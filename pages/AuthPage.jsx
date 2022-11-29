@@ -105,12 +105,14 @@ const AuthPage = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
-            <button
-              onClick={handleLogin}
-              className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
-            >
-              Sign In
-            </button>
+            <Link href="/dashboard">
+              <button
+                onClick={handleLogin}
+               className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
+              >
+                Sign In
+              </button>
+            </Link>
           </div>
         ) : (
           <div>
@@ -150,12 +152,14 @@ const AuthPage = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
-            <button
-              onClick={handleSignUp}
-              className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
-            >
-              Sign Up
-            </button>
+            <Link href="/dashboard">
+              <button
+               onClick={handleSignUp}
+               className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
+              >
+                Sign Up
+              </button>
+            </Link>
           </div>
         )}
       </div>
