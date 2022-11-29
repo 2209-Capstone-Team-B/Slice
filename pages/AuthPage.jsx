@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "../firebase";
-import { serverTimestamp, doc, setDoc } from "firebase/firestore";
 
 const AuthPage = () => {
   const [signIn, setSignIn] = useState(false);
@@ -12,27 +9,8 @@ const AuthPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState(null);
-  const [user] = useAuthState(auth);
 
   const { login, signup } = useAuth();
-
-  useEffect(() => {
-    if (user && firstName.length !== 0) {
-      const updateDb = async () => {
-        const data = await setDoc(
-          doc(db, "Users", user.uid),
-          {
-            email: user.email,
-            firstName: firstName,
-            lastName: lastName,
-            created: serverTimestamp(),
-          },
-          { merge: true }
-        );
-      };
-      updateDb().catch(console.error);
-    }
-  }, [user]);
 
   const handleClick = () => {
     setSignIn(!signIn);
@@ -105,10 +83,18 @@ const AuthPage = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
-            <Link href="/dashboard">
+            <Link
+              href={{
+                pathname: "/dashboard",
+                query: {
+                  firstName: "",
+                  lastName: "",
+                },
+              }}
+            >
               <button
                 onClick={handleLogin}
-               className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
+                className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
               >
                 Sign In
               </button>
@@ -152,10 +138,18 @@ const AuthPage = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
-            <Link href="/dashboard">
+            <Link
+              href={{
+                pathname: "/dashboard",
+                query: {
+                  firstName: firstName,
+                  lastName: lastName,
+                },
+              }}
+            >
               <button
-               onClick={handleSignUp}
-               className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
+                onClick={handleSignUp}
+                className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
               >
                 Sign Up
               </button>
