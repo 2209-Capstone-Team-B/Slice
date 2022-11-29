@@ -11,7 +11,7 @@ export default function Dashboard() {
   const data = router.query;
 
   useEffect(() => {
-    if (user && data.firstName.length !== 0) {
+    if (user && Object.keys(data).length !== 0) {
       const updateDb = async () => {
         const data2 = await setDoc(
           doc(db, "Users", user.uid),
