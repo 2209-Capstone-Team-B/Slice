@@ -86,10 +86,6 @@ const AuthPage = () => {
             <Link
               href={{
                 pathname: "/dashboard",
-                query: {
-                  firstName: "",
-                  lastName: "",
-                },
               }}
             >
               <button
