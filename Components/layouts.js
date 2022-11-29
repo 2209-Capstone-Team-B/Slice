@@ -1,8 +1,8 @@
 // import { AiOutlineDashboard } from 'react-icons/Ai';
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { auth } from "../firebase";
-import { useAuth } from "../context/AuthContext";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { auth } from '../firebase';
+import { useAuth } from '../context/AuthContext';
 
 export default function Layout({ children }) {
   const router = useRouter();
@@ -12,7 +12,7 @@ export default function Layout({ children }) {
   const handleLogout = async () => {
     try {
       await logout();
-      router.push("/");
+      router.push('/');
     } catch (error) {
       console.log(`Help I can't get out!`);
     }
@@ -32,18 +32,19 @@ export default function Layout({ children }) {
   ];
 
   return (
-    <div className='min-h-screen flex flex-col'>
-      <header className='bg-amber-100 sticky top-0 h-14 flex justify-center items-center font-semibold uppercase border border-black'>
+    <div className="min-h-screen flex flex-col">
+      <header className="bg-amber-100 sticky top-0 h-14 flex justify-center items-center font-semibold uppercase border border-black">
         Slice
+        <button onClick={handleLogout}>logout</button>
       </header>
-      <div className='flex flex-col md:flex-row flex-1'>
-        <aside className='bg-amber-100 w-full md:w-60 p-3'>
+      <div className="flex flex-col md:flex-row flex-1">
+        <aside className="bg-amber-100 w-full md:w-60 p-3">
           <nav>
             <ul>
               {sideBar.map(({ href, title }) => (
-                <Link href={href} className='flex'>
+                <Link href={href} className="flex">
                   <div
-                    className='m-2 my-5 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'
+                    className="m-2 my-5 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl"
                     key={title}
                   >
                     <p
