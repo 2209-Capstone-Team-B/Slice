@@ -1,9 +1,22 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 // import { AiOutlineDashboard } from 'react-icons/Ai';
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { auth } from "../firebase";
+import { useAuth } from "../context/AuthContext";
 
 export default function Layout({ children }) {
   const router = useRouter();
+
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.push("/");
+    } catch (error) {
+      console.log(`Help I can't get out!`);
+    }
+  };
 
   const sideBar = [
     {
@@ -14,11 +27,6 @@ export default function Layout({ children }) {
     {
       href: '/about',
       title: 'About',
-      // icon: <AiOutlineDashboard />,
-    },
-    {
-      href: '/testing',
-      title: 'testing',
       // icon: <AiOutlineDashboard />,
     },
   ];
@@ -52,7 +60,7 @@ export default function Layout({ children }) {
             </ul>
           </nav>
         </aside>
-        <main className='flex-1'>{children}</main>
+        <main className="flex-1">{children}</main>
       </div>
     </div>
   );
