@@ -15,6 +15,7 @@ function MyApp({ Component, pageProps }) {
           doc(db, "Users", user.uid),
           {
             email: user.email,
+            created: serverTimestamp(),
           },
           { merge: true }
         );
