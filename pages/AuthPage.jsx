@@ -1,14 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../firebase";
+import { serverTimestamp, doc, setDoc } from "firebase/firestore";
 
 const AuthPage = () => {
   const [signIn, setSignIn] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [error, setError] = useState(null);
+  const [user] = useAuthState(auth);
 
   const { login, signup } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      const updateDb = async () => {
+        const data = await setDoc(
+          doc(db, "Users", user.uid),
+          {
+            email: user.email,
+            firstName: firstName,
+            lastName: lastName,
+            created: serverTimestamp(),
+          },
+          { merge: true }
+        );
+      };
+      updateDb().catch(console.error);
+    }
+  }, [user]);
 
   const handleClick = () => {
     setSignIn(!signIn);
@@ -90,13 +114,24 @@ const AuthPage = () => {
           </div>
         ) : (
           <div>
-            {/* <div className="flex justify-center items-center p-5">
+            <div className="flex justify-center items-center p-5 text-black">
               <input
                 type="text"
-                placeholder="Username..."
+                value={firstName}
+                placeholder="First Name..."
                 className="rounded-3xl p-3"
+                onChange={(event) => setFirstName(event.target.value)}
               />
-            </div> */}
+            </div>
+            <div className="flex justify-center items-center p-5 text-black">
+              <input
+                type="text"
+                value={lastName}
+                placeholder="Last Name..."
+                className="rounded-3xl p-3"
+                onChange={(event) => setLastName(event.target.value)}
+              />
+            </div>
             <div className="flex justify-center items-center p-5 text-black">
               <input
                 type="text"

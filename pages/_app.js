@@ -8,22 +8,6 @@ import { serverTimestamp, doc, setDoc } from "firebase/firestore";
 function MyApp({ Component, pageProps }) {
   const [user, loading] = useAuthState(auth);
 
-  useEffect(() => {
-    if (user) {
-      const updateDb = async () => {
-        const data = await setDoc(
-          doc(db, "Users", user.uid),
-          {
-            email: user.email,
-            created: serverTimestamp(),
-          },
-          { merge: true }
-        );
-      };
-      updateDb().catch(console.error);
-    }
-  }, [user]);
-
   return (
     <AuthProvider>
       <Component {...pageProps} />
