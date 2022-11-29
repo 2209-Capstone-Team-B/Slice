@@ -1,14 +1,38 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { useAuth } from '../context/AuthContext';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { useAuth } from "../context/AuthContext";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../firebase";
+import { serverTimestamp, doc, setDoc } from "firebase/firestore";
 
 const AuthPage = () => {
   const [signIn, setSignIn] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [error, setError] = useState(null);
+  const [user] = useAuthState(auth);
 
   const { login, signup } = useAuth();
+
+  useEffect(() => {
+    if (user && firstName.length !== 0) {
+      const updateDb = async () => {
+        const data = await setDoc(
+          doc(db, "Users", user.uid),
+          {
+            email: user.email,
+            firstName: firstName,
+            lastName: lastName,
+            created: serverTimestamp(),
+          },
+          { merge: true }
+        );
+      };
+      updateDb().catch(console.error);
+    }
+  }, [user]);
 
   const handleClick = () => {
     setSignIn(!signIn);
@@ -84,23 +108,36 @@ const AuthPage = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
-            <button
-              onClick={handleLogin}
-              className='flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border'
-            >
-              Sign In
-            </button>
+            <Link href="/dashboard">
+              <button
+                onClick={handleLogin}
+               className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
+              >
+                Sign In
+              </button>
+            </Link>
           </div>
         ) : (
           <div>
-            {/* <div className="flex justify-center items-center p-5">
+            <div className="flex justify-center items-center p-5 text-black">
               <input
                 type="text"
-                placeholder="Username..."
+                value={firstName}
+                placeholder="First Name..."
                 className="rounded-3xl p-3"
+                onChange={(event) => setFirstName(event.target.value)}
               />
-            </div> */}
-            <div className='flex justify-center items-center p-5 text-black'>
+            </div>
+            <div className="flex justify-center items-center p-5 text-black">
+              <input
+                type="text"
+                value={lastName}
+                placeholder="Last Name..."
+                className="rounded-3xl p-3"
+                onChange={(event) => setLastName(event.target.value)}
+              />
+            </div>
+            <div className="flex justify-center items-center p-5 text-black">
               <input
                 type='text'
                 value={email}
@@ -118,12 +155,14 @@ const AuthPage = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
-            <button
-              onClick={handleSignUp}
-              className='flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border'
-            >
-              Sign Up
-            </button>
+            <Link href="/dashboard">
+              <button
+               onClick={handleSignUp}
+               className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
+              >
+                Sign Up
+              </button>
+            </Link>
           </div>
         )}
       </div>
