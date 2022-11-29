@@ -17,7 +17,7 @@ const AuthPage = () => {
   const { login, signup } = useAuth();
 
   useEffect(() => {
-    if (user) {
+    if (user && firstName.length !== 0) {
       const updateDb = async () => {
         const data = await setDoc(
           doc(db, "Users", user.uid),
