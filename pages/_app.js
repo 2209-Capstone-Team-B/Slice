@@ -1,9 +1,10 @@
-import { AuthProvider } from "../context/AuthContext";
-import "../styles/globals.css";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "../firebase";
-import { useEffect } from "react";
-import { serverTimestamp, doc, setDoc } from "firebase/firestore";
+import { AuthProvider } from '../context/AuthContext';
+import '../styles/globals.css';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, db } from '../firebase';
+import { useEffect } from 'react';
+import { serverTimestamp, doc, setDoc } from 'firebase/firestore';
+import Layout from '../Components/layouts';
 
 function MyApp({ Component, pageProps }) {
   const [user, loading] = useAuthState(auth);
@@ -12,7 +13,7 @@ function MyApp({ Component, pageProps }) {
     if (user) {
       const updateDb = async () => {
         const data = await setDoc(
-          doc(db, "Users", user.uid),
+          doc(db, 'Users', user.uid),
           {
             email: user.email,
             created: serverTimestamp(),
@@ -26,7 +27,13 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <AuthProvider>
-      <Component {...pageProps} />
+      {user ? (
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      ) : (
+        <Component {...pageProps} />
+      )}
     </AuthProvider>
   );
 }
