@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+// import { AiOutlineDashboard } from 'react-icons/Ai';
 
 export default function Layout({ children }) {
   const router = useRouter();
@@ -8,38 +9,45 @@ export default function Layout({ children }) {
     {
       href: '/dashboard',
       title: 'Dashboard',
+      // icon: <AiOutlineDashboard />,
     },
     {
       href: '/about',
       title: 'About',
+      // icon: <AiOutlineDashboard />,
     },
     {
       href: '/testing',
       title: 'testing',
+      // icon: <AiOutlineDashboard />,
     },
   ];
 
   return (
     <div className='min-h-screen flex flex-col'>
-      <header className='bg-purple-200 sticky top-0 h-14 flex justify-center items-center font-semibold uppercase'>
+      <header className='bg-amber-100 sticky top-0 h-14 flex justify-center items-center font-semibold uppercase border border-black'>
         Slice
       </header>
       <div className='flex flex-col md:flex-row flex-1'>
-        <aside className='bg-amber-100 w-full md:w-60'>
+        <aside className='bg-amber-100 w-full md:w-60 p-3'>
           <nav>
             <ul>
               {sideBar.map(({ href, title }) => (
-                <li className='m-2' key={title}>
-                  <Link href={href}>
+                <Link href={href} className='flex'>
+                  <div
+                    className='m-2 my-5 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'
+                    key={title}
+                  >
                     <p
-                      className={`flex p-2 duration-300 hover:font-bold cursor-pointer ${
-                        router.asPath === href && 'bg-amber-400 text-black'
+                      className={`flex justify-self-start items-end p-2 cursor-pointer ${
+                        router.asPath === href && 'text-black'
                       }`}
                     >
                       {title}
                     </p>
-                  </Link>
-                </li>
+                    {/* <div className='mx-auto'>{icon}</div> */}
+                  </div>
+                </Link>
               ))}
             </ul>
           </nav>
