@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import { useAuth } from "../context/AuthContext";
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { useAuth } from '../context/AuthContext';
 
 const AuthPage = () => {
   const [signIn, setSignIn] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   const { login, signup } = useAuth();
 
@@ -17,18 +19,26 @@ const AuthPage = () => {
   };
 
   const handleLogin = async () => {
-    try {
-      await login(email, password);
-    } catch (error) {
-      setError('Email or Password unrecognized');
+    if (signIn) {
+      try {
+        await login(email, password);
+        router.push('/dashboard');
+      } catch (error) {
+        console.log('>>>>>', error);
+        setError('Incorrect Email or Password');
+      }
     }
   };
 
   const handleSignUp = async () => {
-    try {
-      await signup(email, password);
-    } catch (error) {
-      setError;
+    if (!signIn) {
+      try {
+        await signup(email, password);
+        router.push('/dashboard');
+      } catch (error) {
+        console.log('>>>>>', error);
+        setError('Please Fill In All Fields');
+      }
     }
   };
 
@@ -83,40 +93,45 @@ const AuthPage = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
-            <Link
+            {/* <Link
               href={{
-                pathname: "/dashboard",
+                pathname: '/dashboard',
               }}
+            > */}
+            <button
+              onClick={handleLogin}
+              className='flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border'
             >
-              <button
-                onClick={handleLogin}
-                className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
-              >
-                Sign In
-              </button>
-            </Link>
+              Sign In
+            </button>
+            {/* </Link> */}
+            {error && (
+              <div className='w-full max-w-[40ch] border-red-300 text-red-300 py-2 text-center border border-solid mt-5'>
+                {error}
+              </div>
+            )}
           </div>
         ) : (
           <div>
-            <div className="flex justify-center items-center p-5 text-black">
+            <div className='flex justify-center items-center p-5 text-black'>
               <input
-                type="text"
+                type='text'
                 value={firstName}
-                placeholder="First Name..."
-                className="rounded-3xl p-3"
+                placeholder='First Name...'
+                className='rounded-3xl p-3'
                 onChange={(event) => setFirstName(event.target.value)}
               />
             </div>
-            <div className="flex justify-center items-center p-5 text-black">
+            <div className='flex justify-center items-center p-5 text-black'>
               <input
-                type="text"
+                type='text'
                 value={lastName}
-                placeholder="Last Name..."
-                className="rounded-3xl p-3"
+                placeholder='Last Name...'
+                className='rounded-3xl p-3'
                 onChange={(event) => setLastName(event.target.value)}
               />
             </div>
-            <div className="flex justify-center items-center p-5 text-black">
+            <div className='flex justify-center items-center p-5 text-black'>
               <input
                 type='text'
                 value={email}
@@ -134,22 +149,27 @@ const AuthPage = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
-            <Link
+            {/* <Link
               href={{
-                pathname: "/dashboard",
+                pathname: '/dashboard',
                 query: {
                   firstName: firstName,
                   lastName: lastName,
                 },
               }}
+            > */}
+            <button
+              onClick={handleSignUp}
+              className='flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border'
             >
-              <button
-                onClick={handleSignUp}
-                className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
-              >
-                Sign Up
-              </button>
-            </Link>
+              Sign Up
+            </button>
+            {/* </Link> */}
+            {error && (
+              <div className='w-full max-w-[40ch] border-red-300 text-red-300 py-2 text-center border border-solid mt-5'>
+                {error}
+              </div>
+            )}
           </div>
         )}
       </div>

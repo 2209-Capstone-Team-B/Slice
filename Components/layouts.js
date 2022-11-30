@@ -42,11 +42,10 @@ export default function Layout({ children }) {
         <aside className="bg-amber-100 w-full md:w-60 p-3">
           <nav>
             <ul>
-              {sideBar.map(({ href, title }) => (
-                <Link href={href} className="flex">
+              {sideBar.map(({ href, title }, i) => (
+                <Link key={i} href={href} className='flex'>
                   <div
-                    className="m-2 my-5 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl"
-                    key={title}
+                    className='m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'
                   >
                     <p
                       className={`flex justify-self-start items-end p-2 cursor-pointer ${
@@ -61,8 +60,14 @@ export default function Layout({ children }) {
               ))}
             </ul>
           </nav>
+          <button
+            onClick={handleLogout}
+            className='duration-300 hover:scale-110 hover:font-bold flex mx-auto'
+          >
+            logout
+          </button>
         </aside>
-        <main className="flex-1">{children}</main>
+        <main className='flex-1'>{children}</main>
       </div>
     </div>
   );
