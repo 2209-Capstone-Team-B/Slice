@@ -34,7 +34,6 @@ export default function Layout({ children }) {
     <div className="min-h-screen flex flex-col">
       <header className="bg-amber-100 sticky top-0 h-14 flex justify-center items-center font-semibold uppercase border border-b-black">
         Slice
-        <button onClick={handleLogout}>logout</button>
       </header>
       <div className="flex flex-col md:flex-row flex-1">
         <aside className="bg-amber-100 w-full md:w-60 p-3">
