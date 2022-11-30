@@ -1,15 +1,15 @@
 import { db } from '../../firebase.js';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, query, getDocs } from 'firebase/firestore';
 
 export default async (req, res) => {
   if (req.method === 'POST') {
     const docRef = await addDoc(collection(db, 'Users'), req.body);
     res.send(docRef);
   } else if (req.method === 'GET') {
-    const docRef = await getDocs(collection(db, 'Users'));
+    const docSnap = await getDocs(collection(db, 'Users'));
     const users = [];
-    docRef.forEach((doc) => {
-      users.push(doc.id, ' => ', doc.data());
+    docSnap.forEach((doc) => {
+      users.push(doc.data());
     });
     res.send(users);
   } else {
