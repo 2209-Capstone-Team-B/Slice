@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { auth, db } from '../firebase';
 import { serverTimestamp, doc, setDoc } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Dashboard() {
+  const [tasks, setTasks] = useState([]);
   const { currentUser } = useAuth();
   const [user] = useAuthState(auth);
   const router = useRouter();
@@ -26,23 +27,45 @@ export default function Dashboard() {
           { merge: true }
         );
       };
-
       updateDb().catch(console.error);
+    }
+    if (user) {
+      const fetchTasks = async () => {
+        const res = await fetch(`/api/dashboard/${currentUser.uid}`);
+        const data = await res.json();
+        setTasks(data);
+      };
+      fetchTasks();
     }
   }, [user]);
 
   return (
     <div>
-      {currentUser ? <div className="">Hello {currentUser.email}</div> : null}
-      <div className="bg-white h-screen flex items-stretch">
-        <div className="text-black border mr-4 border-black p-3 w-5/12 h-3/4 m-auto rounded-3xl">
-          Div1
+      {currentUser ? (
+        <div className='text-center text-3xl pt-6'>
+          Hello {currentUser.email}
         </div>
-        <div className="w-5/12 h-3/4 m-auto rounded-3xl relative">
-          <div className="text-black border border-black p-3 mb-10 w-11/12 height rounded-3xl">
+      ) : null}
+      <div className='bg-white h-screen flex justify-center items-stretch'>
+        <div className='text-black border border-black hover:border-amber-400 p-3 w-5/12 h-3/4 m-auto rounded-3xl'>
+          {/* {tasks.map((task) => {
+            return (
+              <p key={task.name} className='text-black'>
+                {task.name}
+              </p>
+            );
+          })} */}
+          <div className=''>
+            <div className='border border-black rounded-3xl'>In Progress</div>
+            <div className='border border-black rounded-3xl'>Incomplete</div>
+            <div className='border border-black rounded-3xl'>Complete</div>
+          </div>
+        </div>
+        <div className='w-5/12 h-3/4 m-auto rounded-3xl relative'>
+          <div className='text-black border border-black p-3 mb-10 w-11/12 height rounded-3xl'>
             Div 2
           </div>
-          <div className="text-black border border-black p-3 w-11/12 height rounded-3xl absolute bottom-0 left-0">
+          <div className='text-black border border-black p-3 w-11/12 height rounded-3xl absolute bottom-0 left-0'>
             Div 3
           </div>
         </div>
