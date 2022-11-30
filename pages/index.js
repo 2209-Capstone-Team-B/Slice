@@ -1,7 +1,8 @@
 import Head from "next/head";
 import { useAuth } from "../context/AuthContext";
 import OnboardingPage from "./OnboardingPage";
-import Dashboard from "./dashboard";
+import Dashboard from './dashboard.js'
+
 
 const Home = () => {
   const { currentUser } = useAuth();
