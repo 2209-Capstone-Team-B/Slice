@@ -11,7 +11,6 @@ export default function Dashboard() {
   const [user] = useAuthState(auth);
   const router = useRouter();
   const data = router.query;
-  console.log(currentUser);
 
   useEffect(() => {
     if (user && Object.keys(data).length !== 0) {

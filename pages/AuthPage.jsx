@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 
@@ -9,6 +10,7 @@ const AuthPage = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   const { login, signup } = useAuth();
 
@@ -17,21 +19,26 @@ const AuthPage = () => {
   };
 
   const handleLogin = async () => {
-    try {
-      // if (email && password) {
-      //   await login(email, password);
-      // }
-      await login(email, password);
-    } catch (error) {
-      setError('Email or Password unrecognized');
+    if (signIn) {
+      try {
+        await login(email, password);
+        router.push('/dashboard');
+      } catch (error) {
+        console.log('>>>>>', error);
+        setError('Incorrect Email or Password');
+      }
     }
   };
 
   const handleSignUp = async () => {
-    try {
-      await signup(email, password);
-    } catch (error) {
-      setError;
+    if (!signIn) {
+      try {
+        await signup(email, password);
+        router.push('/dashboard');
+      } catch (error) {
+        console.log('>>>>>', error);
+        setError('Please Fill In All Fields');
+      }
     }
   };
 
@@ -86,18 +93,23 @@ const AuthPage = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
-            <Link
+            {/* <Link
               href={{
                 pathname: '/dashboard',
               }}
+            > */}
+            <button
+              onClick={handleLogin}
+              className='flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border'
             >
-              <button
-                onClick={handleLogin}
-                className='flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border'
-              >
-                Sign In
-              </button>
-            </Link>
+              Sign In
+            </button>
+            {/* </Link> */}
+            {error && (
+              <div className='w-full max-w-[40ch] border-red-300 text-red-300 py-2 text-center border border-solid mt-5'>
+                {error}
+              </div>
+            )}
           </div>
         ) : (
           <div>
@@ -137,7 +149,7 @@ const AuthPage = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
-            <Link
+            {/* <Link
               href={{
                 pathname: '/dashboard',
                 query: {
@@ -145,14 +157,19 @@ const AuthPage = () => {
                   lastName: lastName,
                 },
               }}
+            > */}
+            <button
+              onClick={handleSignUp}
+              className='flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border'
             >
-              <button
-                onClick={handleSignUp}
-                className='flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border'
-              >
-                Sign Up
-              </button>
-            </Link>
+              Sign Up
+            </button>
+            {/* </Link> */}
+            {error && (
+              <div className='w-full max-w-[40ch] border-red-300 text-red-300 py-2 text-center border border-solid mt-5'>
+                {error}
+              </div>
+            )}
           </div>
         )}
       </div>
