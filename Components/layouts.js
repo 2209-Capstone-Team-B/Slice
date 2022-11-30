@@ -1,9 +1,9 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { auth } from '../firebase';
-import { useAuth } from '../context/AuthContext';
-import { AiOutlineDashboard } from 'react-icons/Ai';
-import { MdGroups } from 'react-icons/Md';
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { auth } from "../firebase";
+import { useAuth } from "../context/AuthContext";
+import { AiOutlineDashboard } from "react-icons/Ai";
+import { MdGroups } from "react-icons/Md";
 
 export default function Layout({ children }) {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function Layout({ children }) {
   const handleLogout = async () => {
     try {
       await logout();
-      router.push('/');
+      router.push("/");
     } catch (error) {
       console.log(`Help I can't get out!`);
     }
@@ -21,12 +21,12 @@ export default function Layout({ children }) {
 
   const sideBar = [
     {
-      href: '/dashboard',
-      title: 'Dashboard',
+      href: "/dashboard",
+      title: "Dashboard",
     },
     {
-      href: '/about',
-      title: 'About',
+      href: "/about",
+      title: "About",
     },
   ];
 
@@ -45,12 +45,12 @@ export default function Layout({ children }) {
                   <div className="m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl">
                     <p
                       className={`flex justify-self-start items-end p-2 cursor-pointer w-10/12 ${
-                        router.asPath === href && 'text-black'
+                        router.asPath === href && "text-black"
                       }`}
                     >
                       {title}
                     </p>
-                    {title === 'Dashboard' ? (
+                    {title === "Dashboard" ? (
                       <AiOutlineDashboard />
                     ) : (
                       <MdGroups />
