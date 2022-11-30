@@ -4,36 +4,34 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { auth } from '../firebase';
 import { useAuth } from '../context/AuthContext';
-import {useEffect} from "react"
-import {useDispatch, useSelector} from "react-redux"
-import { useAuthState } from "react-firebase-hooks/auth";
-import {fetchEcosystems} from "../Store/ecosystems.js"
-import { AiOutlineDashboard } from "react-icons/Ai";
-import { MdGroups } from "react-icons/Md";
-
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { fetchEcosystems } from '../Store/ecosystems.js';
+import { AiOutlineDashboard } from 'react-icons/Ai';
+import { MdGroups } from 'react-icons/Md';
 
 export default function Layout({ children }) {
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [user, loading] = useAuthState(auth);
 
   const router = useRouter();
 
   const { logout } = useAuth();
 
-  const userEcosystems = useSelector((state)=>state.ecosystems)
+  const userEcosystems = useSelector((state) => state.ecosystems);
 
-  useEffect(()=>{
-    const unsubscribe = dispatch(fetchEcosystems(user.uid))
-    return ()=>{
-      unsubscribe()
-    }
-  },[])
+  useEffect(() => {
+    const unsubscribe = dispatch(fetchEcosystems(user.uid));
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const handleLogout = async () => {
     try {
       await logout();
-      router.push("/");
+      router.push('/');
     } catch (error) {
       console.log(`Help I can't get out!`);
     }
@@ -41,12 +39,12 @@ export default function Layout({ children }) {
 
   const sideBar = [
     {
-      href: "/dashboard",
-      title: "Dashboard",
+      href: '/dashboard',
+      title: 'Dashboard',
     },
     {
-      href: "/about",
-      title: "About",
+      href: '/about',
+      title: 'About',
     },
   ];
 
@@ -64,12 +62,12 @@ export default function Layout({ children }) {
                   <div className='m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
                     <p
                       className={`flex justify-self-start items-end p-2 cursor-pointer w-10/12 ${
-                        router.asPath === href && "text-black"
+                        router.asPath === href && 'text-black'
                       }`}
                     >
                       {title}
                     </p>
-                    {title === "Dashboard" ? (
+                    {title === 'Dashboard' ? (
                       <AiOutlineDashboard />
                     ) : (
                       <MdGroups />
@@ -77,18 +75,20 @@ export default function Layout({ children }) {
                   </div>
                 </Link>
               ))}
-              {userEcosystems.map((eco, index)=>(
+              {userEcosystems.map((eco, index) => (
                 <div
-                className="m-2 my-5 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl"
-                key={index}
-              >
-                <p
-                  className={`flex justify-self-start items-end p-2 cursor-pointer`}
+                  className='m-2 my-5 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'
+                  key={index}
                 >
-                  {eco.orgName}
-                </p>
-                {/* <div className='mx-auto'>{icon}</div> */}
-              </div>
+                  <p
+                    className={
+                      'flex justify-self-start items-end p-2 cursor-pointer w-10/12'
+                    }
+                  >
+                    {eco.orgName}
+                  </p>
+                  {/* <div className='mx-auto'>{icon}</div> */}
+                </div>
               ))}
             </ul>
           </nav>
