@@ -5,6 +5,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import Chart from './Chart';
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -33,11 +34,15 @@ export default function Dashboard() {
       const fetchTasks = async () => {
         const res = await fetch(`/api/dashboard/${currentUser.uid}`);
         const data = await res.json();
+        console.log(data);
         setTasks(data);
       };
       fetchTasks();
     }
   }, [user]);
+
+  const completedTasks = tasks.filter((task) => task.completed === true);
+  const incompleteTasks = tasks.filter((task) => task.completed === false);
 
   return (
     <div>
@@ -46,19 +51,53 @@ export default function Dashboard() {
           Hello {currentUser.email}
         </div>
       ) : null}
-      <div className='bg-white h-screen flex justify-center items-stretch'>
-        <div className='text-black border border-black hover:border-amber-400 p-3 w-5/12 h-3/4 m-auto rounded-3xl'>
-          {/* {tasks.map((task) => {
-            return (
-              <p key={task.name} className='text-black'>
-                {task.name}
-              </p>
-            );
-          })} */}
-          <div className=''>
-            <div className='border border-black rounded-3xl'>In Progress</div>
-            <div className='border border-black rounded-3xl'>Incomplete</div>
-            <div className='border border-black rounded-3xl'>Complete</div>
+      <div className='bg-white h-screen flex justify-start items-stretch'>
+        <div className='text-black p-3 w-5/12 h-3/4 m-auto rounded-3xl flex flex-col overflow-auto'>
+          <div className='flex w-full h-96 justify-center items-center'>
+            {completedTasks.length || incompleteTasks.length ? (
+              <Chart
+                completed={completedTasks.length}
+                incomplete={incompleteTasks.length}
+              />
+            ) : (
+              <h1 className='border border-solid border-amber-400 p-16 rounded-full animate-bounce'>No Tasks For Me</h1>
+            )}
+          </div>
+          <div className='mt-auto'>
+            <div className='flex justify-center items-center text-center flex-col bg-amber-100 duration-300 hover:scale-110 rounded-3xl p-2 m-5'>
+              <header className='text-center underline text-2xl'>
+                Incomplete
+              </header>
+              {tasks.map((task) => (
+                <>
+                  {!task.completed && (
+                    <p
+                      key={task.name}
+                      className='text-black rounded-3xl border border-slate-200 bg-white w-2/6'
+                    >
+                      {task.name}
+                    </p>
+                  )}
+                </>
+              ))}
+            </div>
+            <div className='flex justify-center items-center text-center flex-col bg-amber-100 duration-300 hover:scale-110 rounded-3xl p-2 m-5 overflow-auto'>
+              <header className='text-center underline text-2xl'>
+                Completed
+              </header>
+              {tasks.map((task) => (
+                <>
+                  {task.completed && (
+                    <p
+                      key={task.name}
+                      className='text-black rounded-3xl border border-slate-200 bg-white w-2/6'
+                    >
+                      {task.name}
+                    </p>
+                  )}
+                </>
+              ))}
+            </div>
           </div>
         </div>
         <div className='w-5/12 h-3/4 m-auto rounded-3xl relative'>
