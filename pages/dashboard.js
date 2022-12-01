@@ -61,7 +61,9 @@ export default function Dashboard() {
                 incomplete={incompleteTasks.length}
               />
             ) : (
-              <h1 className='border border-solid border-amber-400 p-16 rounded-full animate-bounce'>No Tasks For Me</h1>
+              <h1 className='border border-solid border-amber-400 p-16 rounded-full animate-bounce'>
+                No Tasks For Me
+              </h1>
             )}
           </div>
           <div className='mt-auto'>
@@ -69,35 +71,33 @@ export default function Dashboard() {
               <header className='text-center underline text-2xl'>
                 Incomplete
               </header>
-              {tasks.map((task) => (
-                <>
-                  {!task.completed && (
+              {tasks.map(
+                (task) =>
+                  !task.completed && (
                     <p
                       key={task.name}
                       className='text-black rounded-3xl border border-slate-200 bg-white w-2/6'
                     >
                       {task.name}
                     </p>
-                  )}
-                </>
-              ))}
+                  )
+              )}
             </div>
             <div className='flex justify-center items-center text-center flex-col bg-amber-100 duration-300 hover:scale-110 rounded-3xl p-2 m-5 overflow-auto'>
               <header className='text-center underline text-2xl'>
                 Completed
               </header>
-              {tasks.map((task) => (
-                <>
-                  {task.completed && (
+              {tasks.map(
+                (task) =>
+                  task.completed && (
                     <p
                       key={task.name}
                       className='text-black rounded-3xl border border-slate-200 bg-white w-2/6'
                     >
                       {task.name}
                     </p>
-                  )}
-                </>
-              ))}
+                  )
+              )}
             </div>
           </div>
         </div>
