@@ -48,7 +48,7 @@ export default function Layout({ children }) {
       title: 'About',
     },
   ];
-
+  //test
   return (
     <div className='min-h-screen flex flex-col'>
       <header className='bg-amber-100 sticky flex justify-between top-0 h-14 font-semibold uppercase border border-b-black'>
