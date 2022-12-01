@@ -5,6 +5,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import loggedInUser from "./user.js"
 import ecosystems from './ecosystems.js'
 import singleEcosystem from './singleEcosystem.js'
+import userTasks from './userTasks.js'
 
 
 
@@ -12,7 +13,8 @@ import singleEcosystem from './singleEcosystem.js'
 const reducer = combineReducers({
 loggedInUser,
 ecosystems,
-singleEcosystem
+singleEcosystem,
+userTasks
 });
 
 const middleware = composeWithDevTools(
@@ -25,4 +27,5 @@ export default store;
 export * from "./user.js";
 export * from "./ecosystems.js"
 export * from "./singleEcosystem.js"
+export * from "./userTasks.js"
 

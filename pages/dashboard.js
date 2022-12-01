@@ -7,21 +7,20 @@ import { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Chart from './Chart';
 import {useDispatch, useSelector} from "react-redux"
-import {fetchUser} from '../Store'
+import {fetchUser, fetchTasks} from '../Store'
 
 export default function Dashboard() {
-  const [tasks, setTasks] = useState([]);
+  //const [tasks, setTasks] = useState([]);
   const { currentUser } = useAuth();
-  const [user] = useAuthState(auth);
+  const [user,loading] = useAuthState(auth);
   const router = useRouter();
   const data = router.query;
   const userObject = useSelector((state)=>state.loggedInUser)
+  const tasks = useSelector((state)=>state.userTasks)
   const dispatch = useDispatch()
 
   useEffect(() => {
-
     if (user) {
-
         const getUser = async() =>{
           try {
             dispatch( fetchUser(user.uid))
@@ -29,18 +28,15 @@ export default function Dashboard() {
            console.log(error)
           }
         }
-
-
-      const fetchTasks = async () => {
-        const res = await fetch(`/api/dashboard/${currentUser.uid}`);
-        const data = await res.json();
-        console.log(data);
-        setTasks(data);
-      };
       getUser()
-      fetchTasks();
     }
   }, [user]);
+  useEffect(() => {
+    const unsubscribe = dispatch(fetchTasks(user.uid));
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const completedTasks = tasks.filter((task) => task.completed === true);
   const incompleteTasks = tasks.filter((task) => task.completed === false);
