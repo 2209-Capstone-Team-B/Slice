@@ -8,8 +8,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { fetchEcosystems } from '../Store/ecosystems.js';
 import { AiOutlineDashboard } from 'react-icons/Ai';
 import { MdGroups } from 'react-icons/Md';
+import Account from './account';
 import ecosystem from '../pages/Ecosystem/[id]';
-
 
 export default function Layout({ children }) {
   const dispatch = useDispatch();
@@ -39,6 +39,10 @@ export default function Layout({ children }) {
 
   const sideBar = [
     {
+      href: '/dashboard',
+      title: 'Dashboard',
+    },
+    {
       href: '/about',
       title: 'About',
     },
@@ -47,7 +51,13 @@ export default function Layout({ children }) {
   return (
     <div className='min-h-screen flex flex-col'>
       <header className='bg-amber-100 drop-shadow-md sticky top-0 h-14 flex justify-center items-center font-semibold uppercase border'>
-        Slice
+        <div className='flex items-center pl-10'>
+          <p>Slice Logo</p>
+        </div>
+        <h3 className='flex items-center'> </h3>
+        <div className='flex pr-6 items-center'>
+          <Account />
+        </div>
       </header>
       <div className="flex flex-col md:flex-row flex-1">
         <aside className="bg-amber-100 w-full md:w-60 p-3">
@@ -64,7 +74,11 @@ export default function Layout({ children }) {
                     >
                       {title}
                     </p>
-                    <MdGroups />
+                    {title === 'Dashboard' ? (
+                      <AiOutlineDashboard />
+                    ) : (
+                      <MdGroups />
+                    )}
                   </div>
                 </Link>
               ))}
