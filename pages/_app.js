@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import Account from '../Components/account';
 
 function MyApp({ Component, pageProps }) {
+
   const [user, loading] = useAuthState(auth);
 
   /*   useEffect(()=>{
@@ -27,7 +28,6 @@ function MyApp({ Component, pageProps }) {
 
   // you can grab the entire user object on state.loggedInUser
 
-
   return (
     <Provider store={store}>
       <AuthProvider>
@@ -42,5 +42,14 @@ function MyApp({ Component, pageProps }) {
     </Provider>
   );
 }
+// {
+//   user ? (
+//     <Layout>
+//       <Component {...pageProps} />
+//     </Layout>
+//   ) : (
+//     <Component {...pageProps} />
+//   );
+// }
 
 export default MyApp;
