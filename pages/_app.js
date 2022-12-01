@@ -27,6 +27,7 @@ function MyApp({ Component, pageProps }) {
 
   // you can grab the entire user object on state.loggedInUser
 
+
   return (
     <Provider store={store}>
       <AuthProvider>

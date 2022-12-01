@@ -6,6 +6,8 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Chart from './Chart';
+import {useDispatch, useSelector} from "react-redux"
+import {fetchUser} from '../Store'
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -13,30 +15,29 @@ export default function Dashboard() {
   const [user] = useAuthState(auth);
   const router = useRouter();
   const data = router.query;
+  const userObject = useSelector((state)=>state.loggedInUser)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    if (user && Object.keys(data).length !== 0) {
-      const updateDb = async () => {
-        const data2 = await setDoc(
-          doc(db, 'Users', user.uid),
-          {
-            email: user.email,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            created: serverTimestamp(),
-          },
-          { merge: true }
-        );
-      };
-      updateDb().catch(console.error);
-    }
+
     if (user) {
+
+        const getUser = async() =>{
+          try {
+            dispatch( fetchUser(user.uid))
+          } catch (error) {
+           console.log(error)
+          }
+        }
+
+
       const fetchTasks = async () => {
         const res = await fetch(`/api/dashboard/${currentUser.uid}`);
         const data = await res.json();
         console.log(data);
         setTasks(data);
       };
+      getUser()
       fetchTasks();
     }
   }, [user]);
@@ -48,7 +49,7 @@ export default function Dashboard() {
     <div>
       {currentUser ? (
         <div className='text-center text-3xl pt-6'>
-          Hello {currentUser.email}
+          Hello {userObject.firstName}
         </div>
       ) : null}
       <div className='bg-white h-screen flex justify-start items-stretch'>
