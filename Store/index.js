@@ -4,13 +4,15 @@ import thunkMiddleware from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import loggedInUser from "./user.js"
 import ecosystems from './ecosystems.js'
+import singleEcosystem from './singleEcosystem.js'
 
 
 
 
 const reducer = combineReducers({
 loggedInUser,
-ecosystems
+ecosystems,
+singleEcosystem
 });
 
 const middleware = composeWithDevTools(
@@ -22,4 +24,5 @@ const store = createStore(reducer, middleware);
 export default store;
 export * from "./user.js";
 export * from "./ecosystems.js"
+export * from "./singleEcosystem.js"
 

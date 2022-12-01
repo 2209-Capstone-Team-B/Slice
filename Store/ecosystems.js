@@ -10,6 +10,7 @@ import {
 import { db } from '../firebase.js';
 
 // Actions
+
 const GET_ECOSYSTEMS = 'GET_ECOSYSTEMS';
 
 // Action Creators
