@@ -48,7 +48,7 @@ export default function Dashboard() {
     <div>
       {currentUser ? (
         <div className='text-center text-3xl pt-6'>
-          Hello {currentUser.email}
+          Hello {userObject.firstName}
         </div>
       ) : null}
       <div className='bg-white h-screen flex justify-start items-stretch'>

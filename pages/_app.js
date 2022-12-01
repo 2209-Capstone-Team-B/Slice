@@ -6,12 +6,13 @@ import Layout from '../Components/layouts';
 import store, { fetchUser } from '../Store';
 import { useEffect } from 'react';
 import { Provider } from 'react-redux';
-import Oops from './Oops';
+import Account from '../Components/account';
 
 function MyApp({ Component, pageProps }) {
+
   const [user, loading] = useAuthState(auth);
 
-  /* useEffect(()=>{
+  /*   useEffect(()=>{
  if (user){
   const getUser = async() =>{
     try {
@@ -41,5 +42,14 @@ function MyApp({ Component, pageProps }) {
     </Provider>
   );
 }
+// {
+//   user ? (
+//     <Layout>
+//       <Component {...pageProps} />
+//     </Layout>
+//   ) : (
+//     <Component {...pageProps} />
+//   );
+// }
 
 export default MyApp;

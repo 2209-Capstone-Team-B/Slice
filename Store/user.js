@@ -1,5 +1,5 @@
 import axios from "axios";
-import { collection, doc} from "firebase/firestore"
+import { collection, doc, getDoc} from "firebase/firestore"
 import {db} from '../firebase.js'
 
 // Actions

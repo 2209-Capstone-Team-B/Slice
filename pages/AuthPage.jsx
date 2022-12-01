@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
+import { auth, db } from "../firebase";
+import { serverTimestamp, doc, setDoc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const AuthPage = () => {
   const [signIn, setSignIn] = useState(false);
@@ -12,7 +15,8 @@ const AuthPage = () => {
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  const { login, signup } = useAuth();
+  const { currentUser, login, signup } = useAuth();
+  const myauth = getAuth();
 
   const handleClick = () => {
     setSignIn(!signIn);
@@ -30,12 +34,30 @@ const AuthPage = () => {
     }
   };
 
+  const saveToDb = async () => {
+    const user = myauth.currentUser;
+
+    const updateDb = async () => {
+      const data2 = await setDoc(
+        doc(db, "Users", user.uid),
+        {
+          email,
+          firstName,
+          lastName,
+          created: serverTimestamp(),
+        },
+        { merge: true }
+      );
+    };
+    await updateDb().catch(console.error);
+  };
+
   const handleSignUp = async () => {
     if (!signIn) {
       try {
         await signup(email, password);
         router.push({
-          pathname: "/dashboard",
+          pathname: "/",
           query: {
             firstName: firstName,
             lastName: lastName,
@@ -165,7 +187,10 @@ const AuthPage = () => {
               }}
             > */}
             <button
-              onClick={handleSignUp}
+              onClick={async () => {
+                await handleSignUp();
+                saveToDb();
+              }}
               className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
             >
               Sign Up
