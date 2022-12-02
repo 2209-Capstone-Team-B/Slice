@@ -9,8 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^2.0.13",
+    "@mui/material": "^5.10.16",
     "axios": "^1.2.0",
     "babel": "^6.23.0",
     "chart.js": "^4.0.1",

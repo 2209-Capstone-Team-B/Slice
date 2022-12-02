@@ -30,7 +30,7 @@ export default function Layout({ children }) {
 
   const handleLogout = async () => {
     try {
-      router.push('/')
+      router.push('/');
       await logout();
     } catch (error) {
       console.log(`Help I can't get out!`);
@@ -38,10 +38,6 @@ export default function Layout({ children }) {
   };
 
   const sideBar = [
-    {
-      href: '/dashboard',
-      title: 'Dashboard',
-    },
     {
       href: '/about',
       title: 'About',
@@ -59,41 +55,22 @@ export default function Layout({ children }) {
           <Account />
         </div>
       </header>
-      <div className="flex flex-col md:flex-row flex-1">
-        <aside className="bg-amber-100 w-full md:w-60 p-3">
+      <div className='flex flex-col md:flex-row flex-1'>
+        <aside className='bg-amber-100 w-full md:w-60 p-3'>
           <nav>
             {dashboard()}
             <ul>
-              {sideBar.map(({ href, title }, i) => (
-                <Link key={i} href={href} className="flex">
-                  <div className="m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl">
-                    <p
-                      className={`flex justify-self-start items-end p-2 cursor-pointer w-10/12 ${
-                        router.asPath === href && 'text-black'
-                      }`}
-                    >
-                      {title}
-                    </p>
-                    {title === 'Dashboard' ? (
-                      <AiOutlineDashboard />
-                    ) : (
-                      <MdGroups />
-                    )}
-                  </div>
-                </Link>
-              ))}
-              {userEcosystems.map((eco, index) => (
-                <Link key={eco.id} href={`/Ecosystem/${eco.id}`}>
-                  <div
-                    className='m-2 my-5 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'
-                    key={index}
-                  >
-                    <p
-                      className={`flex justify-self-start items-end p-2 cursor-pointer`}
-                    >
+              {userEcosystems.map((eco, i) => (
+                <Link
+                  key={eco.id}
+                  href={`/Ecosystem/${eco.id}`}
+                  className='flex'
+                >
+                  <div className='m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
+                    <p className='flex justify-self-start items-end p-2 cursor-pointer w-10/12'>
                       {eco.orgName}
                     </p>
-                    {/* <div className='mx-auto'>{icon}</div> */}
+                    <MdGroups />
                   </div>
                 </Link>
               ))}
@@ -101,19 +78,18 @@ export default function Layout({ children }) {
           </nav>
           <button
             onClick={handleLogout}
-            className="duration-300 hover:scale-110 hover:font-bold flex mx-auto"
+            className='duration-300 hover:scale-110 hover:font-bold flex mx-auto'
           >
             logout
           </button>
         </aside>
-        <main className="flex-1">{children}</main>
+        <main className='flex-1'>{children}</main>
       </div>
     </div>
   );
 }
 
 //Dashboard link in the sidebar
-
 function dashboard() {
   return (
     <Link key={'dashboard'} href={'/dashboard'} className='flex'>
