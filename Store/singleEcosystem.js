@@ -10,7 +10,6 @@ import {
 import { db } from '../firebase.js';
 
 // Actions
-
 const GET_ECOSYSTEM = 'GET_ECOSYSTEM';
 
 // Action Creators
@@ -23,26 +22,14 @@ const _getECOSYSTEM = (ecosystem) => {
 
 // Thunks
 export const fetchEcosystem = (ecoId) => (dispatch) => {
- console.log(typeof ecoId)
-  const subscriber = onSnapshot(doc(db, "Ecosystem", ecoId), (docSnapshot) => {
-
-   dispatch(_getECOSYSTEM(docSnapshot.data()))
-    /* const ecosystems = await Promise.all(
-      querySnapshot.docs.map(async (ecoMember) => {
-        const docRef = doc(db, 'Ecosystem', ecoMember.data().ecosystemId);
-        const docSnap = await getDoc(docRef);
-        return { ...docSnap.data(), id: docSnap.id };
-      })
-    ); */
+  const subscriber = onSnapshot(doc(db, 'Ecosystem', ecoId), (docSnapshot) => {
+    dispatch(_getECOSYSTEM(docSnapshot.data()));
   });
   return subscriber;
 };
 
-// Initial State
-const initialState = {};
-
 // Reducer
-export default function userEcosystem(state = initialState, action) {
+export default function userEcosystem(state = {}, action) {
   switch (action.type) {
     case GET_ECOSYSTEM: {
       return action.ecosystem;

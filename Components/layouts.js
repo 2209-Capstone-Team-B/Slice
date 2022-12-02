@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { fetchEcosystems } from '../Store/ecosystems.js';
-import { AiOutlineDashboard } from 'react-icons/Ai';
+import { AiOutlineDashboard, AiOutlinePlus } from 'react-icons/Ai';
 import { MdGroups } from 'react-icons/Md';
 import Account from './account';
 import ecosystem from '../pages/Ecosystem/[id]';
@@ -39,10 +39,6 @@ export default function Layout({ children }) {
 
   const sideBar = [
     {
-      href: '/dashboard',
-      title: 'Dashboard',
-    },
-    {
       href: '/about',
       title: 'About',
     },
@@ -50,12 +46,12 @@ export default function Layout({ children }) {
 
   return (
     <div className='min-h-screen flex flex-col'>
-      <header className='bg-amber-100 drop-shadow-md sticky top-0 h-14 flex justify-center items-center font-semibold uppercase border'>
+      <header className='bg-amber-100 drop-shadow-md sticky top-0 h-14 flex justify-between items-center font-semibold uppercase border'>
         <div className='flex items-center pl-10'>
           <p>Slice Logo</p>
         </div>
         <h3 className='flex items-center'> </h3>
-        <div className='flex pr-6 items-center absolute right-0'>
+        <div className='flex pr-6 items-center'>
           <Account />
         </div>
       </header>
@@ -64,39 +60,28 @@ export default function Layout({ children }) {
           <nav>
             {dashboard()}
             <ul>
-              {sideBar.map(({ href, title }, i) => (
-                <Link key={i} href={href} className='flex'>
+              {userEcosystems.map((eco, i) => (
+                <Link
+                  key={eco.id}
+                  href={`/Ecosystem/${eco.id}`}
+                  className='flex'
+                >
                   <div className='m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
-                    <p
-                      className={`flex justify-self-start items-end p-2 cursor-pointer w-10/12 ${
-                        router.asPath === href && 'text-black'
-                      }`}
-                    >
-                      {title}
-                    </p>
-                    {title === 'Dashboard' ? (
-                      <AiOutlineDashboard />
-                    ) : (
-                      <MdGroups />
-                    )}
-                  </div>
-                </Link>
-              ))}
-              {userEcosystems.map((eco, index) => (
-                <Link key={eco.id} href={`/Ecosystem/${eco.id}`}>
-                  <div
-                    className='m-2 my-5 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'
-                    key={index}
-                  >
-                    <p
-                      className={`flex justify-self-start items-end p-2 cursor-pointer`}
-                    >
+                    <p className='flex justify-self-start items-end p-2 cursor-pointer w-10/12'>
                       {eco.orgName}
                     </p>
-                    {/* <div className='mx-auto'>{icon}</div> */}
+                    <MdGroups />
                   </div>
                 </Link>
               ))}
+              <div className='flex'>
+                <div className='m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
+                  <p className='flex justify-self-start items-end p-2 cursor-pointer w-10/12'>
+                    New Ecosystem
+                  </p>
+                  <AiOutlinePlus />
+                </div>
+              </div>
             </ul>
           </nav>
           <button
@@ -113,7 +98,6 @@ export default function Layout({ children }) {
 }
 
 //Dashboard link in the sidebar
-
 function dashboard() {
   return (
     <Link key={'dashboard'} href={'/dashboard'} className='flex'>
