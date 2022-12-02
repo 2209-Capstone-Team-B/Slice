@@ -27,7 +27,7 @@ export const fetchTasks = (userId) => (dispatch) => {
     collection(db, 'Tasks'),
     where('userId', '==', userId)
   );
-  const subscriber = onSnapshot(orgs, async (querySnapshot) => {
+  const subscriber = onSnapshot(orgs, (querySnapshot) => {
     const tasks =
       querySnapshot.docs.map(task => ({...task.data(), id: task.id}))
 
