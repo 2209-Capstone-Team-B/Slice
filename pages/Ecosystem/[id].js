@@ -18,12 +18,12 @@ export default function ecosystem() {
   useEffect(() => {
     //getTasks(id);
     const unsubscribeEcosystem = dispatch(fetchEcosystem(id));
-    const unsubscribeEcosystemTasks = dispatch(fetchEcosystemTasks(id))
+    const unsubscribeEcosystemTasks = dispatch(fetchEcosystemTasks(id));
     return () => {
-      unsubscribeEcosystemTasks()
+      unsubscribeEcosystemTasks();
       unsubscribeEcosystem();
     };
-  }, []);
+  }, [id]);
 
   return (
     <>
