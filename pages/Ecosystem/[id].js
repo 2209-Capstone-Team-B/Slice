@@ -3,7 +3,9 @@ import { useRouter } from 'next/router';
 import { fetchEcosystem, fetchEcosystemTasks } from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
 import AddTask from '../../Components/AddTask';
+import EditTask from '../../Components/EditTask';
 import InvitePeople from '../../Components/InvitePeople';
+
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -43,6 +45,7 @@ export default function ecosystem() {
                   className='border border-black text-center w-3/4 rounded-2xl p-2 m-2'
                 >
                   {task.name} due {task.due}
+                  <EditTask task={task} />
                 </div>
               ))}
             </div>
