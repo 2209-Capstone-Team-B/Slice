@@ -42,14 +42,5 @@ function MyApp({ Component, pageProps }) {
     </Provider>
   );
 }
-// {
-//   user ? (
-//     <Layout>
-//       <Component {...pageProps} />
-//     </Layout>
-//   ) : (
-//     <Component {...pageProps} />
-//   );
-// }
 
 export default MyApp;

@@ -4,6 +4,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/router';
 
 const MyLink = forwardRef((props, ref) => {
   let { href, children, ...rest } = props;
@@ -16,6 +17,7 @@ const MyLink = forwardRef((props, ref) => {
 
 export default function Account({ children }) {
   const { logout } = useAuth();
+  const router = useRouter();
 
   const handleLogout = async () => {
     try {
