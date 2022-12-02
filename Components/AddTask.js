@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
+import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
   position: 'absolute',
@@ -41,6 +42,7 @@ export default function AddTask({ id, getTasks }) {
       name,
       due,
       ecosystemId: id,
+      userId: null,
       completed: false,
     });
     setName('');
@@ -71,8 +73,11 @@ export default function AddTask({ id, getTasks }) {
             className='text-center'
           >
             Create New Task
+            <CloseIcon
+              className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
+              onClick={handleClose}
+            />
           </Typography>
-
           <form
             onSubmit={handleSubmit}
             className='px-10 border-2 border-black w-3/4 m-auto p-6 mt-6 rounded-md'
