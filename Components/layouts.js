@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { fetchEcosystems, fetchInvites, fetchUser } from '../Store/ecosystems.js';
+import { fetchEcosystems, fetchInvites, fetchUser } from '../Store';
 import { AiOutlineDashboard, AiOutlinePlus } from 'react-icons/ai';
 import { MdGroups } from 'react-icons/md';
 import Account from './account';
