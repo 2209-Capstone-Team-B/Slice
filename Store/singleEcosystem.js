@@ -23,7 +23,7 @@ const _getECOSYSTEM = (ecosystem) => {
 // Thunks
 export const fetchEcosystem = (ecoId) => (dispatch) => {
   const subscriber = onSnapshot(doc(db, 'Ecosystem', ecoId), (docSnapshot) => {
-    dispatch(_getECOSYSTEM(docSnapshot.data()));
+    dispatch(_getECOSYSTEM({ ...docSnapshot.data(), id: docSnapshot.id}));
   });
   return subscriber;
 };

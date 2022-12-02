@@ -21,18 +21,7 @@ export default function Dashboard() {
   const tasks = useSelector((state) => state.userTasks);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (user) {
-      const getUser = async () => {
-        try {
-          dispatch(fetchUser(user.uid));
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getUser();
-    }
-  }, [user]);
+
   useEffect(() => {
     const unsubscribe = dispatch(fetchTasks(user.uid));
     return () => {
