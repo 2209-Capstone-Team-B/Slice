@@ -51,7 +51,7 @@ export default function Layout({ children }) {
           <p>Slice Logo</p>
         </div>
         <h3 className='flex items-center'> </h3>
-        <div className='flex pr-6 items-center'>
+        <div className='flex pr-6 items-center absolute right-0'>
           <Account />
         </div>
       </header>
