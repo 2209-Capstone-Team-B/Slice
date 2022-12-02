@@ -20,7 +20,7 @@ const style = {
   alignItems: 'center',
 };
 
-export default function AddTask({ id }) {
+export default function AddTask({ id, getTasks }) {
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
   const [due, setDue] = React.useState('');
@@ -45,13 +45,15 @@ export default function AddTask({ id }) {
     });
     setName('');
     setDue('');
+    getTasks(id);
+    handleClose();
   };
 
   return (
-    <div>
+    <div className='flex justify-center'>
       <button
         onClick={handleOpen}
-        className='bg-amber-300 hover:bg-amber-200 text-black px-4 rounded-md h-1/6 m-2'
+        className='bg-amber-300 hover:bg-amber-200 text-black px-4 py-2 rounded-2xl h-1/6 m-2 w-1/2'
       >
         Add Task
       </button>

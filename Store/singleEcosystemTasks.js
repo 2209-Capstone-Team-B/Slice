@@ -6,6 +6,7 @@ import {
   onSnapshot,
   doc,
   getDoc,
+  getDocs,
 } from 'firebase/firestore';
 import { db } from '../firebase.js';
 
@@ -18,11 +19,17 @@ const _getECOSYSTEM_TASKS = (tasks) => {
   };
 };
 
-export const fetchEcosystemTasks = (ecoId) => (dispatch) => {
-  const subscriber = onSnapshot(doc(db, 'Ecosystem', ecoId), (docSnapshot) => {
-    dispatch(_getECOSYSTEM_TASKS(docSnapshot.data()));
+export const fetchEcosystemTasks = (id) => async (dispatch) => {
+  const q = await query(
+    collection(db, 'Tasks'),
+    where('ecosystemId', '==', id)
+  );
+  const docSnap = await getDocs(q);
+  const tasks = [];
+  docSnap.forEach((doc) => {
+    tasks.push(doc.data());
   });
-  return subscriber;
+  dispatch(_getECOSYSTEM_TASKS(tasks));
 };
 
 export default function userEcosystem(state = [], action) {

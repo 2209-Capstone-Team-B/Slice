@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { fetchEcosystems } from '../Store/ecosystems.js';
-import { AiOutlineDashboard } from 'react-icons/Ai';
+import { AiOutlineDashboard, AiOutlinePlus } from 'react-icons/Ai';
 import { MdGroups } from 'react-icons/Md';
 import Account from './account';
 import ecosystem from '../pages/Ecosystem/[id]';
@@ -74,6 +74,14 @@ export default function Layout({ children }) {
                   </div>
                 </Link>
               ))}
+              <div className='flex'>
+                <div className='m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
+                  <p className='flex justify-self-start items-end p-2 cursor-pointer w-10/12'>
+                    New Ecosystem
+                  </p>
+                  <AiOutlinePlus />
+                </div>
+              </div>
             </ul>
           </nav>
           <button
