@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Chart from './Chart';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser, fetchTasks } from '../Store';
 import MyCalendar from './Calendar';
@@ -30,6 +31,25 @@ export default function Dashboard() {
         }
       };
       getUser();
+
+  const [user,loading] = useAuthState(auth);
+  const router = useRouter();
+  const data = router.query;
+  const userObject = useSelector((state)=>state.loggedInUser)
+  const tasks = useSelector((state)=>state.userTasks)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (user) {
+        const getUser = async() =>{
+          try {
+            dispatch( fetchUser(user.uid))
+          } catch (error) {
+           console.log(error)
+          }
+        }
+      getUser()
+
     }
   }, [user]);
   useEffect(() => {

@@ -1,0 +1,43 @@
+import axios from 'axios';
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  doc,
+  getDoc,
+  getDocs,
+} from 'firebase/firestore';
+import { db } from '../firebase.js';
+
+const GET_ECOSYSTEM_TASKS = 'GET_ECOSYSTEM_TASKS';
+
+const _getECOSYSTEM_TASKS = (tasks) => {
+  return {
+    type: GET_ECOSYSTEM_TASKS,
+    tasks,
+  };
+};
+
+export const fetchEcosystemTasks = (id) => async (dispatch) => {
+  const q = await query(
+    collection(db, 'Tasks'),
+    where('ecosystemId', '==', id)
+  );
+  const docSnap = await getDocs(q);
+  const tasks = [];
+  docSnap.forEach((doc) => {
+    tasks.push(doc.data());
+  });
+  dispatch(_getECOSYSTEM_TASKS(tasks));
+};
+
+export default function userEcosystem(state = [], action) {
+  switch (action.type) {
+    case GET_ECOSYSTEM_TASKS: {
+      return action.tasks;
+    }
+    default:
+      return state;
+  }
+}
