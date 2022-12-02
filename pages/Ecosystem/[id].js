@@ -24,7 +24,7 @@ export default function ecosystem() {
       unsubscribeEcosystemTasks();
       unsubscribeEcosystem();
     };
-  }, []);
+  }, [id]);
 
   return (
     <>
