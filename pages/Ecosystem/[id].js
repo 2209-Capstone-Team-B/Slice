@@ -16,9 +16,11 @@ export default function ecosystem() {
   const getTasks = async (id) => await dispatch(fetchEcosystemTasks(id));
 
   useEffect(() => {
-    getTasks(id);
+    //getTasks(id);
     const unsubscribeEcosystem = dispatch(fetchEcosystem(id));
+    const unsubscribeEcosystemTasks = dispatch(fetchEcosystemTasks(id))
     return () => {
+      unsubscribeEcosystemTasks()
       unsubscribeEcosystem();
     };
   }, []);

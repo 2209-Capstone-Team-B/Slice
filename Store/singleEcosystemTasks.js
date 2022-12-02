@@ -19,7 +19,7 @@ const _getECOSYSTEM_TASKS = (tasks) => {
   };
 };
 
-export const fetchEcosystemTasks = (id) => async (dispatch) => {
+/* export const fetchEcosystemTasks = (id) => async (dispatch) => {
   const q = await query(
     collection(db, 'Tasks'),
     where('ecosystemId', '==', id)
@@ -27,10 +27,19 @@ export const fetchEcosystemTasks = (id) => async (dispatch) => {
   const docSnap = await getDocs(q);
   const tasks = [];
   docSnap.forEach((doc) => {
-    tasks.push(doc.data());
+    tasks.push({...doc.data(), id: doc.id});
   });
   dispatch(_getECOSYSTEM_TASKS(tasks));
-};
+}; */
+
+export const fetchEcosystemTasks = (ecoId) => (dispatch) => {
+  const tasks = query(collection(db, 'Tasks'), where('ecosystemId', '==', ecoId))
+  const subscriber = onSnapshot(tasks, (querySnapshot)=>{
+    const ecoTasks = querySnapshot.docs.map(task => ({...task.data(), id: task.id}))
+    dispatch(_getECOSYSTEM_TASKS(ecoTasks))
+  })
+  return subscriber
+}
 
 export default function userEcosystem(state = [], action) {
   switch (action.type) {

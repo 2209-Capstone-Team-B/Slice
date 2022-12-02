@@ -41,6 +41,7 @@ export default function AddTask({ id, getTasks }) {
       name,
       due,
       ecosystemId: id,
+      userId: null,
       completed: false,
     });
     setName('');
