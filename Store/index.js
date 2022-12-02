@@ -8,6 +8,8 @@ import ecosystems from './ecosystems.js';
 import singleEcosystem from './singleEcosystem.js';
 import singleEcosystemTasks from './singleEcosystemTasks';
 import userTasks from './userTasks.js';
+import userInvites from './userInvites.js'
+import ecosystemMembers from './ecosystemMembers.js'
 
 const reducer = combineReducers({
   loggedInUser,
@@ -15,6 +17,8 @@ const reducer = combineReducers({
   singleEcosystem,
   singleEcosystemTasks,
   userTasks,
+  userInvites,
+  //ecosystemMembers
 });
 
 const middleware = composeWithDevTools(
@@ -29,4 +33,7 @@ export * from './ecosystems.js';
 export * from './singleEcosystem.js';
 export * from './singleEcosystemTasks';
 export * from './userTasks.js';
+export * from './userInvites.js'
+export * from './ecosystemMembers.js'
+
 

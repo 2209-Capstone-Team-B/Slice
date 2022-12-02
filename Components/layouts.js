@@ -5,11 +5,12 @@ import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { fetchEcosystems } from "../Store/ecosystems.js";
+import { fetchEcosystems, fetchInvites, fetchUser } from "../Store";
 import { AiOutlineDashboard, AiOutlinePlus } from "react-icons/ai";
 import { MdGroups } from "react-icons/md";
 import Account from "./account";
 import ecosystem from "../pages/Ecosystem/[id]";
+import SeeInvites from "./SeeInvites.js"
 
 export default function Layout({ children }) {
   const dispatch = useDispatch();
@@ -20,11 +21,17 @@ export default function Layout({ children }) {
   const { logout } = useAuth();
 
   const userEcosystems = useSelector((state) => state.ecosystems);
+  const userInvites = useSelector((state)=> state.userInvites)
+  const userObject = useSelector((state)=> state.loggedInUser)
 
   useEffect(() => {
-    const unsubscribe = dispatch(fetchEcosystems(user.uid));
+    const unsubscribeEcos = dispatch(fetchEcosystems(user.uid));
+    const unsubscribeInvites = dispatch(fetchInvites(user.uid))
+    const unsubscribeUser = dispatch(fetchUser(user.uid))
     return () => {
-      unsubscribe();
+      unsubscribeEcos()
+      unsubscribeInvites()
+      unsubscribeUser()
     };
   }, []);
 
@@ -90,6 +97,7 @@ export default function Layout({ children }) {
           >
             logout
           </button>
+        <SeeInvites />
         </aside>
         <main className="flex-1">{children}</main>
       </div>
