@@ -30,8 +30,8 @@ export default function Layout({ children }) {
 
   const handleLogout = async () => {
     try {
-      await logout();
       router.push('/');
+      await logout();
     } catch (error) {
       console.log(`Help I can't get out!`);
     }
@@ -59,14 +59,14 @@ export default function Layout({ children }) {
           <Account />
         </div>
       </header>
-      <div className="flex flex-col md:flex-row flex-1">
-        <aside className="bg-amber-100 w-full md:w-60 p-3">
+      <div className='flex flex-col md:flex-row flex-1'>
+        <aside className='bg-amber-100 w-full md:w-60 p-3'>
           <nav>
             {dashboard()}
             <ul>
               {sideBar.map(({ href, title }, i) => (
-                <Link key={i} href={href} className="flex">
-                  <div className="m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl">
+                <Link key={i} href={href} className='flex'>
+                  <div className='m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
                     <p
                       className={`flex justify-self-start items-end p-2 cursor-pointer w-10/12 ${
                         router.asPath === href && 'text-black'
@@ -101,12 +101,12 @@ export default function Layout({ children }) {
           </nav>
           <button
             onClick={handleLogout}
-            className="duration-300 hover:scale-110 hover:font-bold flex mx-auto"
+            className='duration-300 hover:scale-110 hover:font-bold flex mx-auto'
           >
             logout
           </button>
         </aside>
-        <main className="flex-1">{children}</main>
+        <main className='flex-1'>{children}</main>
       </div>
     </div>
   );

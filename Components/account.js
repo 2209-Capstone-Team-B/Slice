@@ -21,8 +21,8 @@ export default function Account({ children }) {
 
   const handleLogout = async () => {
     try {
-      await logout();
       router.push('/');
+      await logout();
     } catch (error) {
       console.log(`Help I can't get out!`);
     }
