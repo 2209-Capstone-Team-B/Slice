@@ -18,7 +18,7 @@ export const fetchUser = (userId) => {
   return async (dispatch) => {
    const userRef= doc(db, "Users", userId)
    const userDoc = await getDoc(userRef)
-    dispatch(_getUser(userDoc.data()));
+    dispatch(_getUser({...userDoc.data(), id: userId}));
   };
 };
 

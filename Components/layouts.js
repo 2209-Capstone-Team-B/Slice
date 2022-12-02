@@ -30,8 +30,8 @@ export default function Layout({ children }) {
 
   const handleLogout = async () => {
     try {
+      router.push('/')
       await logout();
-      router.push('/');
     } catch (error) {
       console.log(`Help I can't get out!`);
     }
