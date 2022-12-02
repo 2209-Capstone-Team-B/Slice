@@ -4,6 +4,8 @@ import { fetchEcosystem, fetchEcosystemTasks } from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
 import AddTask from '../../Components/AddTask';
 import EditTask from '../../Components/EditTask';
+import InvitePeople from '../../Components/InvitePeople';
+
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -31,7 +33,9 @@ export default function ecosystem() {
       <h3 className='text-center text-3xl pt-6'>{singleEcosystem.orgName}</h3>
       <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
         <div className='flex h-1/2 w-full'>
-          <div className='border border-black rounded-3xl flex justify-center w-full m-4'></div>
+          <div className='border border-black rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4'>
+            <InvitePeople />
+          </div>
           <div className='border border-black rounded-3xl justify-center w-full m-4 overflow-auto'>
             <AddTask id={id} getTasks={getTasks} />
             <div className='flex flex-wrap justify-center'>
