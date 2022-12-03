@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
 import CloseIcon from '@mui/icons-material/Close';
+import { auth, db } from '../firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const style = {
   position: 'absolute',
@@ -22,6 +24,7 @@ const style = {
 };
 
 export default function AddTask({ id, getTasks }) {
+  const [user, loading] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
   const [due, setDue] = React.useState('');
@@ -37,12 +40,14 @@ export default function AddTask({ id, getTasks }) {
   };
 
   const handleSubmit = async (e) => {
+    console.log(user.uid);
     e.preventDefault();
     await axios.post(`/api/Ecosystem/${id}`, {
       name,
       due,
       ecosystemId: id,
-      userId: null,
+      assignedTo: null,
+      owner: user.uid,
       completed: false,
     });
     setName('');
@@ -84,7 +89,7 @@ export default function AddTask({ id, getTasks }) {
           >
             <label className='float-left pt-4 w-12 text-center'>Name</label>
             <input
-              className='block borhandleChange my-4 w-5/6 border-black text-center rounded-xl'
+              className='block borhandleChange my-4 w-5/6 border-2 border-black text-center rounded-xl'
               type='text'
               name='name'
               placeholder='Enter a name for your task...'

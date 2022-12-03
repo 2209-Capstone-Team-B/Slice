@@ -113,7 +113,7 @@ function EditModal({ close, task }) {
 
 // Child modal to delete a task
 
-function DeleteModal({ close, task }) {
+function DeleteModal({ close, task, uderId }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
