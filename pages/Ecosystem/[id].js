@@ -42,7 +42,10 @@ export default function ecosystem() {
             <InvitePeople />
             <div className='flex flex-wrap justify-center'>
               {ecosystemMembers.map((member, i) => (
-                <div className='border border-black text-center w-3/4 rounded-2xl p-2 m-2'>
+                <div
+                  key={i}
+                  className='border border-black text-center w-3/4 rounded-2xl p-2 m-2'
+                >
                   {member.userId}
                 </div>
               ))}

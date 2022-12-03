@@ -84,7 +84,7 @@ export default function AddTask({ id, getTasks }) {
           >
             <label className='float-left pt-4 w-12 text-center'>Name</label>
             <input
-              className='block border-2 m-auto my-4 w-5/6 border-black text-center rounded-xl'
+              className='block borhandleChange my-4 w-5/6 border-black text-center rounded-xl'
               type='text'
               name='name'
               placeholder='Enter a name for your task...'
