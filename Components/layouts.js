@@ -5,13 +5,13 @@ import { useAuth } from '../context/AuthContext';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { fetchEcosystems, fetchInvites, fetchUser } from '../Store/ecosystems.js';
-import { AiOutlineDashboard, AiOutlinePlus } from 'react-icons/ai';
+import { fetchEcosystems, fetchInvites, fetchUser } from '../Store';
+import { AiOutlineDashboard } from 'react-icons/ai';
 import { MdGroups } from 'react-icons/md';
 import Account from './account';
 import ecosystem from '../pages/Ecosystem/[id]';
 import AddEcosystem from './AddEcosystem';
-import SeeInvites from "./SeeInvites.js"
+import SeeInvites from './SeeInvites.js';
 
 export default function Layout({ children }) {
   const dispatch = useDispatch();
@@ -22,17 +22,17 @@ export default function Layout({ children }) {
   const { logout } = useAuth();
 
   const userEcosystems = useSelector((state) => state.ecosystems);
-  const userInvites = useSelector((state)=> state.userInvites)
-  const userObject = useSelector((state)=> state.loggedInUser)
+  const userInvites = useSelector((state) => state.userInvites);
+  const userObject = useSelector((state) => state.loggedInUser);
 
   useEffect(() => {
     const unsubscribeEcos = dispatch(fetchEcosystems(user.uid));
-    const unsubscribeInvites = dispatch(fetchInvites(user.uid))
-    const unsubscribeUser = dispatch(fetchUser(user.uid))
+    const unsubscribeInvites = dispatch(fetchInvites(user.uid));
+    const unsubscribeUser = dispatch(fetchUser(user.uid));
     return () => {
-      unsubscribeEcos()
-      unsubscribeInvites()
-      unsubscribeUser()
+      unsubscribeEcos();
+      unsubscribeInvites();
+      unsubscribeUser();
     };
   }, []);
 
@@ -67,8 +67,8 @@ export default function Layout({ children }) {
                   href={`/Ecosystem/${eco.id}`}
                   className='flex'
                 >
-                  <div className='m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
-                    <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
+                  <div className='bg-amber-100 m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
+                    <p className='flex items-end p-2 pl-3 cursor-pointer w-10/12'>
                       {eco.orgName}
                     </p>
                     <MdGroups />
@@ -76,7 +76,7 @@ export default function Layout({ children }) {
                 </Link>
               ))}
               <div className='flex'>
-                <div className='m-2 my-3 w-screen flex justify-start items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
+                <div className='bg-amber-100 m-2 my-3 w-screen flex justify-start items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
                   <AddEcosystem id={user.uid} />
                 </div>
               </div>
@@ -88,7 +88,7 @@ export default function Layout({ children }) {
           >
             logout
           </button>
-        <SeeInvites />
+          <SeeInvites />
         </aside>
         <main className='flex-1'>{children}</main>
       </div>
@@ -100,7 +100,7 @@ export default function Layout({ children }) {
 function dashboard() {
   return (
     <Link key={'dashboard'} href={'/dashboard'} className='flex'>
-      <div className='m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
+      <div className='bg-amber-100 m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
         <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
           Dashboard
         </p>
