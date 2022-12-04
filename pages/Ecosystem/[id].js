@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, db } from '../../firebase';
 import { useRouter } from 'next/router';
 import {
   fetchEcosystem,
@@ -13,6 +15,7 @@ import ClaimTask from '../../Components/ClaimTask';
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
+  const [user, loading] = useAuthState(auth);
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useDispatch();
@@ -22,7 +25,6 @@ export default function ecosystem() {
   const getTasks = async (id) => await dispatch(fetchEcosystemTasks(id));
 
   useEffect(() => {
-    //getTasks(id);
     const unsubscribeEcosystemMembers = dispatch(fetchEcosystemMembers(id));
     const unsubscribeEcosystem = dispatch(fetchEcosystem(id));
     const unsubscribeEcosystemTasks = dispatch(fetchEcosystemTasks(id));
@@ -42,7 +44,10 @@ export default function ecosystem() {
             <InvitePeople />
             <div className='flex flex-wrap justify-center'>
               {ecosystemMembers.map((member, i) => (
-                <div className='border border-black text-center w-3/4 rounded-2xl p-2 m-2'>
+                <div
+                  key={i}
+                  className='border border-black text-center w-3/4 rounded-2xl p-2 m-2'
+                >
                   {member.userId}
                 </div>
               ))}
@@ -58,7 +63,7 @@ export default function ecosystem() {
                 >
                   {task.name} due {task.due}
                   <div className='flex justify-around p-3'>
-                    <EditTask task={task} />
+                    {task.owner === user.uid && <EditTask task={task} />}
                     <ClaimTask task={task} />
                   </div>
                 </div>
