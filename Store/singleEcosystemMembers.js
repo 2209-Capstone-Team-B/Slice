@@ -7,6 +7,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  addDoc
 } from 'firebase/firestore';
 import { db } from '../firebase.js';
 
@@ -35,6 +36,15 @@ export const fetchEcosystemMembers = (ecoId) => (dispatch) => {
     dispatch(_getECOSYSTEM_MEMBERS(ecoMembers));
   });
   return subscriber;
+};
+
+export const setMember = (userId, ecoId, userName) => (dispatch) => {
+  addDoc(collection(db, "EcosystemMembers"), {
+    currencyAmount: 0,
+    ecosystemId: ecoId,
+    userId: userId,
+    userName,
+  });
 };
 
 // Reducer
