@@ -74,7 +74,6 @@ const AuthPage = () => {
     await signInWithPopup(auth, provider).catch(alert);
 
     const user = myauth.currentUser;
-    console.log("GOOGLE", user);
 
     const updateDb = async () => {
       let names = user.displayName.split(" ");
@@ -124,7 +123,7 @@ const AuthPage = () => {
         </Link>
         <h2 className="flex justify-center items-center">
           <button
-            className=" hover:text-green-600"
+            className=" flex justify-center items-center rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
             onClick={async () => {
               await GoogleSignIn();
               // router.push("/dashboard");
