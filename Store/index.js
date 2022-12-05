@@ -1,4 +1,3 @@
-
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
@@ -8,8 +7,8 @@ import ecosystems from './ecosystems.js';
 import singleEcosystem from './singleEcosystem.js';
 import singleEcosystemTasks from './singleEcosystemTasks';
 import userTasks from './userTasks.js';
-import userInvites from './userInvites.js'
-import ecosystemMembers from './ecosystemMembers.js'
+import userInvites from './userInvites.js';
+import ecosystemMembers from './ecosystemMembers.js';
 
 const reducer = combineReducers({
   loggedInUser,
@@ -18,7 +17,7 @@ const reducer = combineReducers({
   singleEcosystemTasks,
   userTasks,
   userInvites,
-  //ecosystemMembers
+  ecosystemMembers,
 });
 
 const middleware = composeWithDevTools(
@@ -33,7 +32,5 @@ export * from './ecosystems.js';
 export * from './singleEcosystem.js';
 export * from './singleEcosystemTasks';
 export * from './userTasks.js';
-export * from './userInvites.js'
-export * from './ecosystemMembers.js'
-
-
+export * from './userInvites.js';
+export * from './ecosystemMembers.js';

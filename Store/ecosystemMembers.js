@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import {
   collection,
   query,
@@ -7,12 +7,12 @@ import {
   doc,
   addDoc,
   getDoc,
-} from "firebase/firestore";
-import { db } from "../firebase.js";
+} from 'firebase/firestore';
+import { db } from '../firebase.js';
 
 // Actions
 
-const GET_MEMBERS = "GET_MEMBERS";
+const GET_MEMBERS = 'GET_MEMBERS';
 
 // Action Creators
 
@@ -25,12 +25,27 @@ const _getMEMBERS = (members) => {
 
 // Thunks
 export const setMember = (userId, ecoId, userName) => (dispatch) => {
-  addDoc(collection(db, "EcosystemMembers"), {
+  addDoc(collection(db, 'EcosystemMembers'), {
     currencyAmount: 0,
     ecosystemId: ecoId,
     userId: userId,
     userName,
   });
+};
+
+export const getMembers = (ecoId) => (dispatch) => {
+  const members = query(
+    collection(db, 'EcosystemMembers'),
+    where('ecosystemId', '==', ecoId)
+  );
+  const subscriber = onSnapshot(members, (querySnapshot) => {
+    const ecoMembers = querySnapshot.docs.map((member) => ({
+      ...member.data(),
+      id: member.id,
+    }));
+    dispatch(_getMEMBERS(ecoMembers));
+  });
+  return subscriber;
 };
 
 // Initial State
