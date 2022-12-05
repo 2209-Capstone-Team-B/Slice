@@ -16,6 +16,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ClaimTask from '../../Components/ClaimTask';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { setDoc, doc, deleteDoc } from 'firebase/firestore';
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -32,6 +35,11 @@ export default function ecosystem() {
   );
 
   const getTasks = async (id) => await dispatch(fetchEcosystemTasks(id));
+
+  const toggleCompletedTask = (id, bool) => {
+    setDoc(doc(db, 'Tasks', id), { completed: !bool }, { merge: true });
+    setOpen(false);
+  };
 
   useEffect(() => {
     const unsubscribeEcosystemMembers = dispatch(fetchEcosystemMembers(id));
@@ -115,9 +123,26 @@ export default function ecosystem() {
                     {singleEcosystemTasks.map((task, idx) => {
                       if (task.assignedTo === member.userId) {
                         return (
-                          <li key={idx} className='text-left p-1 ml-2'>
-                            {task.name}
-                          </li>
+                          <div className='flex'>
+                            {task.completed ? (
+                              <CheckBoxIcon
+                                className='flex justify-end mr-3'
+                                onClick={() =>
+                                  toggleCompletedTask(task.id, task.completed)
+                                }
+                              />
+                            ) : (
+                              <CheckBoxOutlineBlankIcon
+                                className='flex justify-end mr-3'
+                                onClick={() =>
+                                  toggleCompletedTask(task.id, task.completed)
+                                }
+                              />
+                            )}
+                            <li key={idx} className='text-left p-1 ml-2'>
+                              {task.name}
+                            </li>
+                          </div>
                         );
                       }
                     })}
