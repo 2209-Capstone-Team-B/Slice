@@ -25,11 +25,13 @@ const _getTASKS = (tasks) => {
 export const fetchTasks = (userId) => (dispatch) => {
   const orgs = query(
     collection(db, 'Tasks'),
-    where('userId', '==', userId)
+    where('assignedTo', '==', userId)
   );
   const subscriber = onSnapshot(orgs, (querySnapshot) => {
-    const tasks =
-      querySnapshot.docs.map(task => ({...task.data(), id: task.id}))
+    const tasks = querySnapshot.docs.map((task) => ({
+      ...task.data(),
+      id: task.id,
+    }));
 
     dispatch(_getTASKS(tasks));
   });

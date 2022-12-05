@@ -28,14 +28,14 @@ export default function AddEcosystem({ id }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleChange = (e) => {
-    if (e.target.name === type) {
-    } else if (e.target.name == name) {
-      console.log(e.target.value);
-      setName(e.target.value);
-    } else {
-    }
-  };
+  // const handleChange = (e) => {
+  //   if (e.target.name === type) {
+  //   } else if (e.target.name == name) {
+  //     console.log(e.target.value);
+  //     setName(e.target.value);
+  //   } else {
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();

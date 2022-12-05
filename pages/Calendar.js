@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import Calendar from "react-calendar";
+import React, { useState } from 'react';
+import Calendar from 'react-calendar';
 // import "react-calendar/dist/calendar.css";
 
 const MyCalendar = () => {
   const [date, setDate] = useState(new Date());
 
   return (
-    <button
+    <div
       onClick={() => {
         console.log(date);
       }}
     >
       <Calendar onChange={setDate} value={date} />
-    </button>
+    </div>
   );
 };
 
