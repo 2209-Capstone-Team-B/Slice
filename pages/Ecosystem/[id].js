@@ -64,7 +64,7 @@ export default function ecosystem() {
                   {task.name} due {task.due}
                   <div className='flex justify-around p-3'>
                     {task.owner === user.uid && <EditTask task={task} />}
-                    <ClaimTask task={task} />
+                    <ClaimTask task={task} user={user} />
                   </div>
                 </div>
               ))}

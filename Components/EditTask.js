@@ -30,7 +30,7 @@ function EditModal({ close, task }) {
   const handleOpen = () => {
     setOpen(true);
   };
-  const handleClose = (closing) => {
+  const handleClose = (e, closing) => {
     if (closing) {
       setOpen(false);
       return;
@@ -53,7 +53,7 @@ function EditModal({ close, task }) {
       <Modal
         hideBackdrop
         open={open}
-        onClose={handleClose}
+        onClose={(e) => handleClose(e, true)}
         aria-labelledby='child-modal-title'
         aria-describedby='child-modal-description'
       >
@@ -61,7 +61,7 @@ function EditModal({ close, task }) {
           <div className='flex flex-col justify-around h-full'>
             <CloseIcon
               className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
-              onClick={() => handleClose(true)}
+              onClick={(e) => handleClose(e, true)}
             />
             <h2
               id='child-modal-title'
@@ -142,7 +142,7 @@ function DeleteModal({ close, task, uderId }) {
       <Modal
         hideBackdrop
         open={open}
-        onClose={handleClose}
+        onClose={(e) => handleClose(e, true)}
         aria-labelledby='child-modal-title'
         aria-describedby='child-modal-description'
       >
@@ -159,7 +159,7 @@ function DeleteModal({ close, task, uderId }) {
               No going back from here!
               <CloseIcon
                 className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
-                onClick={() => handleClose(true)}
+                onClick={(e) => handleClose(e, true)}
               />
             </h2>
             <p id='child-modal-description'></p>
