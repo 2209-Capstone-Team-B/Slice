@@ -25,17 +25,17 @@ export default function Layout({ children }) {
   const { logout } = useAuth();
 
   const userEcosystems = useSelector((state) => state.ecosystems);
-  const userInvites = useSelector((state) => state.userInvites);
-  const userObject = useSelector((state) => state.loggedInUser);
+  const userInvites = useSelector((state)  => state.userInvites);;
+  const userObject = useSelector((state)  => state.loggedInUser);;
 
   useEffect(() => {
     const unsubscribeEcos = dispatch(fetchEcosystems(user.uid));
-    const unsubscribeInvites = dispatch(fetchInvites(user.uid));
-    const unsubscribeUser = dispatch(fetchUser(user.uid));
+    const unsubscribeInvites = dispatch(fetchInvites(user.uid));;
+    const unsubscribeUser = dispatch(fetchUser(user.uid));;
     return () => {
-      unsubscribeEcos();
-      unsubscribeInvites();
-      unsubscribeUser();
+      unsubscribeEcos();;
+      unsubscribeInvites();;
+      unsubscribeUser();;
     };
   }, []);
 
@@ -95,7 +95,7 @@ export default function Layout({ children }) {
                   </Link>
                 ))}
                 <div className='flex'>
-                  <div className='m-2 my-3 w-screen flex justify-start items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
+                  <div className='bg-amber-100 m-2 my-3 w-screen flex justify-start items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
                     <AddEcosystem id={user.uid} />
                   </div>
                 </div>
@@ -120,7 +120,7 @@ export default function Layout({ children }) {
 function dashboard() {
   return (
     <Link key={'dashboard'} href={'/dashboard'} className='flex'>
-      <div className='m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
+      <div className='bg-amber-100 m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
         <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
           Dashboard
         </p>

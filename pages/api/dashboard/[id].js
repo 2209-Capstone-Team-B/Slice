@@ -9,7 +9,10 @@ export default async (req, res) => {
     const docRef = await addDoc(collection(db, 'Tasks'), req.body);
     res.send(docRef);
   } else if (req.method === 'GET') {
-    const q = await query(collection(db, 'Tasks'), where('userId', '==', id));
+    const q = await query(
+      collection(db, 'Tasks'),
+      where('assignedTo', '==', id)
+    );
     //q is the reference to those documents
     const docSnap = await getDocs(q);
     //fetching the docs at those addresses/references
@@ -27,4 +30,4 @@ export default async (req, res) => {
 
 //collections: # of docs, cant have anything on them except the documents
 //documents: can have properties like userId, compeleted, name
-    //can also contain collections which are sub collections
+//can also contain collections which are sub collections

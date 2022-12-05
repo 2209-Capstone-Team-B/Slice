@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, db } from '../../firebase';
 import { useRouter } from 'next/router';
-import { fetchEcosystem, fetchEcosystemTasks, getMembers } from '../../Store';
+import {
+  fetchEcosystem,
+  fetchEcosystemTasks,
+  fetchEcosystemMembers,
+} from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
 import AddTask from '../../Components/AddTask';
 import EditTask from '../../Components/EditTask';
@@ -9,9 +15,11 @@ import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import ClaimTask from '../../Components/ClaimTask';
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
+  const [user, loading] = useAuthState(auth);
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const { id } = router.query;
@@ -22,14 +30,13 @@ export default function ecosystem() {
   const getTasks = async (id) => await dispatch(fetchEcosystemTasks(id));
 
   useEffect(() => {
-    //getTasks(id);
+    const unsubscribeEcosystemMembers = dispatch(fetchEcosystemMembers(id));
     const unsubscribeEcosystem = dispatch(fetchEcosystem(id));
     const unsubscribeEcosystemTasks = dispatch(fetchEcosystemTasks(id));
-    const unsubscribeMembers = dispatch(getMembers(id));
     return () => {
+      unsubscribeEcosystemMembers();
       unsubscribeEcosystemTasks();
       unsubscribeEcosystem();
-      unsubscribeMembers();
     };
   }, [id]);
 
@@ -92,6 +99,16 @@ export default function ecosystem() {
         <div className='flex h-1/2 w-full'>
           <div className='border border-black rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4'>
             <InvitePeople />
+            <div className='flex flex-wrap justify-center'>
+              {ecosystemMembers.map((member, i) => (
+                <div
+                  key={i}
+                  className='border border-black text-center w-3/4 rounded-2xl p-2 m-2'
+                >
+                  {member.userId}
+                </div>
+              ))}
+            </div>
           </div>
           <div className='border border-black rounded-3xl justify-center w-full m-4 overflow-auto'>
             <AddTask id={id} getTasks={getTasks} />
@@ -102,7 +119,10 @@ export default function ecosystem() {
                   className='border border-black text-center w-3/4 rounded-2xl p-2 m-2'
                 >
                   {task.name} due {task.due}
-                  <EditTask task={task} />
+                  <div className='flex justify-around p-3'>
+                    {task.owner === user.uid && <EditTask task={task} />}
+                    <ClaimTask task={task} user={user} />
+                  </div>
                 </div>
               ))}
             </div>

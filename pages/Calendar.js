@@ -6,13 +6,13 @@ const MyCalendar = () => {
   const [date, setDate] = useState(new Date());
 
   return (
-    <button
+    <div
       onClick={() => {
         console.log(date);
       }}
     >
       <Calendar onChange={setDate} value={date} />
-    </button>
+    </div>
   );
 };
 

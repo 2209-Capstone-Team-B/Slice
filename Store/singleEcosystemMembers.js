@@ -5,35 +5,25 @@ import {
   where,
   onSnapshot,
   doc,
-  addDoc,
   getDoc,
+  getDocs,
+  addDoc
 } from 'firebase/firestore';
 import { db } from '../firebase.js';
 
-// Actions
+// Action Constant
+const GET_ECOSYSTEM_MEMBERS = 'GET_ECOSYSTEM_MEMBERS';
 
-const GET_MEMBERS = 'GET_MEMBERS';
-
-// Action Creators
-
-const _getMEMBERS = (members) => {
+// Action Creator
+const _getECOSYSTEM_MEMBERS = (members) => {
   return {
-    type: GET_MEMBERS,
+    type: GET_ECOSYSTEM_MEMBERS,
     members,
   };
 };
 
 // Thunks
-export const setMember = (userId, ecoId, userName) => (dispatch) => {
-  addDoc(collection(db, 'EcosystemMembers'), {
-    currencyAmount: 0,
-    ecosystemId: ecoId,
-    userId: userId,
-    userName,
-  });
-};
-
-export const getMembers = (ecoId) => (dispatch) => {
+export const fetchEcosystemMembers = (ecoId) => (dispatch) => {
   const members = query(
     collection(db, 'EcosystemMembers'),
     where('ecosystemId', '==', ecoId)
@@ -43,18 +33,24 @@ export const getMembers = (ecoId) => (dispatch) => {
       ...member.data(),
       id: member.id,
     }));
-    dispatch(_getMEMBERS(ecoMembers));
+    dispatch(_getECOSYSTEM_MEMBERS(ecoMembers));
   });
   return subscriber;
 };
 
-// Initial State
-const initialState = [];
+export const setMember = (userId, ecoId, userName) => (dispatch) => {
+  addDoc(collection(db, "EcosystemMembers"), {
+    currencyAmount: 0,
+    ecosystemId: ecoId,
+    userId: userId,
+    userName,
+  });
+};
 
 // Reducer
-export default function ecosystemMembers(state = initialState, action) {
+export default function ecosystemMembers(state = [], action) {
   switch (action.type) {
-    case GET_MEMBERS: {
+    case GET_ECOSYSTEM_MEMBERS: {
       return action.members;
     }
     default:
