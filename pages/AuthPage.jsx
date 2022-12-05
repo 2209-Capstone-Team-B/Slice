@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
+import { db, provider, auth } from "../firebase";
+import { serverTimestamp, doc, setDoc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged, signInWithPopup } from "firebase/auth";
 
 const AuthPage = () => {
   const [signIn, setSignIn] = useState(false);
@@ -12,7 +15,8 @@ const AuthPage = () => {
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  const { login, signup } = useAuth();
+  const { currentUser, login, signup } = useAuth();
+  const myauth = getAuth();
 
   const handleClick = () => {
     setSignIn(!signIn);
@@ -30,12 +34,30 @@ const AuthPage = () => {
     }
   };
 
+  const saveToDb = async () => {
+    const user = myauth.currentUser;
+
+    const updateDb = async () => {
+      const data2 = await setDoc(
+        doc(db, "Users", user.uid),
+        {
+          email,
+          firstName,
+          lastName,
+          created: serverTimestamp(),
+        },
+        { merge: true }
+      );
+    };
+    await updateDb().catch(console.error);
+  };
+
   const handleSignUp = async () => {
     if (!signIn) {
       try {
         await signup(email, password);
         router.push({
-          pathname: "/dashboard",
+          pathname: "/",
           query: {
             firstName: firstName,
             lastName: lastName,
@@ -48,15 +70,70 @@ const AuthPage = () => {
     }
   };
 
+  const GoogleSignIn = async () => {
+    await signInWithPopup(auth, provider).catch(alert);
+
+    const user = myauth.currentUser;
+
+    const updateDb = async () => {
+      let names = user.displayName.split(" ");
+      await setDoc(
+        doc(db, "Users", user.uid),
+        {
+          email: user.email,
+          firstName: names[0],
+          lastName: names[1],
+          created: serverTimestamp(),
+        },
+        { merge: true }
+      );
+    };
+    router.push("/dashboard");
+    await updateDb().catch(console.error);
+  };
+
+  // const saveToDbGoogle = async () => {
+  //   const user = myauth.currentUser;
+  //   console.log("GOOGLE", user);
+
+  //   const updateDb = async () => {
+  //     let names = user.displayName.split(" ");
+  //     await setDoc(
+  //       doc(db, "Users", user.uid),
+  //       {
+  //         email: user.email,
+  //         firstName: names[0],
+  //         lastName: names[1],
+  //         created: serverTimestamp(),
+  //       },
+  //       { merge: true }
+  //     );
+  //   };
+  //   await updateDb().catch(console.error);
+  // };
+
   return (
-    <div className="flex items-center justify-center h-screen mb-0 bg-fixed bg-center bg-cover custom-img">
+    <div className="flex items-center justify-center sm:h-screen mb-0 bg-center bg-cover custom-img border">
       <div className="absolute top-0 right-0 bottom-0 left-0 bg-black/70 z-[2]" />
       <div className="p-5 text-white z-[2] object-top">
         <Link href="/">
-          <h1 className="text-9xl antialiased font-serif-thin p-10 flex justify-center items-center hover:text-green-200">
+          <h1 className="text-5xl sm:text-9xl antialiased font-serif-thin p-10 flex justify-center items-center hover:text-green-200">
             Slice
           </h1>
         </Link>
+        <h2 className="flex justify-center items-center">
+          <div>
+            <button
+              className=" flex justify-center items-center rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
+              onClick={async () => {
+                await GoogleSignIn();
+                // router.push("/dashboard");
+              }}
+            >
+              Sign in with Google!
+            </button>
+          </div>
+        </h2>
         <div className="pb-5 flex space-x-10 justify-center items-center">
           <Link href="/AuthPage">
             <button
@@ -99,18 +176,13 @@ const AuthPage = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
-            {/* <Link
-              href={{
-                pathname: '/dashboard',
-              }}
-            > */}
             <button
               onClick={handleLogin}
               className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
             >
               Sign In
             </button>
-            {/* </Link> */}
+
             {error && (
               <div className="w-full max-w-[40ch] border-red-300 text-red-300 py-2 text-center border border-solid mt-5">
                 {error}
@@ -155,22 +227,17 @@ const AuthPage = () => {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </div>
-            {/* <Link
-              href={{
-                pathname: '/dashboard',
-                query: {
-                  firstName: firstName,
-                  lastName: lastName,
-                },
-              }}
-            > */}
+
             <button
-              onClick={handleSignUp}
+              onClick={async () => {
+                await handleSignUp();
+                saveToDb();
+              }}
               className="flex justify-center items-center animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
             >
               Sign Up
             </button>
-            {/* </Link> */}
+
             {error && (
               <div className="w-full max-w-[40ch] border-red-300 text-red-300 py-2 text-center border border-solid mt-5">
                 {error}

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { collection, doc} from "firebase/firestore"
+import { onSnapshot,collection, doc, getDoc} from "firebase/firestore"
 import {db} from '../firebase.js'
 
 // Actions
@@ -14,12 +14,12 @@ const _getUser = (user) => {
 };
 
 // Thunks
-export const fetchUser = (userId) => {
-  return async (dispatch) => {
-   const userRef= doc(db, "Users", userId)
-   const userDoc = await getDoc(userRef)
-    dispatch(_getUser(userDoc.data()));
-  };
+export const fetchUser = (userId) => (dispatch)=> {
+  const userRef = doc(db, "Users", userId)
+  const subscriber = onSnapshot(userRef, (docSnapshot)=>{
+    dispatch(_getUser({...docSnapshot.data(), id: docSnapshot.id}))
+  })
+ return subscriber
 };
 
 // Initial State

@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import Account from '../Components/account';
 
 function MyApp({ Component, pageProps }) {
+
   const [user, loading] = useAuthState(auth);
 
   /*   useEffect(()=>{
