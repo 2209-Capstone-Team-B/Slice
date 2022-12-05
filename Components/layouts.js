@@ -25,17 +25,17 @@ export default function Layout({ children }) {
   const { logout } = useAuth();
 
   const userEcosystems = useSelector((state) => state.ecosystems);
-  const userInvites = useSelector((state)  => state.userInvites);;
-  const userObject = useSelector((state)  => state.loggedInUser);;
+  const userInvites = useSelector((state) => state.userInvites);
+  const userObject = useSelector((state) => state.loggedInUser);
 
   useEffect(() => {
     const unsubscribeEcos = dispatch(fetchEcosystems(user.uid));
-    const unsubscribeInvites = dispatch(fetchInvites(user.uid));;
-    const unsubscribeUser = dispatch(fetchUser(user.uid));;
+    const unsubscribeInvites = dispatch(fetchInvites(user.uid));
+    const unsubscribeUser = dispatch(fetchUser(user.uid));
     return () => {
-      unsubscribeEcos();;
-      unsubscribeInvites();;
-      unsubscribeUser();;
+      unsubscribeEcos();
+      unsubscribeInvites();
+      unsubscribeUser();
     };
   }, []);
 
@@ -80,20 +80,22 @@ export default function Layout({ children }) {
             </h1>
             {showEcos && (
               <ul>
-                {userEcosystems.map((eco, i) => (
-                  <Link
-                    key={eco.id}
-                    href={`/Ecosystem/${eco.id}`}
-                    className='flex'
-                  >
-                    <div className='m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
-                      <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
-                        {eco.orgName}
-                      </p>
-                      <MdGroups />
-                    </div>
-                  </Link>
-                ))}
+                {userEcosystems
+                  .sort((a, b) => a.orgName.localeCompare(b.orgName))
+                  .map((eco, i) => (
+                    <Link
+                      key={eco.id}
+                      href={`/Ecosystem/${eco.id}`}
+                      className='flex'
+                    >
+                      <div className='m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
+                        <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
+                          {eco.orgName}
+                        </p>
+                        <MdGroups />
+                      </div>
+                    </Link>
+                  ))}
                 <div className='flex'>
                   <div className='bg-amber-100 m-2 my-3 w-screen flex justify-start items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
                     <AddEcosystem id={user.uid} />

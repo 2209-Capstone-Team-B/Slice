@@ -3,7 +3,7 @@ import { collection, addDoc, query, getDoc, where } from 'firebase/firestore';
 
 export default async (req, res) => {
   if (req.method === 'POST') {
-    const { id, name, type, username } = req.body;
+    const { id, name, type, userName } = req.body;
 
     const docRef = await addDoc(collection(db, 'Ecosystem'), {
       orgName: name,
@@ -13,7 +13,7 @@ export default async (req, res) => {
     console.log(id);
     await addDoc(collection(db, 'EcosystemMembers'), {
       userId: id,
-      username,
+      userName,
       ecosystemId: docSnap.id,
     });
     res.send('Hello');
