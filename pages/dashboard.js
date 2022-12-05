@@ -28,7 +28,7 @@ export default function Dashboard() {
     };
   }, [user]);
 
-  const completedTasks = tasks.filter((task) => task.completed === 'true');
+  const completedTasks = tasks.filter((task) => task.completed === true);
   const incompleteTasks = tasks.filter((task) => task.completed === false);
 
   return (
