@@ -27,6 +27,10 @@ export default function ecosystem() {
   const { singleEcosystem, singleEcosystemTasks, ecosystemMembers } =
     useSelector((state) => state);
 
+  const unclaimedTasks = singleEcosystemTasks.filter(
+    (task) => task.assignedTo === null
+  );
+
   const getTasks = async (id) => await dispatch(fetchEcosystemTasks(id));
 
   useEffect(() => {
@@ -79,6 +83,7 @@ export default function ecosystem() {
             <Typography
               id='modal-modal-title'
               component='div'
+              variant='h5'
               className='text-center underline text-lg'
             >
               {singleEcosystem.orgName} Members
@@ -97,15 +102,26 @@ export default function ecosystem() {
       </div>
       <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
         <div className='flex h-1/2 w-full'>
-          <div className='border border-black rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4'>
+          <div className='border border-black rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4 overflow-auto'>
             <InvitePeople />
             <div className='flex flex-wrap justify-center'>
               {ecosystemMembers.map((member, i) => (
                 <div
                   key={i}
-                  className='border border-black text-center w-3/4 rounded-2xl p-2 m-2'
+                  className='border border-black text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto h-1/3'
                 >
-                  {member.userName}
+                  <p className='text-lg font-bold'>{member.userName}</p>
+                  <ol className='list-decimal p-3'>
+                    {singleEcosystemTasks.map((task, idx) => {
+                      if (task.assignedTo === member.userId) {
+                        return (
+                          <li key={idx} className='text-left p-1 ml-2'>
+                            {task.name}
+                          </li>
+                        );
+                      }
+                    })}
+                  </ol>
                 </div>
               ))}
             </div>
@@ -113,18 +129,22 @@ export default function ecosystem() {
           <div className='border border-black rounded-3xl justify-center w-full m-4 overflow-auto'>
             <AddTask id={id} getTasks={getTasks} />
             <div className='flex flex-wrap justify-center'>
-              {singleEcosystemTasks.map((task, i) => (
-                <div
-                  key={i}
-                  className='border border-black text-center w-3/4 rounded-2xl p-2 m-2'
-                >
-                  {task.name} due {task.due}
-                  <div className='flex justify-around p-3'>
-                    {task.owner === user.uid && <EditTask task={task} />}
-                    <ClaimTask task={task} user={user} />
+              {unclaimedTasks.length ? (
+                unclaimedTasks.map((task, i) => (
+                  <div
+                    key={i}
+                    className='border border-black text-center w-3/4 rounded-2xl p-2 m-2'
+                  >
+                    {task.name} due {task.due}
+                    <div className='flex justify-around p-3'>
+                      {task.owner === user.uid && <EditTask task={task} />}
+                      <ClaimTask task={task} user={user} />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <h1 className='mt-10 items-end'>No Tasks To Claim!</h1>
+              )}
             </div>
           </div>
         </div>
