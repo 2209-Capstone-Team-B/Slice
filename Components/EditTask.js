@@ -89,7 +89,9 @@ function EditModal({ close, task }) {
                 ></input>
                 <select
                   value={status}
-                  onChange={(e) => setStatus(e.target.value)}
+                  onChange={(e) =>
+                    setStatus(e.target.value === 'true' ? true : false)
+                  }
                   className='block border-2 m-auto my-4 w-5/6 border-black text-center rounded-xl'
                 >
                   <option value={true}>Complete</option>

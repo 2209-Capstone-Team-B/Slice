@@ -18,6 +18,7 @@ const style = {
   pt: 0,
   borderRadius: 5,
   alignItems: 'center',
+  overflow: 'scroll',
 };
 
 //Parent modal for deciding what type of edit you would like to make -- Edit or Delete

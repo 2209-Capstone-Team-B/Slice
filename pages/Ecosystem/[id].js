@@ -6,19 +6,23 @@ import {
   fetchEcosystem,
   fetchEcosystemTasks,
   fetchEcosystemMembers,
-} from "../../Store";
-import { useDispatch, useSelector } from "react-redux";
-import AddTask from "../../Components/AddTask";
-import EditTask from "../../Components/EditTask";
-import InvitePeople from "../../Components/InvitePeople";
-import Modal from "@mui/material/Modal";
-import CloseIcon from "@mui/icons-material/Close";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import ClaimTask from "../../Components/ClaimTask";
+} from '../../Store';
+import { useDispatch, useSelector } from 'react-redux';
+import AddTask from '../../Components/AddTask';
+import EditTask from '../../Components/EditTask';
+import InvitePeople from '../../Components/InvitePeople';
+import Modal from '@mui/material/Modal';
+import CloseIcon from '@mui/icons-material/Close';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import ClaimTask from '../../Components/ClaimTask';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { setDoc, doc, deleteDoc } from 'firebase/firestore';
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import PropTypes from "prop-types";
+
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -31,7 +35,16 @@ export default function ecosystem() {
   const { singleEcosystem, singleEcosystemTasks, ecosystemMembers } =
     useSelector((state) => state);
 
+  const unclaimedTasks = singleEcosystemTasks.filter(
+    (task) => task.assignedTo === null
+  );
+
   const getTasks = async (id) => await dispatch(fetchEcosystemTasks(id));
+
+  const toggleCompletedTask = (id, bool) => {
+    setDoc(doc(db, 'Tasks', id), { completed: !bool }, { merge: true });
+    setOpen(false);
+  };
 
   useEffect(() => {
     const unsubscribeEcosystemMembers = dispatch(fetchEcosystemMembers(id));
@@ -115,6 +128,29 @@ export default function ecosystem() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
+            <Typography
+              id='modal-modal-title'
+              component='div'
+              variant='h5'
+              className='text-center underline text-lg'
+            >
+              {singleEcosystem.orgName} Members
+              <CloseIcon
+                className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
+                onClick={handleOpen}
+              />
+            </Typography>
+            {ecosystemMembers.map((member) => (
+              <div key={member.id} className='flex justify-between'>
+                {member.userName}
+              </div>
+            ))}
+          </Box>
+        </Modal>
+      </div>
+      <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
+        <div className='flex h-1/2 w-full'>
+          <div className='border border-black rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4 overflow-auto'>
             <Box sx={{ width: "100%" }}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs
@@ -168,28 +204,60 @@ export default function ecosystem() {
               {ecosystemMembers.map((member, i) => (
                 <div
                   key={i}
-                  className="border border-black text-center w-3/4 rounded-2xl p-2 m-2"
+                  className='border border-black text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto h-1/3'
                 >
-                  {member.userName}
+                  <p className='text-lg font-bold'>{member.userName}</p>
+                  <ol className='list-decimal p-3'>
+                    {singleEcosystemTasks.map((task, idx) => {
+                      if (task.assignedTo === member.userId) {
+                        return (
+                          <div className='flex'>
+                            {task.completed ? (
+                              <CheckBoxIcon
+                                className='flex justify-end mr-3'
+                                onClick={() =>
+                                  toggleCompletedTask(task.id, task.completed)
+                                }
+                              />
+                            ) : (
+                              <CheckBoxOutlineBlankIcon
+                                className='flex justify-end mr-3'
+                                onClick={() =>
+                                  toggleCompletedTask(task.id, task.completed)
+                                }
+                              />
+                            )}
+                            <li key={idx} className='text-left p-1 ml-2'>
+                              {task.name}
+                            </li>
+                          </div>
+                        );
+                      }
+                    })}
+                  </ol>
                 </div>
               ))}
             </div>
           </div>
           <div className="border border-black rounded-3xl justify-center w-full m-4 overflow-auto">
             <AddTask id={id} getTasks={getTasks} />
-            <div className="flex flex-wrap justify-center">
-              {singleEcosystemTasks.map((task, i) => (
-                <div
-                  key={i}
-                  className="border border-black text-center w-3/4 rounded-2xl p-2 m-2"
-                >
-                  {task.name} due {task.due}
-                  <div className="flex justify-around p-3">
-                    {task.owner === user.uid && <EditTask task={task} />}
-                    <ClaimTask task={task} user={user} />
+            <div className='flex flex-wrap justify-center'>
+              {unclaimedTasks.length ? (
+                unclaimedTasks.map((task, i) => (
+                  <div
+                    key={i}
+                    className='border border-black text-center w-3/4 rounded-2xl p-2 m-2'
+                  >
+                    {task.name} due {task.due}
+                    <div className='flex justify-around p-3'>
+                      {task.owner === user.uid && <EditTask task={task} />}
+                      <ClaimTask task={task} user={user} />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <h1 className='mt-10 items-end'>No Tasks To Claim!</h1>
+              )}
             </div>
           </div>
         </div>
