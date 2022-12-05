@@ -49,7 +49,8 @@ export default function Account({ children }) {
           <div className='px-1 py-1 mt-3 flex-col justify-between items-center'>
             <Menu.Item>
               {({ active }) => (
-                <button
+                <Link
+                  href='/profile'
                   className={`${
                     active ? 'bg-amber-500 text-white' : 'text-gray-900'
                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
@@ -66,7 +67,7 @@ export default function Account({ children }) {
                     />
                   )}
                   Account Profile
-                </button>
+                </Link>
               )}
             </Menu.Item>
             <Menu.Item>
