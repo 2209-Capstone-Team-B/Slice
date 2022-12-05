@@ -122,15 +122,17 @@ const AuthPage = () => {
           </h1>
         </Link>
         <h2 className="flex justify-center items-center">
-          <button
-            className=" flex justify-center items-center rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
-            onClick={async () => {
-              await GoogleSignIn();
-              // router.push("/dashboard");
-            }}
-          >
-            Sign in with Google!
-          </button>
+          <div>
+            <button
+              className=" flex justify-center items-center rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
+              onClick={async () => {
+                await GoogleSignIn();
+                // router.push("/dashboard");
+              }}
+            >
+              Sign in with Google!
+            </button>
+          </div>
         </h2>
         <div className="pb-5 flex space-x-10 justify-center items-center">
           <Link href="/AuthPage">
