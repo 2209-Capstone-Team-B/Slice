@@ -128,29 +128,6 @@ export default function ecosystem() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <Typography
-              id='modal-modal-title'
-              component='div'
-              variant='h5'
-              className='text-center underline text-lg'
-            >
-              {singleEcosystem.orgName} Members
-              <CloseIcon
-                className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
-                onClick={handleOpen}
-              />
-            </Typography>
-            {ecosystemMembers.map((member) => (
-              <div key={member.id} className='flex justify-between'>
-                {member.userName}
-              </div>
-            ))}
-          </Box>
-        </Modal>
-      </div>
-      <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
-        <div className='flex h-1/2 w-full'>
-          <div className='border border-black rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4 overflow-auto'>
             <Box sx={{ width: "100%" }}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs
@@ -211,7 +188,7 @@ export default function ecosystem() {
                     {singleEcosystemTasks.map((task, idx) => {
                       if (task.assignedTo === member.userId) {
                         return (
-                          <div className='flex'>
+                          <div className='flex' key={idx}>
                             {task.completed ? (
                               <CheckBoxIcon
                                 className='flex justify-end mr-3'
