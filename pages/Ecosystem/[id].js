@@ -54,7 +54,7 @@ export default function ecosystem() {
 
   return (
     <>
-      <h3 className='text-center text-3xl pt-6'>
+      <div className='text-center text-3xl pt-6'>
         {singleEcosystem.orgName}
         <h1
           className='text-sm duration-300 hover:scale-110 cursor-pointer'
@@ -87,7 +87,7 @@ export default function ecosystem() {
             ))}
           </Box>
         </Modal>
-      </h3>
+      </div>
       <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
         <div className='flex h-1/2 w-full'>
           <div className='border border-black rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4'>
