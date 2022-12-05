@@ -23,7 +23,7 @@ const style = {
 export default function AddEcosystem({ id }) {
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
-  const [username, setUsername] = React.useState('');
+  const [userName, setUsername] = React.useState('');
   const [type, setType] = React.useState('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -43,7 +43,7 @@ export default function AddEcosystem({ id }) {
       id,
       name,
       type,
-      username,
+      userName,
     });
     setName('');
     setUsername('');
@@ -95,7 +95,7 @@ export default function AddEcosystem({ id }) {
               type='text'
               name='username'
               placeholder='Create a username...'
-              value={username}
+              value={userName}
               onChange={(e) => setUsername(e.target.value)}
             ></input>
             <label className='float-left w-12 text-center'>Type</label>

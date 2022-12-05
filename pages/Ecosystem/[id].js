@@ -105,7 +105,7 @@ export default function ecosystem() {
                   key={i}
                   className='border border-black text-center w-3/4 rounded-2xl p-2 m-2'
                 >
-                  {member.userId}
+                  {member.userName}
                 </div>
               ))}
             </div>
