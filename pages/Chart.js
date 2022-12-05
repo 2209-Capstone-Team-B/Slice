@@ -10,7 +10,7 @@ const Chart = ({ completed, incomplete }) => {
     datasets: [
       {
         label: 'My First Dataset',
-        data: [completed, incomplete],
+        data: [incomplete, completed],
         backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)'],
         hoverOffset: 4,
       },
