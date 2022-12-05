@@ -4,7 +4,7 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import { db } from '../firebase';
-import { setDoc, doc } from 'firebase/firestore';
+import { setDoc, doc, deleteDoc } from 'firebase/firestore';
 
 const style = {
   position: 'absolute',
@@ -30,7 +30,11 @@ function EditModal({ close, task }) {
   const handleOpen = () => {
     setOpen(true);
   };
-  const handleClose = () => {
+  const handleClose = (closing) => {
+    if (closing) {
+      setOpen(false);
+      return;
+    }
     setDoc(
       doc(db, 'Tasks', task.id),
       { name, due, completed: status },
@@ -57,7 +61,7 @@ function EditModal({ close, task }) {
           <div className='flex flex-col justify-around h-full'>
             <CloseIcon
               className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
-              onClick={handleClose}
+              onClick={() => handleClose(true)}
             />
             <h2
               id='child-modal-title'
@@ -118,7 +122,12 @@ function DeleteModal({ close, task, uderId }) {
   const handleOpen = () => {
     setOpen(true);
   };
-  const handleClose = () => {
+  const handleClose = async (closing) => {
+    if (closing) {
+      setOpen(false);
+      return;
+    }
+    deleteDoc(doc(db, 'Tasks', task.id));
     setOpen(false);
   };
 
@@ -150,7 +159,7 @@ function DeleteModal({ close, task, uderId }) {
               No going back from here!
               <CloseIcon
                 className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
-                onClick={handleClose}
+                onClick={() => handleClose(true)}
               />
             </h2>
             <p id='child-modal-description'></p>
