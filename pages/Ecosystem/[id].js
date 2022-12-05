@@ -11,11 +11,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import AddTask from '../../Components/AddTask';
 import EditTask from '../../Components/EditTask';
 import InvitePeople from '../../Components/InvitePeople';
+import Modal from '@mui/material/Modal';
+import CloseIcon from '@mui/icons-material/Close';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import ClaimTask from '../../Components/ClaimTask';
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
   const [user, loading] = useAuthState(auth);
+  const [open, setOpen] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useDispatch();
@@ -35,9 +40,61 @@ export default function ecosystem() {
     };
   }, [id]);
 
+  const handleOpen = () => {
+    setOpen(!open);
+  };
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 600,
+    height: 300,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 5,
+    alignItems: 'center',
+  };
+
   return (
     <>
-      <h3 className='text-center text-3xl pt-6'>{singleEcosystem.orgName}</h3>
+      <div className='text-center text-3xl pt-6'>
+        {singleEcosystem.orgName}
+        <h1
+          className='text-sm duration-300 hover:scale-110 cursor-pointer'
+          onClick={handleOpen}
+        >
+          Members ({ecosystemMembers.length})
+        </h1>
+        <Modal
+          open={open}
+          onClose={handleOpen}
+          aria-labelledby='modal-modal-title'
+          aria-describedby='modal-modal-description'
+        >
+          <Box sx={style}>
+            <Typography
+              id='modal-modal-title'
+              component='div'
+              className='text-center underline text-lg'
+            >
+              {singleEcosystem.orgName} Members
+              <CloseIcon
+                className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
+                onClick={handleOpen}
+              />
+            </Typography>
+            {ecosystemMembers.map((member) => (
+              <div key={member.id} className='flex justify-between'>
+                {member.userName}
+              </div>
+            ))}
+          </Box>
+        </Modal>
+      </div>
       <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
         <div className='flex h-1/2 w-full'>
           <div className='border border-black rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4'>
