@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux';
 import { useAuth } from '../context/AuthContext';
 import Chart from './Chart';
 import EditProfile from '../Components/EditProfile';
+import EditPassword from '../Components/EditPassword';
+import { getAuth, updatePassword } from 'firebase/auth';
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -17,10 +19,12 @@ export default function Dashboard() {
   const data = router.query;
   const userObject = useSelector((state) => state.loggedInUser);
 
+  const passUser = auth.currentUser;
+
   useEffect(() => {
     if (user && Object.keys(data).length !== 0) {
       const updateDb = async () => {
-        const data2 = await setDoc(
+        await setDoc(
           doc(db, 'Users', user.uid),
           {
             email: user.email,
@@ -39,7 +43,7 @@ export default function Dashboard() {
     <div>
       {currentUser ? (
         <div className='text-center text-3xl pt-6'>
-          Account Information for {currentUser.email}
+          Account Information for {userObject.firstName}
         </div>
       ) : null}
       <div className='bg-white h-screen flex justify-start items-stretch'>
@@ -59,6 +63,7 @@ export default function Dashboard() {
                 <p className='text-black'>{currentUser.email}</p>
               </div>
               <EditProfile userObject={userObject} />
+              {/* <EditPassword passUser={passUser} /> */}
             </div>
           </div>
         </div>
