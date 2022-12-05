@@ -30,9 +30,9 @@ export default function Layout({ children }) {
   const userObject = useSelector((state) => state.loggedInUser);
 
   useEffect(() => {
-    const unsubscribeEcos = dispatch(fetchEcosystems(user.uid));
-    const unsubscribeInvites = dispatch(fetchInvites(user.uid));
-    const unsubscribeUser = dispatch(fetchUser(user.uid));
+    const unsubscribeEcos = dispatch(fetchEcosystems(user.uid || userObject.id));
+    const unsubscribeInvites = dispatch(fetchInvites(user.uid || userObject.id));
+    const unsubscribeUser = dispatch(fetchUser(user.uid || userObject.id));
     return () => {
       unsubscribeEcos();
       unsubscribeInvites();
