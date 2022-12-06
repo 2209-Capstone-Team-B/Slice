@@ -6,25 +6,36 @@ import {
   fetchEcosystem,
   fetchEcosystemTasks,
   fetchEcosystemMembers,
-} from "../../Store";
-import { useDispatch, useSelector } from "react-redux";
-import AddTask from "../../Components/AddTask";
-import EditTask from "../../Components/EditTask";
-import InvitePeople from "../../Components/InvitePeople";
-import Modal from "@mui/material/Modal";
-import CloseIcon from "@mui/icons-material/Close";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import ClaimTask from "../../Components/ClaimTask";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import { setDoc, doc, deleteDoc } from "firebase/firestore";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
-import PropTypes from "prop-types";
-import Container from "@mui/material/Container";
-import LeaveOrg from "../../Components/LeaveOrg.js";
-import BarGraph from "../../Components/BarGraph";
+} from '../../Store';
+import { useDispatch, useSelector } from 'react-redux';
+import AddTask from '../../Components/AddTask';
+import EditTask from '../../Components/EditTask';
+import InvitePeople from '../../Components/InvitePeople';
+import Modal from '@mui/material/Modal';
+import CloseIcon from '@mui/icons-material/Close';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import ClaimTask from '../../Components/ClaimTask';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import {
+  setDoc,
+  doc,
+  deleteDoc,
+  query,
+  collection,
+  where,
+  getDocs,
+  updateDoc,
+} from 'firebase/firestore';
+
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import PropTypes from 'prop-types';
+import Container from '@mui/material/Container';
+import LeaveOrg from '../../Components/LeaveOrg.js';
+import BarGraph from '../../Components/BarGraph';
+
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -43,8 +54,33 @@ export default function ecosystem() {
 
   const getTasks = async (id) => await dispatch(fetchEcosystemTasks(id));
 
-  const toggleCompletedTask = (id, bool) => {
-    setDoc(doc(db, "Tasks", id), { completed: !bool }, { merge: true });
+  const toggleCompletedTask = async (id, status) => {
+    setDoc(doc(db, 'Tasks', id), { completed: !status }, { merge: true });
+
+    //Build a query to find the right ecosystemMember
+    const q = query(
+      collection(db, 'EcosystemMembers'),
+      where('ecosystemId', '==', singleEcosystem.id),
+      where('userId', '==', user.uid)
+    );
+    const docSnap = await getDocs(q);
+    // docSnap.forEach((ecoMem) => console.log(ecoMem.ref));
+
+    if (!status) {
+      docSnap.forEach(async (ecoMember) => {
+        let newAmount = ecoMember.data().currencyAmount + 1;
+        await updateDoc(ecoMember.ref, {
+          currencyAmount: newAmount,
+        });
+      });
+    } else {
+      docSnap.forEach(async (ecoMember) => {
+        let newAmount = ecoMember.data().currencyAmount - 1;
+        await updateDoc(ecoMember.ref, {
+          currencyAmount: newAmount,
+        });
+      });
+    }
     setOpen(false);
   };
 
@@ -261,9 +297,9 @@ export default function ecosystem() {
             </div>
           </div>
         </div>
-        <div className="flex h-1/2 w-full">
-          <div className="flex border border-black rounded-3xl justify-center w-full m-4">
-            <BarGraph className="w-full" />
+        <div className='flex h-1/2 w-full'>
+          <div className='flex border border-black rounded-3xl justify-center w-full m-4'>
+            <BarGraph ecosystemMembers={ecosystemMembers} className='w-full' />
           </div>
         </div>
       </div>

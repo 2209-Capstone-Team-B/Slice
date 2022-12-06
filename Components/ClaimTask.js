@@ -1,10 +1,11 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
-import CloseIcon from "@mui/icons-material/Close";
-import { db } from "../firebase";
-import { setDoc, doc } from "firebase/firestore";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
+import { db } from '../firebase';
+import { setDoc, doc } from 'firebase/firestore';
+
 
 const style = {
   position: "absolute",
