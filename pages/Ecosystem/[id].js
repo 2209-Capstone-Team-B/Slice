@@ -22,7 +22,10 @@ import { setDoc, doc, deleteDoc } from 'firebase/firestore';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import PropTypes from 'prop-types';
+import Container from '@mui/material/Container'
+import LeaveOrg from '../../Components/LeaveOrg.js'
 import BarGraph from '../../Components/BarGraph';
+
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -91,13 +94,15 @@ export default function ecosystem() {
         {...other}
       >
         {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
+                <Container>
+                    <Box>
+                        {children}
+                    </Box>
+                </Container>
+            )}
+        </div>
     );
-  }
+}
 
   TabPanel.propTypes = {
     children: PropTypes.node,
@@ -147,6 +152,7 @@ export default function ecosystem() {
               </Box>
               <TabPanel value={value} index={0}>
                 {singleEcosystem.description}
+                <LeaveOrg ecosystemId={singleEcosystem.id}/>
               </TabPanel>
               <TabPanel value={value} index={1}>
                 <Typography
@@ -190,7 +196,7 @@ export default function ecosystem() {
                         return (
                           <div className='flex' key={idx}>
                             {task.completed ? (
-                              task.assignedTo === user.uid ? (
+                              task.userId === user?.uid ? (
                                 <CheckBoxIcon
                                   className='flex justify-end mr-3'
                                   onClick={() =>
@@ -207,7 +213,7 @@ export default function ecosystem() {
                                   className='flex justify-end mr-3'
                                 />
                               )
-                            ) : task.assignedTo === user.uid ? (
+                            ) : task.userId === user?.uid ? (
                               <CheckBoxOutlineBlankIcon
                                 className='flex justify-end mr-3'
                                 onClick={() =>
