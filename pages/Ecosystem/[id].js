@@ -35,6 +35,7 @@ import PropTypes from 'prop-types';
 import Container from '@mui/material/Container';
 import LeaveOrg from '../../Components/LeaveOrg.js';
 import BarGraph from '../../Components/BarGraph';
+import CompleteTask from '../../Components/CompleteTask';
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -231,33 +232,16 @@ export default function ecosystem() {
                   <p className='text-lg font-bold'>{member.userName}</p>
                   <ol className='list-decimal p-3'>
                     {singleEcosystemTasks.map((task, idx) => {
-                      if (task.assignedTo === member.userId) {
+                      if (
+                        task.assignedTo === member.userId &&
+                        !task.completed
+                      ) {
                         return (
                           <div className='flex' key={idx}>
-                            {task.completed ? (
-                              task.assignedTo === user?.uid ? (
-                                <CheckBoxIcon
-                                  className='flex justify-end mr-3'
-                                  onClick={() =>
-                                    toggleCompletedTask(task.id, task.completed)
-                                  }
-                                />
-                              ) : (
-                                <CheckBoxIcon
-                                  onClick={() =>
-                                    alert(
-                                      'You cannot mark a task that is not assigned to you!'
-                                    )
-                                  }
-                                  className='flex justify-end mr-3'
-                                />
-                              )
-                            ) : task.assignedTo === user?.uid ? (
-                              <CheckBoxOutlineBlankIcon
-                                className='flex justify-end mr-3'
-                                onClick={() =>
-                                  toggleCompletedTask(task.id, task.completed)
-                                }
+                            {task.assignedTo === user?.uid ? (
+                              <CompleteTask
+                                task={task}
+                                toggle={toggleCompletedTask}
                               />
                             ) : (
                               <CheckBoxOutlineBlankIcon
