@@ -32,10 +32,9 @@ import {
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import PropTypes from 'prop-types';
-import Container from '@mui/material/Container'
-import LeaveOrg from '../../Components/LeaveOrg.js'
+import Container from '@mui/material/Container';
+import LeaveOrg from '../../Components/LeaveOrg.js';
 import BarGraph from '../../Components/BarGraph';
-
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -129,15 +128,13 @@ export default function ecosystem() {
         {...other}
       >
         {value === index && (
-                <Container>
-                    <Box>
-                        {children}
-                    </Box>
-                </Container>
-            )}
-        </div>
+          <Container>
+            <Box>{children}</Box>
+          </Container>
+        )}
+      </div>
     );
-}
+  }
 
   TabPanel.propTypes = {
     children: PropTypes.node,
@@ -187,7 +184,7 @@ export default function ecosystem() {
               </Box>
               <TabPanel value={value} index={0}>
                 {singleEcosystem.description}
-                <LeaveOrg ecosystemId={singleEcosystem.id}/>
+                <LeaveOrg ecosystemId={singleEcosystem.id} />
               </TabPanel>
               <TabPanel value={value} index={1}>
                 <Typography
@@ -231,7 +228,7 @@ export default function ecosystem() {
                         return (
                           <div className='flex' key={idx}>
                             {task.completed ? (
-                              task.userId === user?.uid ? (
+                              task.assignedTo === user?.uid ? (
                                 <CheckBoxIcon
                                   className='flex justify-end mr-3'
                                   onClick={() =>
@@ -248,7 +245,7 @@ export default function ecosystem() {
                                   className='flex justify-end mr-3'
                                 />
                               )
-                            ) : task.userId === user?.uid ? (
+                            ) : task.assignedTo === user?.uid ? (
                               <CheckBoxOutlineBlankIcon
                                 className='flex justify-end mr-3'
                                 onClick={() =>

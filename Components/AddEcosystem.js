@@ -20,10 +20,12 @@ const style = {
   alignItems: 'center',
 };
 
-export default function AddEcosystem({ id }) {
+export default function AddEcosystem({ id, user }) {
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
-  const [userName, setUsername] = React.useState('');
+  const [userName, setUsername] = React.useState(
+    `${user.firstName}-${user.lastName}`
+  );
   const [type, setType] = React.useState('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
