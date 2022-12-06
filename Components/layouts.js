@@ -80,7 +80,8 @@ export default function Layout({ children }) {
         {show ? (
           <div className='flex'>
             <aside
-              className='bg-amber-100 w-full md:w-60 p-3'
+
+              className='bg-amber-100 w-full md:w-60 p-3 inset-0 z-10'
               id='collapseWidth'
             >
               <nav>
