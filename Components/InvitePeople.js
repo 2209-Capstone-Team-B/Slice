@@ -42,13 +42,16 @@ const InvitePeople = () => {
     // let emailFound = '';
     const q = query(collection(db, 'Users'), where('email', '==', email));
     const querySnapshot = await getDocs(q);
-    if (querySnapshot.docs[0].exists()) {
+
+    if (querySnapshot.size === 1) {
       await addDoc(collection(db, 'Invites'), {
         ecosystemId: singleEcosystem.id,
         orgName: singleEcosystem.orgName,
         userId: querySnapshot.docs[0].id,
         pending: true,
       });
+    } else {
+      alert("user not found")
     }
     // querySnapshot.forEach((doc) => {
     //   // doc.data() is never undefined for query doc snapshots
