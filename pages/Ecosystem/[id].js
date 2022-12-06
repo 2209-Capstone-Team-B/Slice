@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "../../firebase";
-import { useRouter } from "next/router";
+import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, db } from '../../firebase';
+import { useRouter } from 'next/router';
 import {
   fetchEcosystem,
   fetchEcosystemTasks,
@@ -35,7 +35,7 @@ import PropTypes from 'prop-types';
 import Container from '@mui/material/Container';
 import LeaveOrg from '../../Components/LeaveOrg.js';
 import BarGraph from '../../Components/BarGraph';
-
+import CompleteTask from '../../Components/CompleteTask';
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -104,25 +104,25 @@ export default function ecosystem() {
   };
 
   const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     width: 600,
     height: 300,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
     boxShadow: 24,
     p: 4,
     borderRadius: 5,
-    alignItems: "center",
+    alignItems: 'center',
   };
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
     return (
       <div
-        role="tabpanel"
+        role='tabpanel'
         hidden={value !== index}
         id={`simple-tabpanel-${index}`}
         aria-labelledby={`simple-tab-${index}`}
@@ -146,15 +146,15 @@ export default function ecosystem() {
   function a11yProps(index) {
     return {
       id: `simple-tab-${index}`,
-      "aria-controls": `simple-tabpanel-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
     };
   }
   return (
     <>
-      <div className="text-center text-3xl pt-6">
+      <div className='text-center text-3xl pt-6'>
         {singleEcosystem.orgName}
         <h1
-          className="text-sm duration-300 hover:scale-110 cursor-pointer"
+          className='text-sm duration-300 hover:scale-110 cursor-pointer'
           onClick={handleOpen}
         >
           Channel Details {/* ({ecosystemMembers.length}) */}
@@ -162,20 +162,20 @@ export default function ecosystem() {
         <Modal
           open={open}
           onClose={handleOpen}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
+          aria-labelledby='modal-modal-title'
+          aria-describedby='modal-modal-description'
         >
           <Box sx={style}>
-            <Box sx={{ width: "100%" }}>
-              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Box sx={{ width: '100%' }}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs
                   value={value}
                   onChange={handleTabChange}
-                  aria-label="basic tabs example"
-                  TabIndicatorProps={{ style: { background: "#FEF3C7" } }}
-                  textColor="inherit"
+                  aria-label='basic tabs example'
+                  TabIndicatorProps={{ style: { background: '#FEF3C7' } }}
+                  textColor='inherit'
                 >
-                  <Tab label="About" {...a11yProps(0)} />
+                  <Tab label='About' {...a11yProps(0)} />
                   <Tab
                     label={`Members (${ecosystemMembers.length})`}
                     {...a11yProps(1)}
@@ -189,14 +189,14 @@ export default function ecosystem() {
               </TabPanel>
               <TabPanel value={value} index={1}>
                 <Typography
-                  id="modal-modal-title"
-                  component="div"
-                  className="text-center underline text-lg"
+                  id='modal-modal-title'
+                  component='div'
+                  className='text-center underline text-lg'
                 >
                   {singleEcosystem.orgName} Members
                 </Typography>
                 {ecosystemMembers.map((member) => (
-                  <div key={member.id} className="flex justify-between">
+                  <div key={member.id} className='flex justify-between'>
                     {member.userName}
                   </div>
                 ))}
@@ -206,64 +206,47 @@ export default function ecosystem() {
       </TabPanel> */}
             </Box>
             <CloseIcon
-              className="absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold"
+              className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
               onClick={handleOpen}
             />
           </Box>
         </Modal>
       </div>
-      <div className="bg-white h-screen flex-col min-w-full pt-0 p-10">
-        <div className="flex h-1/2 w-full">
-          <div className="border border-black rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4 overflow-auto">
+      <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
+        <div className='flex h-1/2 w-full'>
+          <div className='border border-black rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4 overflow-auto'>
             <InvitePeople />
-            <div className="flex flex-wrap justify-center">
+            <div className='flex flex-wrap justify-center'>
               {ecosystemMembers.map((member, i) => (
                 <div
                   key={i}
-                  className="border border-black text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto h-1/3"
+                  className='border border-black text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto'
                 >
-                  <p className="text-lg font-bold">{member.userName}</p>
-                  <ol className="list-decimal p-3">
+                  <p className='text-lg font-bold'>{member.userName}</p>
+                  <ol className='list-decimal p-3'>
                     {singleEcosystemTasks.map((task, idx) => {
-                      if (task.assignedTo === member.userId) {
+                      if (
+                        task.assignedTo === member.userId &&
+                        !task.completed
+                      ) {
                         return (
-                          <div className="flex" key={idx}>
-                            {task.completed ? (
-                              task.assignedTo === user?.uid ? (
-                                <CheckBoxIcon
-                                  className="flex justify-end mr-3"
-                                  onClick={() =>
-                                    toggleCompletedTask(task.id, task.completed)
-                                  }
-                                />
-                              ) : (
-                                <CheckBoxIcon
-                                  onClick={() =>
-                                    alert(
-                                      "You cannot mark a task that is not assigned to you!"
-                                    )
-                                  }
-                                  className="flex justify-end mr-3"
-                                />
-                              )
-                            ) : task.assignedTo === user?.uid ? (
-                              <CheckBoxOutlineBlankIcon
-                                className="flex justify-end mr-3"
-                                onClick={() =>
-                                  toggleCompletedTask(task.id, task.completed)
-                                }
+                          <div className='flex' key={idx}>
+                            {task.assignedTo === user?.uid ? (
+                              <CompleteTask
+                                task={task}
+                                toggle={toggleCompletedTask}
                               />
                             ) : (
                               <CheckBoxOutlineBlankIcon
                                 onClick={() =>
                                   alert(
-                                    "You cannot mark a task that is not assigned to you!"
+                                    'You cannot mark a task that is not assigned to you!'
                                   )
                                 }
-                                className="flex justify-end mr-3"
+                                className='flex justify-end mr-3'
                               />
                             )}
-                            <li key={idx} className="text-left p-1 ml-2">
+                            <li key={idx} className='text-left p-1 ml-2'>
                               {task.name}
                             </li>
                           </div>
@@ -275,24 +258,24 @@ export default function ecosystem() {
               ))}
             </div>
           </div>
-          <div className="border border-black rounded-3xl justify-center w-full m-4 overflow-auto">
+          <div className='border border-black rounded-3xl justify-center w-full m-4 overflow-auto'>
             <AddTask id={id} getTasks={getTasks} />
-            <div className="flex flex-wrap justify-center">
+            <div className='flex flex-wrap justify-center'>
               {unclaimedTasks.length ? (
                 unclaimedTasks.map((task, i) => (
                   <div
                     key={i}
-                    className="border border-black text-center w-3/4 rounded-2xl p-2 m-2"
+                    className='border border-black text-center w-3/4 rounded-2xl p-2 m-2'
                   >
                     {task.name} due {task.due}
-                    <div className="flex justify-around p-3">
+                    <div className='flex justify-around p-3'>
                       {task.owner === user.uid && <EditTask task={task} />}
                       <ClaimTask task={task} user={user} />
                     </div>
                   </div>
                 ))
               ) : (
-                <h1 className="mt-10 items-end">No Tasks To Claim!</h1>
+                <h1 className='mt-10 items-end'>No Tasks To Claim!</h1>
               )}
             </div>
           </div>
