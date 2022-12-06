@@ -49,6 +49,7 @@ export default function AddTask({ id, getTasks }) {
       assignedTo: null,
       owner: user.uid,
       completed: false,
+      completedAt: null,
     });
     setName('');
     setDue('');
