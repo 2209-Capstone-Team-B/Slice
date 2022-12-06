@@ -75,6 +75,7 @@ const AuthPage = () => {
     await signInWithPopup(auth, provider).catch(alert);
 
     const user = myauth.currentUser;
+    if (user) router.push("/dashboard");
 
     const updateDb = async () => {
       let names = user.displayName.split(" ");
@@ -89,7 +90,6 @@ const AuthPage = () => {
         { merge: true }
       );
     };
-    if (user) router.push("/dashboard");
     await updateDb().catch(console.error);
   };
 
@@ -122,19 +122,6 @@ const AuthPage = () => {
             Slice
           </h1>
         </Link>
-        <h2 className="flex justify-center items-center">
-          <div>
-            <button
-              className=" flex justify-center items-center rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
-              onClick={async () => {
-                await GoogleSignIn();
-                // router.push("/dashboard");
-              }}
-            >
-              Sign in with Google!
-            </button>
-          </div>
-        </h2>
         <div className="pb-5 flex space-x-10 justify-center items-center">
           <Link href="/AuthPage">
             <button
@@ -184,14 +171,18 @@ const AuthPage = () => {
               Sign In
             </button>
             <div className="flex justify-center">
-              <Link href="/">
+              <button
+                onClick={async () => {
+                  await GoogleSignIn();
+                }}
+              >
                 <Image
                   src="/btn_google_signin_light_pressed_web.png"
                   width="200"
                   height="200"
                   unoptimized
                 />
-              </Link>
+              </button>
             </div>
             {error && (
               <div className="w-full max-w-[40ch] border-red-300 text-red-300 py-2 text-center border border-solid mt-5">
@@ -247,7 +238,20 @@ const AuthPage = () => {
             >
               Sign Up
             </button>
-
+            <div className="flex justify-center">
+              <button
+                onClick={async () => {
+                  await GoogleSignIn();
+                }}
+              >
+                <Image
+                  src="/btn_google_signin_light_pressed_web.png"
+                  width="200"
+                  height="200"
+                  unoptimized
+                />
+              </button>
+            </div>
             {error && (
               <div className="w-full max-w-[40ch] border-red-300 text-red-300 py-2 text-center border border-solid mt-5">
                 {error}
