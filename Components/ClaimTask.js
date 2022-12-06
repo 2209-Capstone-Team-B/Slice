@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import { db } from '../firebase';
 import { setDoc, doc } from 'firebase/firestore';
+import SuccessAlert from './SuccessAlert';
 
 const style = {
   position: 'absolute',
@@ -38,6 +39,7 @@ export default function ClaimTask({ task, user }) {
       { merge: true }
     );
     setOpen(false);
+    return <SuccessAlert />;
   };
 
   return (
