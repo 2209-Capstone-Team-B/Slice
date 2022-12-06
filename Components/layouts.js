@@ -31,12 +31,12 @@ export default function Layout({ children }) {
 
   useEffect(() => {
     const unsubscribeEcos = dispatch(
-      fetchEcosystems(user.uid || userObject.id)
+      fetchEcosystems(user?.uid || userObject.id)
     );
     const unsubscribeInvites = dispatch(
-      fetchInvites(user.uid || userObject.id)
+      fetchInvites(user?.uid || userObject.id)
     );
-    const unsubscribeUser = dispatch(fetchUser(user.uid || userObject.id));
+    const unsubscribeUser = dispatch(fetchUser(user?.uid || userObject.id));
     return () => {
       unsubscribeEcos();
       unsubscribeInvites();
@@ -98,7 +98,9 @@ export default function Layout({ children }) {
                 </h1>
                 {showEcos && (
                   <ul>
-                    {userEcosystems.map((eco, i) => (
+                    {userEcosystems.sort((a, b) =>
+                    a.orgName.localeCompare(b.orgName)
+                  ).map((eco, i) => (
                       <Link
                         key={eco.id}
                         href={`/Ecosystem/${eco.id}`}

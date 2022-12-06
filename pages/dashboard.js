@@ -22,7 +22,7 @@ export default function Dashboard() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = dispatch(fetchTasks(user.uid || userObject.id));
+    const unsubscribe = dispatch(fetchTasks(user?.uid || userObject.id));
     return () => {
       unsubscribe();
     };
