@@ -60,7 +60,7 @@ export default function Dashboard() {
               </div>
               <div className='user-details'>
                 <h4>Email: </h4>
-                <p className='text-black'>{currentUser.email}</p>
+                <p className='text-black'>{userObject.email}</p>
               </div>
               <EditProfile userObject={userObject} />
               {/* <EditPassword passUser={passUser} /> */}
