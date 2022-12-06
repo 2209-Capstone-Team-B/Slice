@@ -27,8 +27,8 @@ import {
   where,
   getDocs,
   updateDoc,
+  serverTimestamp,
 } from 'firebase/firestore';
-
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import PropTypes from 'prop-types';
@@ -55,7 +55,14 @@ export default function ecosystem() {
   const getTasks = async (id) => await dispatch(fetchEcosystemTasks(id));
 
   const toggleCompletedTask = async (id, status) => {
-    setDoc(doc(db, 'Tasks', id), { completed: !status }, { merge: true });
+    setDoc(
+      doc(db, 'Tasks', id),
+      {
+        completed: !status,
+        completedAt: serverTimestamp(),
+      },
+      { merge: true }
+    );
 
     //Build a query to find the right ecosystemMember
     const q = query(

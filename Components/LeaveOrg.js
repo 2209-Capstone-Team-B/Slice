@@ -62,7 +62,7 @@ export default function LeaveOrg({ecosystemId}) {
           sx={{
             ...style,
             width: 300,
-            height: 135,
+            height: 185,
             boxShadow: '2px 5px 30px red',
           }}
         >

@@ -31,6 +31,8 @@ export default function Dashboard() {
   const completedTasks = tasks.filter((task) => task.completed === true);
   const incompleteTasks = tasks.filter((task) => task.completed === false);
 
+  console.log(tasks);
+
   return (
     <div>
       {currentUser ? (
@@ -60,8 +62,8 @@ export default function Dashboard() {
                   (task) =>
                     !task.completed && (
                       <p
-                        key={task.name}
-                        className='text-black rounded-3xl border border-slate-200 bg-white w-2/6'
+                        key={task.id}
+                        className='text-black rounded-3xl border border-slate-200 bg-white w-4/6'
                       >
                         {task.name}
                       </p>
@@ -80,8 +82,8 @@ export default function Dashboard() {
                   (task) =>
                     task.completed && (
                       <p
-                        key={task.name}
-                        className='text-black rounded-3xl border border-slate-200 bg-white w-2/6'
+                        key={task.id}
+                        className='text-black rounded-3xl border border-slate-200 bg-white w-4/6'
                       >
                         {task.name}
                       </p>

@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
 import { AiOutlineDashboard, AiOutlinePlus } from 'react-icons/ai';
+import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
   position: 'absolute',
@@ -76,6 +77,10 @@ export default function AddEcosystem({ id, user }) {
             className='text-center'
           >
             Create a New Ecosystem
+            <CloseIcon
+              className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
+              onClick={handleClose}
+            />
           </Typography>
 
           <form
