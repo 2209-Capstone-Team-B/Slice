@@ -18,10 +18,23 @@ import Typography from '@mui/material/Typography';
 import ClaimTask from '../../Components/ClaimTask';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { setDoc, doc, deleteDoc } from 'firebase/firestore';
+import {
+  setDoc,
+  doc,
+  deleteDoc,
+  query,
+  collection,
+  where,
+  getDocs,
+  updateDoc,
+} from 'firebase/firestore';
+
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import PropTypes from 'prop-types';
+import Container from '@mui/material/Container';
+import LeaveOrg from '../../Components/LeaveOrg.js';
+import BarGraph from '../../Components/BarGraph';
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -40,8 +53,33 @@ export default function ecosystem() {
 
   const getTasks = async (id) => await dispatch(fetchEcosystemTasks(id));
 
-  const toggleCompletedTask = (id, bool) => {
-    setDoc(doc(db, 'Tasks', id), { completed: !bool }, { merge: true });
+  const toggleCompletedTask = async (id, status) => {
+    setDoc(doc(db, 'Tasks', id), { completed: !status }, { merge: true });
+
+    //Build a query to find the right ecosystemMember
+    const q = query(
+      collection(db, 'EcosystemMembers'),
+      where('ecosystemId', '==', singleEcosystem.id),
+      where('userId', '==', user.uid)
+    );
+    const docSnap = await getDocs(q);
+    // docSnap.forEach((ecoMem) => console.log(ecoMem.ref));
+
+    if (!status) {
+      docSnap.forEach(async (ecoMember) => {
+        let newAmount = ecoMember.data().currencyAmount + 1;
+        await updateDoc(ecoMember.ref, {
+          currencyAmount: newAmount,
+        });
+      });
+    } else {
+      docSnap.forEach(async (ecoMember) => {
+        let newAmount = ecoMember.data().currencyAmount - 1;
+        await updateDoc(ecoMember.ref, {
+          currencyAmount: newAmount,
+        });
+      });
+    }
     setOpen(false);
   };
 
@@ -90,9 +128,9 @@ export default function ecosystem() {
         {...other}
       >
         {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
+          <Container>
+            <Box>{children}</Box>
+          </Container>
         )}
       </div>
     );
@@ -146,6 +184,7 @@ export default function ecosystem() {
               </Box>
               <TabPanel value={value} index={0}>
                 {singleEcosystem.description}
+                <LeaveOrg ecosystemId={singleEcosystem.id} />
               </TabPanel>
               <TabPanel value={value} index={1}>
                 <Typography
@@ -189,7 +228,7 @@ export default function ecosystem() {
                         return (
                           <div className='flex' key={idx}>
                             {task.completed ? (
-                              task.userId === user.uid ? (
+                              task.assignedTo === user?.uid ? (
                                 <CheckBoxIcon
                                   className='flex justify-end mr-3'
                                   onClick={() =>
@@ -197,9 +236,16 @@ export default function ecosystem() {
                                   }
                                 />
                               ) : (
-                                <CheckBoxIcon className='flex justify-end mr-3' />
+                                <CheckBoxIcon
+                                  onClick={() =>
+                                    alert(
+                                      'You cannot mark a task that is not assigned to you!'
+                                    )
+                                  }
+                                  className='flex justify-end mr-3'
+                                />
                               )
-                            ) : task.userId === user.uid ? (
+                            ) : task.assignedTo === user?.uid ? (
                               <CheckBoxOutlineBlankIcon
                                 className='flex justify-end mr-3'
                                 onClick={() =>
@@ -207,7 +253,14 @@ export default function ecosystem() {
                                 }
                               />
                             ) : (
-                              <CheckBoxOutlineBlankIcon className='flex justify-end mr-3' />
+                              <CheckBoxOutlineBlankIcon
+                                onClick={() =>
+                                  alert(
+                                    'You cannot mark a task that is not assigned to you!'
+                                  )
+                                }
+                                className='flex justify-end mr-3'
+                              />
                             )}
                             <li key={idx} className='text-left p-1 ml-2'>
                               {task.name}
@@ -245,48 +298,10 @@ export default function ecosystem() {
         </div>
         <div className='flex h-1/2 w-full'>
           <div className='flex border border-black rounded-3xl justify-center w-full m-4'>
-            <Chart className='w-full' />
+            <BarGraph ecosystemMembers={ecosystemMembers} className='w-full' />
           </div>
         </div>
       </div>
     </>
   );
 }
-
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  registerables,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-
-ChartJS.register(...registerables, Tooltip, Legend);
-
-const Chart = () => {
-  const data = {
-    labels: ['Scott', 'Mike', 'Cadre', 'Tasdid', 'Allan', 'Sarah', 'Emily'],
-    datasets: [
-      {
-        barPercentage: 0.5,
-        barThickness: 50,
-        maxBarThickness: 800,
-        minBarLength: 2,
-        data: [1, 6, 7, 4, 5, 2, 3],
-        backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(170, 239, 139)',
-          'rgb(137, 167, 178)',
-          'rgb(107, 32, 173)',
-          'rgb(244, 175, 24)',
-          'rgb(204, 38, 26)',
-        ],
-        hoverOffset: 4,
-      },
-    ],
-  };
-
-  return <Bar data={data} />;
-};
