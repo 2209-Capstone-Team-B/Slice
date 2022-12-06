@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { db, provider, auth } from "../firebase";
 import { serverTimestamp, doc, setDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged, signInWithPopup } from "firebase/auth";
+import Image from "next/image";
 
 const AuthPage = () => {
   const [signIn, setSignIn] = useState(false);
@@ -88,7 +89,7 @@ const AuthPage = () => {
         { merge: true }
       );
     };
-    router.push("/dashboard");
+    if (user) router.push("/dashboard");
     await updateDb().catch(console.error);
   };
 
@@ -182,7 +183,16 @@ const AuthPage = () => {
             >
               Sign In
             </button>
-
+            <div className="flex justify-center">
+              <Link href="/">
+                <Image
+                  src="/btn_google_signin_light_pressed_web.png"
+                  width="200"
+                  height="200"
+                  unoptimized
+                />
+              </Link>
+            </div>
             {error && (
               <div className="w-full max-w-[40ch] border-red-300 text-red-300 py-2 text-center border border-solid mt-5">
                 {error}
