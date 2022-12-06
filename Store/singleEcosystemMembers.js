@@ -13,6 +13,17 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase.js';
 
+//Helper Functions - random RGB color generator
+function randomInteger(max) {
+  return Math.floor(Math.random() * (max + 1));
+}
+function randomRgbColor() {
+  let r = randomInteger(255);
+  let g = randomInteger(255);
+  let b = randomInteger(255);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
 // Action Constant
 const GET_ECOSYSTEM_MEMBERS = 'GET_ECOSYSTEM_MEMBERS';
 
@@ -46,6 +57,7 @@ export const setMember = (userId, ecoId, userName) => (dispatch) => {
     ecosystemId: ecoId,
     userId: userId,
     userName,
+    color: randomRgbColor(),
   });
 };
 

@@ -9,25 +9,17 @@ import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(...registerables, Tooltip, Legend);
 
-const BarGraph = () => {
+const BarGraph = ({ ecosystemMembers }) => {
   const data = {
-    labels: ['Scott', 'Mike', 'Cadre', 'Tasdid', 'Allan', 'Sarah', 'Emily'],
+    labels: ecosystemMembers.map((member) => member.userName),
     datasets: [
       {
         barPercentage: 0.5,
         barThickness: 50,
         maxBarThickness: 800,
         minBarLength: 2,
-        data: [1, 6, 7, 4, 5, 2, 3],
-        backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(170, 239, 139)',
-          'rgb(137, 167, 178)',
-          'rgb(107, 32, 173)',
-          'rgb(244, 175, 24)',
-          'rgb(204, 38, 26)',
-        ],
+        data: ecosystemMembers.map((member) => member.currencyAmount),
+        backgroundColor: ecosystemMembers.map((member) => member.color),
         hoverOffset: 4,
       },
     ],
