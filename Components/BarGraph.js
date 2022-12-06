@@ -25,7 +25,16 @@ const BarGraph = ({ ecosystemMembers }) => {
     ],
   };
 
-  return <Bar data={data} />;
+  const options = {
+    scales: {
+      y: {
+        min: 0,
+        stepSize: 10,
+      },
+      x: {},
+    },
+  };
+  return <Bar data={data} options={options} />;
 };
 
 export default BarGraph;
