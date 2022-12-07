@@ -14,11 +14,12 @@ function randomRgbColor() {
 
 export default async (req, res) => {
   if (req.method === 'POST') {
-    const { id, name, type, userName } = req.body;
+    const { id, name, type, userName, description } = req.body;
 
     const docRef = await addDoc(collection(db, 'Ecosystem'), {
       orgName: name,
       type,
+      description
     });
     const docSnap = await getDoc(docRef);
     console.log(id);

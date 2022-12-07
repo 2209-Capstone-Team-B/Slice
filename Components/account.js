@@ -75,7 +75,7 @@ export default function Account({ children }) {
               {({ active }) => (
                 <button
                   className={`${
-                    active ? "bg-amber-500 text-white" : "text-gray-900"
+                    active ? "bg-slate-500 text-white" : "text-gray-900"
                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                 >
                   {active ? (

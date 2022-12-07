@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Chart from './Chart';
-
+import Skeleton from '@mui/material/Skeleton';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser, fetchTasks } from '../Store';
 import MyCalendar from './Calendar';
@@ -49,9 +49,14 @@ export default function Dashboard() {
                 incomplete={incompleteTasks.length}
               />
             ) : (
-              <h1 className='border border-solid border-amber-400 p-16 rounded-full animate-bounce'>
+              <div className='animate-bounce border border-black rounded-full p-10'>
                 No Tasks For Me
-              </h1>
+                {/* <Skeleton
+                  variant='circular'
+                  width={230}
+                  height={230}
+                ></Skeleton> */}
+              </div>
             )}
           </div>
           <div className='mt-auto'>
@@ -70,9 +75,11 @@ export default function Dashboard() {
                     )
                 )
               ) : (
-                <p className='text-black rounded-3xl border border-slate-200 bg-white w-2/6'>
-                  No Tasks For Me
-                </p>
+                <div>
+                  <Skeleton variant='text' width={410} height={40} />
+                  <Skeleton variant='text' width={410} height={40} />
+                  <Skeleton variant='text' width={410} height={40} />
+                </div>
               )}
             </div>
             <div className='flex justify-center items-center text-center flex-col shadow-md border border-gray-200 rounded-3xl p-2 m-5 text-xs sm:text-base'>
@@ -90,9 +97,11 @@ export default function Dashboard() {
                     )
                 )
               ) : (
-                <p className='text-black rounded-3xl border border-slate-200 bg-white w-2/6'>
-                  No Tasks For Me
-                </p>
+                <div>
+                  <Skeleton variant='text' width={410} height={40} />
+                  <Skeleton variant='text' width={410} height={40} />
+                  <Skeleton variant='text' width={410} height={40} />
+                </div>
               )}
             </div>
           </div>

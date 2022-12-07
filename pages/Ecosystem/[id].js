@@ -36,6 +36,7 @@ import Container from '@mui/material/Container';
 import LeaveOrg from '../../Components/LeaveOrg.js';
 import BarGraph from '../../Components/BarGraph';
 import CompleteTask from '../../Components/CompleteTask';
+import EditDescription from '../../Components/EditDescription';
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -161,11 +162,12 @@ export default function ecosystem() {
       <div className='text-center text-3xl pt-6'>
         {singleEcosystem.orgName}
         <h1
-          className='text-sm duration-300 hover:scale-110 cursor-pointer'
+          className='text-sm duration-300 hover:scale-110 cursor-pointer p-2'
           onClick={handleOpen}
         >
           Channel Details {/* ({ecosystemMembers.length}) */}
         </h1>
+        <LeaveOrg ecosystemId={singleEcosystem.id} />
         <Modal
           open={open}
           onClose={handleOpen}
@@ -190,10 +192,17 @@ export default function ecosystem() {
                   {/* <Tab label="Item Three" {...a11yProps(2)} /> */}
                 </Tabs>
               </Box>
-              <TabPanel value={value} index={0}>
-                {singleEcosystem.description}
-                <LeaveOrg ecosystemId={singleEcosystem.id} />
+              <TabPanel value={value} index={0} className='p-1'>
+                Ecosystem Name: {singleEcosystem.orgName}
               </TabPanel>
+              <TabPanel value={value} index={0} className='p-1'>
+                Description: {singleEcosystem.description}
+              </TabPanel>
+              <EditDescription
+                curDescription={singleEcosystem.description}
+                orgId={singleEcosystem.id}
+                curEcoName={singleEcosystem.orgName}
+              />
               <TabPanel value={value} index={1}>
                 <Typography
                   id='modal-modal-title'
