@@ -15,11 +15,11 @@ import Alert from '@mui/material/Alert';
 const InvitePeople = () => {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
-  const [invited, setInvited] = React.useState(false);
-  const [error, setError] = React.useState(false);
-  const { singleEcosystem, singleEcosystemTasks } = useSelector(
-    (state) => state
-  );
+  const [invited, setInvited] = useState(false);
+
+  const [error, setError] = useState(false);
+  const { singleEcosystem, singleEcosystemTasks, ecosystemMembers } =
+    useSelector((state) => state);
 
   const handleOpen = () => {
     setOpen(true);
@@ -40,17 +40,31 @@ const InvitePeople = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // find the invitee to see if they exist in Users
     const q = query(collection(db, 'Users'), where('email', '==', email));
     const querySnapshot = await getDocs(q);
-
     if (querySnapshot.size === 1) {
-      await addDoc(collection(db, 'Invites'), {
-        ecosystemId: singleEcosystem.id,
-        orgName: singleEcosystem.orgName,
-        userId: querySnapshot.docs[0].id,
-        pending: true,
-      });
-      setInvited(true);
+      // check if invitee is already invited
+      const x = query(
+        collection(db, "Invites"),
+        where("userId", "==", querySnapshot.docs[0].id),
+        where("ecosystemId", "==", singleEcosystem.id)
+      );
+      const inviteSnapshot = await getDocs(x);
+      //check if invitee is already in the group
+      let alreadyHere = ecosystemMembers.find(
+        (member) => member.userId === querySnapshot.docs[0].id
+      );
+
+      if (!alreadyHere && inviteSnapshot.size === 0) {
+        await addDoc(collection(db, "Invites"), {
+          ecosystemId: singleEcosystem.id,
+          orgName: singleEcosystem.orgName,
+          userId: querySnapshot.docs[0].id,
+          pending: true,
+        });
+         setInvited(true);
+      }
     } else {
       setError(true);
     }
@@ -64,9 +78,9 @@ const InvitePeople = () => {
   };
 
   return (
-    <div className='flex justify-center'>
+    <div className="flex justify-center">
       <button
-        className='bg-blue-300 hover:bg-blue-400 text-black px-4 py-2 rounded-2xl h-10 m-2 w-1/2'
+        className="bg-blue-300 hover:bg-blue-400 text-black px-4 py-2 rounded-2xl h-10 m-2 w-1/2"
         onClick={handleOpen}
       >
         Invite
@@ -75,32 +89,32 @@ const InvitePeople = () => {
         <DialogTitle>
           Invite Someone
           <CloseIcon
-            className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
+            className="absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold"
             onClick={handleClose}
           />
         </DialogTitle>
         <DialogContent>
-          <DialogContentText className='w-screen'>
-            Enter Email Address:{' '}
+          <DialogContentText className="w-screen">
+            Enter Email Address:{" "}
           </DialogContentText>
           <TextField
             autoFocus
-            margin='dense'
-            id='name'
-            label='Email Address'
-            type='email'
+            margin="dense"
+            id="name"
+            label="Email Address"
+            type="email"
             fullWidth
-            variant='standard'
-            name='email'
+            variant="standard"
+            name="email"
             onChange={handleChange}
-            className='w-screen'
+            className="w-screen"
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSubmit}>
             {invited ? <Alert severity='success'>Invited</Alert> : 'Invite'}
           </Button>
-          {error && <Alert severity='error'>User not found</Alert>}
+          {error && <Alert severity="error">User not found</Alert>}
         </DialogActions>
       </Dialog>
     </div>
