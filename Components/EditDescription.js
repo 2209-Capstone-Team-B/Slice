@@ -21,13 +21,13 @@ const EditDescription = ({ curDescription, orgId, curEcoName }) => {
   };
   const handleClose = async (e, closing) => {
     if (closing) {
-      setOpen(!open);
-      setSave(!saved);
+      setOpen(false);
+      setSave(false);
     }
   };
 
   const updateInfo = async () => {
-    setSave(!saved);
+    setSave(true);
 
     const docRef = doc(db, 'Ecosystem', orgId);
 
