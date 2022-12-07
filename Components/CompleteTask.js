@@ -49,10 +49,12 @@ export default function CompleteTask({ task, toggle }) {
           <FaUndoAlt
             className='hover:text-blue-300 text-blue-500'
             onClick={() => handleUnassign()}
+            title='Unassign'
           />
           <BsCheckLg
             className='hover:text-green-300 text-green-500'
             onClick={handleOpen}
+            title='Complete Task'
           />
         </div>
       </div>

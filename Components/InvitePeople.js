@@ -51,7 +51,7 @@ const InvitePeople = () => {
         pending: true,
       });
     } else {
-      alert("user not found")
+      alert('user not found');
     }
     // querySnapshot.forEach((doc) => {
     //   // doc.data() is never undefined for query doc snapshots
@@ -63,9 +63,9 @@ const InvitePeople = () => {
   };
 
   return (
-    <div className='text-center flex justify-center'>
+    <div className='flex justify-center'>
       <button
-        className='bg-amber-300 hover:bg-amber-200 rounded-2xl mx-8-0 p-2 h-11 m-2 w-1/2'
+        className='bg-blue-300 hover:bg-blue-400 text-black px-4 py-2 rounded-2xl h-10 m-2 w-1/2'
         onClick={handleOpen}
       >
         Invite
