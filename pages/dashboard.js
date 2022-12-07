@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { auth, db } from '../firebase';
-import { serverTimestamp, doc, setDoc } from 'firebase/firestore';
+import { serverTimestamp, doc, setDoc, toDate } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser, fetchTasks } from '../Store';
 import MyCalendar from './Calendar';
 
+
 export default function Dashboard() {
   //const [tasks, setTasks] = useState([]);
   const { currentUser } = useAuth();
@@ -19,6 +20,7 @@ export default function Dashboard() {
   const data = router.query;
   const userObject = useSelector((state) => state.loggedInUser);
   const tasks = useSelector((state) => state.userTasks);
+  const notifications = useSelector((state) => state.notifications);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,7 +38,7 @@ export default function Dashboard() {
   return (
     <div>
       {currentUser ? (
-        <div className='text-center text-3xl pt-6 grid grid-auto-fit-sm'>
+        <div className="text-center text-3xl pt-6 grid grid-auto-fit-sm">
           Hello {userObject.firstName}
         </div>
       ) : null}
@@ -75,6 +77,14 @@ export default function Dashboard() {
                     )
                 )
               ) : (
+                {/* <p className="text-black rounded-3xl border border-slate-200 bg-white w-2/6">
+                  No Tasks For Me
+                </p>
+              )}
+            </div>
+            <div className="flex justify-center items-center text-center flex-col bg-amber-100 duration-300 hover:scale-110 rounded-3xl p-2 m-5 text-xs sm:text-base">
+              <header className="text-center underline">Completed</header>
+              */}
                 <div>
                   <Skeleton variant='text' width={410} height={40} />
                   <Skeleton variant='text' width={410} height={40} />
@@ -90,13 +100,17 @@ export default function Dashboard() {
                     task.completed && (
                       <p
                         key={task.id}
-                        className='text-black rounded-3xl border border-slate-200 bg-white w-4/6'
+                        className="text-black rounded-3xl border border-slate-200 bg-white w-4/6"
                       >
                         {task.name}
                       </p>
                     )
                 )
               ) : (
+                {*/ <p className="text-black rounded-3xl border border-slate-200 bg-white w-2/6">
+                  No Tasks For Me
+                </p>
+                */}
                 <div>
                   <Skeleton variant='text' width={410} height={40} />
                   <Skeleton variant='text' width={410} height={40} />
@@ -106,13 +120,23 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <div className='w-11/12 h-3/4 m-auto rounded-3xl relative'>
-          <div className='text-black p-3 mb-10 w-11/12 height rounded-3xl'>
-            <div className='flex justify-center items-center w-full h-full p-10'>
+        <div className="w-11/12 h-3/4 m-auto rounded-3xl relative">
+          <div className="text-black border border-black p-3 mb-10 w-11/12 height rounded-3xl">
+            <div className="flex justify-center items-center w-full h-full p-10">
               <MyCalendar />
             </div>
           </div>
-          <div className='text-black border border-gray-200 p-3 w-11/12 height rounded-3xl absolute bottom-0 left-0 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'></div>
+          <div className="text-black border border-black p-3 w-11/12 height rounded-3xl absolute bottom-0 left-0">
+            <header className="text-center underline">
+              Task Completion Notifications (last 7 days)
+            </header>
+            {notifications.map((note) => (
+              <div key={note.id}>
+                "{note.userName}" in "{note.orgName}" completed your task "
+                {note.name}" on {note.completedAt.toDate().toUTCString()}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
