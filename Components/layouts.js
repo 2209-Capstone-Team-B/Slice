@@ -14,6 +14,7 @@ import AddEcosystem from './AddEcosystem';
 import SeeInvites from './SeeInvites.js';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
 export default function Layout({ children }) {
@@ -28,6 +29,8 @@ export default function Layout({ children }) {
   const userEcosystems = useSelector((state) => state.ecosystems);
   const userInvites = useSelector((state) => state.userInvites);
   const userObject = useSelector((state) => state.loggedInUser);
+  const singleEcosystem = useSelector((state) => state.singleEcosystem);
+  const [ecoId, setEcoId] = useState(singleEcosystem.id);
 
   useEffect(() => {
     const unsubscribeEcos = dispatch(
@@ -44,15 +47,6 @@ export default function Layout({ children }) {
     };
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      router.push('/');
-      await logout();
-    } catch (error) {
-      console.log(`Help I can't get out!`);
-    }
-  };
-
   //test
   const showEcosystems = () => {
     setShowEcos(!showEcos);
@@ -65,7 +59,7 @@ export default function Layout({ children }) {
 
   return (
     <div className='min-h-screen flex flex-col'>
-      <header className='bg-slate-100 drop-shadow-md sticky top-0 h-14 flex justify-center items-center font-semibold uppercase border'>
+      <header className='bg-slate-100 drop-shadow-md sticky top-0 h-14 flex justify-center items-center font-semibold uppercase border z-50'>
         <div className='flex items-center pl-10'>
           <Link href='/'>
             <p>Slice Logo</p>
@@ -105,33 +99,37 @@ export default function Layout({ children }) {
                           key={eco.id}
                           href={`/Ecosystem/${eco.id}`}
                           className='flex'
+                          onClick={() => setEcoId(eco.id)}
                         >
-                          <div className='m-2 my-3 w-screen flex items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
-                            <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
-                              {eco.orgName}
-                            </p>
-                            <MdGroups />
-                          </div>
+                          {eco.id !== ecoId ? (
+                            <div className='bg-slate-200 m-2 my-3 w-screen flex items-center border border-slate-400 duration-300 rounded-3xl hover:scale-110 hover:shadow-md'>
+                              <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
+                                {eco.orgName}
+                              </p>
+                              <MdGroups />
+                            </div>
+                          ) : (
+                            <div className='bg-slate-200 m-2 my-3 w-screen flex items-center border border-red-600 duration-300 rounded-3xl scale-110 shadow-md'>
+                              <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
+                                {eco.orgName}
+                              </p>
+                              <MdGroups />
+                            </div>
+                          )}
                         </Link>
                       ))}
                     <div className='flex'>
-                      <div className='bg-slate-100 m-2 my-3 w-screen flex justify-start items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
+                      <div className='bg-slate-200 m-2 my-3 w-screen flex justify-start items-center border border-slate-400 duration-300 hover:scale-110 rounded-3xl hover:shadow-md'>
                         <AddEcosystem id={user.uid} user={userObject} />
                       </div>
                     </div>
                   </ul>
                 )}
               </nav>
-              {/* <button
-            onClick={handleLogout}
-            className='duration-300 hover:scale-110 hover:font-bold flex mx-auto'
-          >
-            logout
-          </button> */}
               <SeeInvites />
             </aside>
             <button
-              className='text-black p-3 mt-.5 w-1/4 bg-slate-200 bg-opacity-40 duration-300 transition duration-150 ease-in-out hover:scale-110 hover:shadow-lg h-14'
+              className='text-black p-3 mt-.5 bg-slate-200 transition ease-in-out hover:scale-110 hover:shadow-lg flex justify-center items-center h-full w-0.5'
               type='button'
               data-bs-toggle='collapse'
               data-bs-target='#collapseWidth'
@@ -139,13 +137,13 @@ export default function Layout({ children }) {
               aria-controls='collapseWidth'
               onClick={toggle}
             >
-              {'<'}
+              <ArrowLeftIcon />
             </button>
           </div>
         ) : (
           <nav>
             <button
-              className='text-black p-8 mt-.5 w-1/4 bg-slate-200 bg-opacity-40 duration-600 transition duration-150 ease-in-out hover:scale-110 hover:shadow-lg h-14 flex items-center'
+              className='text-black bg-slate-200 mt-.5 w-6 h-full duration-600 transition ease-in-out hover:scale-110 hover:shadow-lg flex items-center justify-center'
               type='button'
               data-bs-toggle='collapse'
               data-bs-target='#collapseWidth'
@@ -153,7 +151,7 @@ export default function Layout({ children }) {
               aria-controls='collapseWidth'
               onClick={toggle}
             >
-              <ArrowDropDownIcon />
+              <ArrowRightIcon />
             </button>
           </nav>
         )}
@@ -162,18 +160,42 @@ export default function Layout({ children }) {
       </div>
     </div>
   );
+
+  function dashboard() {
+    return ecoId ? (
+      <Link
+        key={'dashboard'}
+        href={'/dashboard'}
+        className='flex'
+        onClick={() => {
+          setEcoId('');
+        }}
+      >
+        <div className='bg-slate-200 m-2 my-3 w-screen flex items-center border border-slate-400 duration-300 hover:scale-110 rounded-3xl hover:shadow-md'>
+          <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
+            Dashboard
+          </p>
+          <AiOutlineDashboard />
+        </div>
+      </Link>
+    ) : (
+      <Link
+        key={'dashboard'}
+        href={'/dashboard'}
+        className='flex'
+        onClick={() => {
+          setEcoId('');
+        }}
+      >
+        <div className='bg-slate-200 m-2 my-3 w-screen flex items-center border border-red-600 duration-300 scale-110 rounded-3xl shadow-md'>
+          <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
+            Dashboard
+          </p>
+          <AiOutlineDashboard />
+        </div>
+      </Link>
+    );
+  }
 }
 
 //Dashboard link in the sidebar
-function dashboard() {
-  return (
-    <Link key={'dashboard'} href={'/dashboard'} className='flex'>
-      <div className='bg-slate-100 m-2 my-3 w-screen flex items-center border border-black duration-600 hover:scale-110 rounded-3xl'>
-        <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
-          Dashboard
-        </p>
-        <AiOutlineDashboard />
-      </div>
-    </Link>
-  );
-}

@@ -47,7 +47,7 @@ const SeeInvites = () => {
   return (
     <div className='text-center flex justify-center'>
       <button
-        className='bg-slate-300 hover:bg-slate-200 rounded-2xl mx-8-0 p-2 h-11 m-2 w-1/2'
+        className='bg-blue-300 hover:bg-blue-400 rounded-2xl mx-8-0 p-2 h-11 m-2 w-1/2'
         onClick={handleOpen}
       >
         Invites ({userInvites.length})

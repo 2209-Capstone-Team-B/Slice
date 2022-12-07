@@ -230,13 +230,13 @@ export default function ecosystem() {
       </div>
       <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
         <div className='flex h-1/2 w-full'>
-          <div className='border border-black rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4 overflow-auto'>
+          <div className='border border-gray-200 rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
             <InvitePeople />
             <div className='flex flex-wrap justify-center'>
               {ecosystemMembers.map((member, i) => (
                 <div
                   key={i}
-                  className='border border-black text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto'
+                  className='border border-gray-200 text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto shadow-md'
                 >
                   <p className='text-lg font-bold'>{member.userName}</p>
                   <ol className='list-decimal p-3'>
@@ -265,14 +265,14 @@ export default function ecosystem() {
               ))}
             </div>
           </div>
-          <div className='border border-black rounded-3xl justify-center w-full m-4 overflow-auto'>
+          <div className='border border-gray-200 rounded-3xl justify-center w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
             <AddTask id={id} getTasks={getTasks} />
             <div className='flex flex-wrap justify-center'>
               {unclaimedTasks.length ? (
                 unclaimedTasks.map((task, i) => (
                   <div
                     key={i}
-                    className='border border-black text-center w-3/4 rounded-2xl p-2 m-2'
+                    className='border border-gray-200 text-center w-3/4 rounded-2xl p-2 m-2 shadow-md'
                   >
                     {task.name} due {task.due}
                     <div className='flex justify-around p-3'>
@@ -287,8 +287,8 @@ export default function ecosystem() {
             </div>
           </div>
         </div>
-        <div className='flex h-1/2 w-full'>
-          <div className='flex border border-black rounded-3xl justify-center w-full m-4'>
+        <div className='flex h-1/2 w-full justify-center'>
+          <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] p-7'>
             <BarGraph ecosystemMembers={ecosystemMembers} className='w-full' />
           </div>
         </div>

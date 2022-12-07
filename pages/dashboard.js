@@ -41,7 +41,7 @@ export default function Dashboard() {
         </div>
       ) : null}
       <div className='bg-white h-screen grid lg:grid-cols-2'>
-        <div className='text-black lg:w-11/12 h-3/4 m-auto rounded-3xl flex flex-col'>
+        <div className='text-black lg:w-11/12 h-3/4 m-auto rounded-3xl flex flex-col shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] overflow-auto'>
           <div className='flex w-full h-96 justify-center items-center'>
             {completedTasks.length || incompleteTasks.length ? (
               <Chart
@@ -60,7 +60,7 @@ export default function Dashboard() {
             )}
           </div>
           <div className='mt-auto'>
-            <div className='flex justify-center items-center text-center flex-col bg-slate-100 duration-300 hover:scale-110 rounded-3xl p-2 m-5 text-xs sm:text-base'>
+            <div className='flex justify-center items-center text-center flex-col shadow-md border border-gray-200 rounded-2xl p-2 m-5 text-xs sm:text-base'>
               <header className='text-center underline'>Incomplete</header>
               {tasks.length ? (
                 tasks.map(
@@ -68,7 +68,7 @@ export default function Dashboard() {
                     !task.completed && (
                       <p
                         key={task.id}
-                        className='text-black rounded-3xl border border-slate-200 bg-white w-4/6'
+                        className='text-black rounded-2xl border m-1 border-gray-200 bg-white w-4/6 shadow-sm'
                       >
                         {task.name}
                       </p>
@@ -82,7 +82,7 @@ export default function Dashboard() {
                 </div>
               )}
             </div>
-            <div className='flex justify-center items-center text-center flex-col bg-slate-100 duration-300 hover:scale-110 rounded-3xl p-2 m-5 text-xs sm:text-base'>
+            <div className='flex justify-center items-center text-center flex-col shadow-md border border-gray-200 rounded-3xl p-2 m-5 text-xs sm:text-base'>
               <header className='text-center underline'>Completed</header>
               {tasks.length ? (
                 tasks.map(
@@ -112,9 +112,7 @@ export default function Dashboard() {
               <MyCalendar />
             </div>
           </div>
-          <div className='text-black border border-black p-3 w-11/12 height rounded-3xl absolute bottom-0 left-0'>
-            Div 3
-          </div>
+          <div className='text-black border border-gray-200 p-3 w-11/12 height rounded-3xl absolute bottom-0 left-0 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'></div>
         </div>
       </div>
     </div>
