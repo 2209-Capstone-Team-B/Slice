@@ -77,10 +77,9 @@ export default function Layout({ children }) {
         </div>
       </header>
       <div className='flex flex-col md:flex-row flex-1'>
-        {show ? (
+        {!show ? (
           <div className='flex'>
             <aside
-
               className='bg-amber-100 w-full md:w-60 p-3 inset-0 z-10'
               id='collapseWidth'
             >

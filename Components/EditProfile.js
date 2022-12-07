@@ -28,7 +28,7 @@ export default function EditProfile({ close, userObject }) {
   const handleOpen = () => {
     setOpen(true);
   };
-  const handleClose = async (e, closing) => {
+  const handleCloseSubmit = async (e, closing) => {
     if (closing) {
       setOpen(!open);
       // return;
@@ -38,6 +38,13 @@ export default function EditProfile({ close, userObject }) {
       firstName,
       lastName,
     });
+  };
+
+  const handleClose = async (e, closing) => {
+    if (closing) {
+      setOpen(!open);
+      // return;
+    }
   };
 
   return (
@@ -82,7 +89,7 @@ export default function EditProfile({ close, userObject }) {
               </form>
             </div>
             <button
-              onClick={(e) => handleClose(e, true)}
+              onClick={(e) => handleCloseSubmit(e, true)}
               className='text-green-600 border border-green-600 rounded-3xl px-2 m-4 hover:bg-green-600 hover:text-white'
             >
               Confirm Edit
