@@ -57,7 +57,7 @@ export default function Layout({ children }) {
   return (
     <>
       <div className='min-h-screen flex flex-col'>
-        <header className='bg-amber-100 sticky flex justify-between top-0 h-14 font-semibold uppercase border border-b-black'>
+        <header className='bg-slate-100 sticky flex justify-between top-0 h-14 font-semibold uppercase border border-b-black'>
           <div className='flex items-center pl-10'>
             <p>Slice Logo</p>
           </div>
@@ -68,10 +68,10 @@ export default function Layout({ children }) {
         </header>
         <div className='flex flex-col md:flex-row flex-1'>
           {!show ? (
-            <aside className='bg-amber-100 w-full md:w-60 p-3'>
+            <aside className='bg-slate-100 w-full md:w-60 p-3'>
               <nav>
                 <button
-                  className='text-black border border-black p-3 w-1/4 rounded-3xl bg-amber-100'
+                  className='text-black border border-black p-3 w-1/4 rounded-3xl bg-slate-100'
                   onClick={toggle}
                 >
                   {'<'}
@@ -115,7 +115,7 @@ export default function Layout({ children }) {
             <aside className=''>
               <nav>
                 <button
-                  classname='text-black border border-black p-3 w-1/4 rounded-3xl bg-amber-100'
+                  classname='text-black border border-black p-3 w-1/4 rounded-3xl bg-slate-100'
                   onClick={toggle}
                 >
                   {'>'}
@@ -160,10 +160,10 @@ export default function Account({ children }) {
   };
   return (
     <Menu>
-      <Menu.Button className='flex w-full justify-center items-center h-2/4 rounded-md bg-amber-300 px-4 py-4 text-sm font-medium text-black hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'>
+      <Menu.Button className='flex w-full justify-center items-center h-2/4 rounded-md bg-slate-300 px-4 py-4 text-sm font-medium text-black hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'>
         Account
         <ChevronDownIcon
-          className='ml-2 -mr-1 h-5 w-5 text-black hover:text-amber-300'
+          className='ml-2 -mr-1 h-5 w-5 text-black hover:text-slate-300'
           aria-hidden='true'
         />
       </Menu.Button>
@@ -183,7 +183,7 @@ export default function Account({ children }) {
                 <Link
                   href='/profile'
                   className={`${
-                    active ? 'bg-amber-500 text-white' : 'text-gray-900'
+                    active ? 'bg-slate-500 text-white' : 'text-gray-900'
                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                 >
                   {active ? (
@@ -206,7 +206,7 @@ export default function Account({ children }) {
                 <Link
                   href='/edit'
                   className={`${
-                    active ? 'bg-amber-500 text-white' : 'text-gray-900'
+                    active ? 'bg-slate-500 text-white' : 'text-gray-900'
                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                 >
                   {active ? (
@@ -229,7 +229,7 @@ export default function Account({ children }) {
                 <button
                   onClick={handleLogout}
                   className={`${
-                    active ? 'bg-amber-500 text-white' : 'text-gray-900'
+                    active ? 'bg-slate-500 text-white' : 'text-gray-900'
                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                 >
                   {active ? (
@@ -475,7 +475,7 @@ export default function Layout({ children }) {
 
   return (
     <div className='min-h-screen flex flex-col'>
-      <header className='bg-amber-100 drop-shadow-md sticky top-0 h-14 flex justify-center items-center font-semibold uppercase border'>
+      <header className='bg-slate-100 drop-shadow-md sticky top-0 h-14 flex justify-center items-center font-semibold uppercase border'>
         <div className='flex items-center pl-10'>
           <Link href='/'>
             <p>Slice Logo</p>
@@ -489,7 +489,7 @@ export default function Layout({ children }) {
       <div className='flex flex-col md:flex-row flex-1'>
         <div className='flex'>
           <aside
-            className='bg-amber-100 w-full md:w-60 p-3 collapse collapse-horizontal'
+            className='bg-slate-100 w-full md:w-60 p-3 collapse collapse-horizontal'
             id='collapseWidth'
           >
             <nav>
@@ -522,7 +522,7 @@ export default function Layout({ children }) {
                     </Link>
                   ))}
                   <div className='flex'>
-                    <div className='bg-amber-100 m-2 my-3 w-screen flex justify-start items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
+                    <div className='bg-slate-100 m-2 my-3 w-screen flex justify-start items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
                       <AddEcosystem id={user.uid} />
                     </div>
                   </div>
@@ -538,7 +538,7 @@ export default function Layout({ children }) {
             <SeeInvites />
           </aside>
           <button
-            className='text-black p-3 mt-.5 w-1/4 bg-amber-200 bg-opacity-40 duration-300 transition duration-150 ease-in-out hover:scale-110 hover:shadow-lg h-14'
+            className='text-black p-3 mt-.5 w-1/4 bg-slate-200 bg-opacity-40 duration-300 transition duration-150 ease-in-out hover:scale-110 hover:shadow-lg h-14'
             type='button'
             data-bs-toggle='collapse'
             data-bs-target='#collapseWidth'
@@ -559,7 +559,7 @@ export default function Layout({ children }) {
 function dashboard() {
   return (
     <Link key={'dashboard'} href={'/dashboard'} className='flex'>
-      <div className='bg-amber-100 m-2 my-3 w-screen flex items-center border border-black duration-600 hover:scale-110 rounded-3xl'>
+      <div className='bg-slate-100 m-2 my-3 w-screen flex items-center border border-black duration-600 hover:scale-110 rounded-3xl'>
         <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
           Dashboard
         </p>

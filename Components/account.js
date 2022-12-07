@@ -5,6 +5,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/router';
+import { CgProfile } from 'react-icons/cg';
 
 const MyLink = forwardRef((props, ref) => {
   let { href, children, ...rest } = props;
@@ -29,10 +30,10 @@ export default function Account({ children }) {
   };
   return (
     <Menu>
-      <Menu.Button className='flex w-full justify-center items-center h-2/4 rounded-md bg-amber-300 px-4 py-4 text-sm font-medium text-black hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'>
-        Account
+      <Menu.Button className='flex w-full justify-center items-center h-10 rounded-md bg-emerald-400 px-4 py-4 text-sm font-medium text-black hover:bg-emerald-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'>
+        <CgProfile className='mr-2' /> Account
         <ChevronDownIcon
-          className='ml-2 -mr-1 h-5 w-5 text-black hover:text-amber-300'
+          className='ml-2 -mr-1 h-5 w-5 text-black hover:scale-110'
           aria-hidden='true'
         />
       </Menu.Button>
@@ -52,7 +53,7 @@ export default function Account({ children }) {
                 <Link
                   href='/profile'
                   className={`${
-                    active ? 'bg-amber-500 text-white' : 'text-gray-900'
+                    active ? 'bg-emerald-300' : 'text-gray-900'
                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                 >
                   {active ? (
@@ -74,7 +75,7 @@ export default function Account({ children }) {
               {({ active }) => (
                 <button
                   className={`${
-                    active ? "bg-amber-500 text-white" : "text-gray-900"
+                    active ? "bg-slate-500 text-white" : "text-gray-900"
                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                 >
                   {active ? (
@@ -97,7 +98,7 @@ export default function Account({ children }) {
                 <button
                   onClick={handleLogout}
                   className={`${
-                    active ? 'bg-amber-500 text-white' : 'text-gray-900'
+                    active ? 'bg-emerald-300' : 'text-gray-900'
                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                 >
                   {active ? (
@@ -169,13 +170,13 @@ function LogoutInactiveIcon(props) {
       <path
         d='M4 4H12V12H4V4Z'
         fill='#EDE9FE'
-        stroke='#A78BFA'
+        stroke='#000000'
         strokeWidth='2'
       />
       <path
         d='M8 8H16V16H8V8Z'
         fill='#EDE9FE'
-        stroke='#A78BFA'
+        stroke='#000000'
         strokeWidth='2'
       />
     </svg>
@@ -187,19 +188,14 @@ function LogoutActiveIcon(props) {
     <svg
       {...props}
       viewBox='0 0 20 20'
-      fill='none'
+      fill='#EDE9FE'
       xmlns='http://www.w3.org/2000/svg'
     >
-      <path
-        d='M4 4H12V12H4V4Z'
-        fill='#FFC107'
-        stroke='#C4B5FD'
-        strokeWidth='2'
-      />
+      <path d='M4 4H12V12H4V4Z' fill='' stroke='#000000' strokeWidth='2' />
       <path
         d='M8 8H16V16H8V8Z'
-        fill='#FFC107'
-        stroke='#C4B5FD'
+        fill='#EDE9FE'
+        stroke='#000000'
         strokeWidth='2'
       />
     </svg>
@@ -220,7 +216,7 @@ function ProfileInactiveIcon(props) {
         width='10'
         height='8'
         fill='#EDE9FE'
-        stroke='#A78BFA'
+        stroke='#000000'
         strokeWidth='2'
       />
       <rect
@@ -229,7 +225,7 @@ function ProfileInactiveIcon(props) {
         width='12'
         height='4'
         fill='#EDE9FE'
-        stroke='#A78BFA'
+        stroke='#000000'
         strokeWidth='2'
       />
       <path d='M8 12H12' stroke='#A78BFA' strokeWidth='2' />
@@ -250,8 +246,8 @@ function ProfileActiveIcon(props) {
         y='8'
         width='10'
         height='8'
-        fill='#FFC107'
-        stroke='#C4B5FD'
+        fill='#EDE9FE'
+        stroke='#000000'
         strokeWidth='2'
       />
       <rect
@@ -259,8 +255,8 @@ function ProfileActiveIcon(props) {
         y='4'
         width='12'
         height='4'
-        fill='#FFC107'
-        stroke='#C4B5FD'
+        fill='#EDE9FE'
+        stroke='#000000'
         strokeWidth='2'
       />
       <path d='M8 12H12' stroke='#A78BFA' strokeWidth='2' />
