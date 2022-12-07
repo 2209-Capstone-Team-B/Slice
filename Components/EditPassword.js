@@ -9,6 +9,7 @@ import {
   updatePassword,
   getAuth,
   reauthenticateWithCredential,
+  EmailAuthProvider,
 } from 'firebase/auth';
 
 const auth = getAuth();
@@ -30,6 +31,7 @@ const style = {
 
 function promptForCredentials() {
   let signIn = prompt('Enter old password');
+  return signIn;
 }
 
 function EditModal({ close, passUser }) {
@@ -38,8 +40,11 @@ function EditModal({ close, passUser }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     // TODO(you): prompt the user to re-provide their sign-in credentials
-    const credential = promptForCredentials();
-
+    const credential = EmailAuthProvider.credential(
+      passUser.email,
+      promptForCredentials()
+    );
+    console.log('credintial >>>', credential);
     reauthenticateWithCredential(passUser, credential)
       .then(() => {
         // User re-authenticated.
