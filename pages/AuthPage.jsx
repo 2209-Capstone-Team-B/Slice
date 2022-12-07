@@ -123,9 +123,6 @@ const AuthPage = () => {
               Sign Up
             </button>
           </Link>
-          <div>
-            <Link href="/passwordReset">Forgot your password?</Link>
-          </div>
         </div>
         {signIn ? (
           <div>
@@ -167,6 +164,12 @@ const AuthPage = () => {
                 />
               </button>
             </div>
+            <Link
+              href="/passwordReset"
+              className="flex justify-center text-gray-300 hover:text-green-200 focus:text-green-200 active:text-green-800 duration-200 transition ease-in-out"
+            >
+              Forgot your password?
+            </Link>
             {error && (
               <div className="w-full max-w-[40ch] border-red-300 text-red-300 py-2 text-center border border-solid mt-5">
                 {error}
