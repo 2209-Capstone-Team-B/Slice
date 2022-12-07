@@ -238,19 +238,10 @@ export default function ecosystem() {
                       ) {
                         return (
                           <div className='flex' key={idx}>
-                            {task.assignedTo === user?.uid ? (
+                            {task.assignedTo === user?.uid && (
                               <CompleteTask
                                 task={task}
                                 toggle={toggleCompletedTask}
-                              />
-                            ) : (
-                              <CheckBoxOutlineBlankIcon
-                                onClick={() =>
-                                  alert(
-                                    'You cannot mark a task that is not assigned to you!'
-                                  )
-                                }
-                                className='flex justify-end mr-3'
                               />
                             )}
                             <li key={idx} className='text-left p-1 ml-2'>
