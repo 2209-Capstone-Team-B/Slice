@@ -29,10 +29,10 @@ export default function Account({ children }) {
   };
   return (
     <Menu>
-      <Menu.Button className='flex w-full justify-center items-center h-2/4 rounded-md bg-amber-300 px-4 py-4 text-sm font-medium text-black hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'>
+      <Menu.Button className='flex w-full justify-center items-center h-2/4 rounded-md bg-slate-300 px-4 py-4 text-sm font-medium text-black hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'>
         Account
         <ChevronDownIcon
-          className='ml-2 -mr-1 h-5 w-5 text-black hover:text-amber-300'
+          className='ml-2 -mr-1 h-5 w-5 text-black hover:text-slate-300'
           aria-hidden='true'
         />
       </Menu.Button>
@@ -52,7 +52,7 @@ export default function Account({ children }) {
                 <Link
                   href='/profile'
                   className={`${
-                    active ? 'bg-amber-500 text-white' : 'text-gray-900'
+                    active ? 'bg-slate-500 text-white' : 'text-gray-900'
                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                 >
                   {active ? (
@@ -74,7 +74,7 @@ export default function Account({ children }) {
               {({ active }) => (
                 <button
                   className={`${
-                    active ? "bg-amber-500 text-white" : "text-gray-900"
+                    active ? "bg-slate-500 text-white" : "text-gray-900"
                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                 >
                   {active ? (
@@ -97,7 +97,7 @@ export default function Account({ children }) {
                 <button
                   onClick={handleLogout}
                   className={`${
-                    active ? 'bg-amber-500 text-white' : 'text-gray-900'
+                    active ? 'bg-slate-500 text-white' : 'text-gray-900'
                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                 >
                   {active ? (
