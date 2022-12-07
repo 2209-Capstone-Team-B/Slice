@@ -26,17 +26,17 @@ const EditDescription = ({ curDescription, orgId, curEcoName }) => {
     }
   };
 
-  const updateInfo = async () => {
-    setSave(true);
-
+  const updateInfo = async (e) => {
+    e.preventDefault();
     const docRef = doc(db, 'Ecosystem', orgId);
 
     await updateDoc(docRef, {
       description,
       orgName: ecosystemName,
     });
+    setSave(true);
   };
-
+  console.log(open);
   return (
     <div className='p-1'>
       <button
@@ -80,7 +80,11 @@ const EditDescription = ({ curDescription, orgId, curEcoName }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={updateInfo}>
+          <Button
+            onClick={(e) => {
+              updateInfo(e);
+            }}
+          >
             {saved ? <Alert severity='success'>Saved</Alert> : 'Save'}
           </Button>
         </DialogActions>
