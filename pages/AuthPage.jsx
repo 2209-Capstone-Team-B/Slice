@@ -93,26 +93,6 @@ const AuthPage = () => {
     await updateDb().catch(console.error);
   };
 
-  // const saveToDbGoogle = async () => {
-  //   const user = myauth.currentUser;
-  //   console.log("GOOGLE", user);
-
-  //   const updateDb = async () => {
-  //     let names = user.displayName.split(" ");
-  //     await setDoc(
-  //       doc(db, "Users", user.uid),
-  //       {
-  //         email: user.email,
-  //         firstName: names[0],
-  //         lastName: names[1],
-  //         created: serverTimestamp(),
-  //       },
-  //       { merge: true }
-  //     );
-  //   };
-  //   await updateDb().catch(console.error);
-  // };
-
   return (
     <div className="flex items-center justify-center sm:h-screen mb-0 bg-center bg-cover custom-img border">
       <div className="absolute top-0 right-0 bottom-0 left-0 bg-black/70 z-[2]" />
@@ -184,6 +164,12 @@ const AuthPage = () => {
                 />
               </button>
             </div>
+            <Link
+              href="/passwordReset"
+              className="flex justify-center text-gray-300 hover:text-green-200 focus:text-green-200 active:text-green-800 duration-200 transition ease-in-out"
+            >
+              Forgot your password?
+            </Link>
             {error && (
               <div className="w-full max-w-[40ch] border-red-300 text-red-300 py-2 text-center border border-solid mt-5">
                 {error}
@@ -246,6 +232,7 @@ const AuthPage = () => {
               >
                 <Image
                   src="/btn_google_signin_light_pressed_web.png"
+                  alt="Loading"
                   width="200"
                   height="200"
                   unoptimized

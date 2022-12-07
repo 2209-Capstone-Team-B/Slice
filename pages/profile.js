@@ -48,7 +48,7 @@ export default function Dashboard() {
       ) : null}
       <div className='bg-white h-screen flex justify-start items-stretch'>
         <div className='text-black p-3 w-5/12 h-3/4 m-auto rounded-3xl flex flex-col overflow-auto'>
-          <div className='text-black border border-black p-3 w-4/12 height rounded-3xl absolute bg-amber-100'>
+          <div className='text-black border border-black p-3 w-4/12 height rounded-3xl absolute bg-slate-100'>
             <div className='flex w-full h-96 flex-col space-y-7 items-center absolute'>
               <div className='user-details'>
                 <h4>First Name: </h4>

@@ -31,14 +31,6 @@ export default function AddTask({ id, getTasks }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleChange = (e) => {
-    if (e.target.name === due) {
-      setDue(e.target.value);
-    } else {
-      setName(e.target.value);
-    }
-  };
-
   const handleSubmit = async (e) => {
     console.log(user.uid);
     e.preventDefault();
@@ -61,7 +53,7 @@ export default function AddTask({ id, getTasks }) {
     <div className='flex justify-center'>
       <button
         onClick={handleOpen}
-        className='bg-amber-300 hover:bg-amber-200 text-black px-4 py-2 rounded-2xl h-1/6 m-2 w-1/2'
+        className='bg-blue-300 hover:bg-blue-400 text-black px-4 py-2 rounded-2xl h-10 m-2 w-1/2'
       >
         Add Task
       </button>
@@ -95,18 +87,18 @@ export default function AddTask({ id, getTasks }) {
               name='name'
               placeholder='Enter a name for your task...'
               value={name}
-              onChange={handleChange}
+              onChange={(e) => setName(e.target.value)}
             ></input>
             <label className='float-left w-12 text-center'>Due</label>
             <input
               className='block border-2 m-auto my-4 w-5/6 border-black text-center rounded-xl'
               type='date'
               value={due}
-              onChange={handleChange}
+              onChange={(e) => setDue(e.target.value)}
             ></input>
             <button
               type='submit'
-              className='bg-amber-300 hover:bg-amber-200 text-black px-4 rounded-md h-1/6 items-center m-auto block'
+              className='bg-slate-300 hover:bg-slate-200 text-black px-4 rounded-md h-1/6 items-center m-auto block'
             >
               Add Task
             </button>
