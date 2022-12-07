@@ -10,6 +10,7 @@ import Skeleton from '@mui/material/Skeleton';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser, fetchTasks } from '../Store';
 import MyCalendar from './Calendar';
+import DialogContentText from '@mui/material/DialogContentText';
 
 export default function Dashboard() {
   //const [tasks, setTasks] = useState([]);
@@ -119,12 +120,20 @@ export default function Dashboard() {
             <header className='text-center underline'>
               Task Completion Notifications (last 7 days)
             </header>
-            {notifications.map((note) => (
-              <div key={note.id}>
-                "{note.userName}" in "{note.orgName}" completed your task "
-                {note.name}" on {note.completedAt.toDate().toUTCString()}
-              </div>
-            ))}
+            <ul className='list-decimal p-3'>
+              {notifications.length > 0 ? (
+                notifications.map((note) => (
+                  <li key={note.id}>
+                    "{note.userName}" in "{note.orgName}" completed your task "
+                    {note.name}" on {note.completedAt.toDate().toUTCString()}
+                  </li>
+                ))
+              ) : (
+                <DialogContentText className='text-center'>
+                  No Notifications
+                </DialogContentText>
+              )}
+            </ul>
           </div>
         </div>
       </div>

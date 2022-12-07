@@ -6,7 +6,7 @@ import {
   fetchEcosystem,
   fetchEcosystemTasks,
   fetchEcosystemMembers,
-  fetchTaskHistory
+  fetchTaskHistory,
 } from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
 import AddTask from '../../Components/AddTask';
@@ -30,7 +30,7 @@ import {
   getDocs,
   updateDoc,
   serverTimestamp,
-  toDate
+  toDate,
 } from 'firebase/firestore';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -49,8 +49,12 @@ export default function ecosystem() {
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useDispatch();
-  const { singleEcosystem, singleEcosystemTasks, ecosystemMembers, singleTaskHistory } =
-    useSelector((state) => state);
+  const {
+    singleEcosystem,
+    singleEcosystemTasks,
+    ecosystemMembers,
+    singleTaskHistory,
+  } = useSelector((state) => state);
 
   const unclaimedTasks = singleEcosystemTasks.filter(
     (task) => task.assignedTo === null
@@ -66,14 +70,14 @@ export default function ecosystem() {
       where('userId', '==', user.uid)
     );
     const docSnap = await getDocs(q);
-    const currentName = docSnap.docs[0].data().userName
+    const currentName = docSnap.docs[0].data().userName;
 
     await setDoc(
       doc(db, 'Tasks', id),
       {
         completed: !status,
         completedAt: serverTimestamp(),
-        userName: currentName
+        userName: currentName,
       },
       { merge: true }
     );
@@ -95,14 +99,15 @@ export default function ecosystem() {
       });
     }
     //create notification
-    const currentTaskDoc = await getDoc(doc(db, 'Tasks', id))
-    const TaskObj = currentTaskDoc.data()
+    const currentTaskDoc = await getDoc(doc(db, 'Tasks', id));
+    const TaskObj = currentTaskDoc.data();
 
-    if (TaskObj.assignedTo !== TaskObj.owner){
-      await setDoc(doc(db, "Notifications", id), {
-        ...TaskObj, orgName: singleEcosystem.orgName, userName: currentName
+    if (TaskObj.assignedTo !== TaskObj.owner) {
+      await setDoc(doc(db, 'Notifications', id), {
+        ...TaskObj,
+        orgName: singleEcosystem.orgName,
+        userName: currentName,
       });
-
     }
 
     setOpen(false);
@@ -112,12 +117,12 @@ export default function ecosystem() {
     const unsubscribeEcosystemMembers = dispatch(fetchEcosystemMembers(id));
     const unsubscribeEcosystem = dispatch(fetchEcosystem(id));
     const unsubscribeEcosystemTasks = dispatch(fetchEcosystemTasks(id));
-    const unsubscribeTaskHistory = dispatch(fetchTaskHistory(id))
+    const unsubscribeTaskHistory = dispatch(fetchTaskHistory(id));
     return () => {
       unsubscribeEcosystemMembers();
       unsubscribeEcosystemTasks();
       unsubscribeEcosystem();
-      unsubscribeTaskHistory()
+      unsubscribeTaskHistory();
     };
   }, [id]);
 
@@ -207,7 +212,7 @@ export default function ecosystem() {
                     label={`Members (${ecosystemMembers.length})`}
                     {...a11yProps(1)}
                   />
-                  <Tab label="Task History" {...a11yProps(2)} />
+                  <Tab label='Task History' {...a11yProps(2)} />
                 </Tabs>
               </Box>
               <TabPanel value={value} index={0} className='p-1'>
@@ -215,12 +220,12 @@ export default function ecosystem() {
               </TabPanel>
               <TabPanel value={value} index={0} className='p-1'>
                 Description: {singleEcosystem.description}
+                <EditDescription
+                  curDescription={singleEcosystem.description}
+                  orgId={singleEcosystem.id}
+                  curEcoName={singleEcosystem.orgName}
+                />
               </TabPanel>
-              <EditDescription
-                curDescription={singleEcosystem.description}
-                orgId={singleEcosystem.id}
-                curEcoName={singleEcosystem.orgName}
-              />
               <TabPanel value={value} index={1}>
                 <Typography
                   id='modal-modal-title'
@@ -236,7 +241,7 @@ export default function ecosystem() {
                 ))}
               </TabPanel>
               <TabPanel value={value} index={2}>
-              <Typography
+                <Typography
                   id='modal-modal-title'
                   component='div'
                   className='text-center underline text-lg'
@@ -244,11 +249,12 @@ export default function ecosystem() {
                   Completed Task History (Last 30 Days)
                 </Typography>
                 {singleTaskHistory.map((task) => (
-              <div key={task.id}>
-                "{task.userName}" completed "{task.name}" on {task.completedAt.toDate().toUTCString()}
-              </div>
-            ))}
-      </TabPanel>
+                  <div key={task.id}>
+                    "{task.userName}" completed "{task.name}" on{' '}
+                    {task.completedAt.toDate().toUTCString()}
+                  </div>
+                ))}
+              </TabPanel>
             </Box>
             <CloseIcon
               className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
