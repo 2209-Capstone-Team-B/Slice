@@ -5,8 +5,8 @@ import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import { db } from '../firebase';
 import { setDoc, doc } from 'firebase/firestore';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBox from '@mui/icons-material/CheckBox';
+import { BsCheckLg } from 'react-icons/bs';
+import { FaUndoAlt } from 'react-icons/fa';
 
 const style = {
   position: 'absolute',
@@ -37,17 +37,24 @@ export default function CompleteTask({ task, toggle }) {
     setOpen(false);
   };
 
+  const handleUnassign = () => {
+    setDoc(doc(db, 'Tasks', task.id), { assignedTo: null }, { merge: true });
+    setOpen(false);
+  };
+
   return (
     <div>
       <div className='flex justify-around'>
-        {task.completed ? (
-          <CheckBox className='flex justify-end mr-3' onClick={handleOpen} />
-        ) : (
-          <CheckBoxOutlineBlankIcon
-            className='flex justify-end mr-3'
+        <div className='flex items-center mr-5 pt-2 space-x-3'>
+          <FaUndoAlt
+            className='hover:text-blue-300 text-blue-500'
+            onClick={() => handleUnassign()}
+          />
+          <BsCheckLg
+            className='hover:text-green-300 text-green-500'
             onClick={handleOpen}
           />
-        )}
+        </div>
       </div>
       <Modal
         open={open}
