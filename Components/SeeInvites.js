@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import DialogTitle from '@mui/material/DialogTitle';
 import { setMember, deleteInvite } from '../Store';
+import DialogContentText from '@mui/material/DialogContentText';
 
 const style = {
   position: 'absolute',
@@ -29,7 +31,11 @@ const SeeInvites = () => {
   const userObject = useSelector((state) => state.loggedInUser);
 
   const handleOpen = () => {
-    setOpen(!open);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const onAcceptHandler = (e, userId, ecoId, userName, inviteId) => {
@@ -52,7 +58,6 @@ const SeeInvites = () => {
       >
         Invites ({userInvites.length})
       </button>
-
       <Modal
         open={open}
         onClose={handleOpen}
@@ -60,7 +65,7 @@ const SeeInvites = () => {
         aria-describedby='modal-modal-description'
       >
         <Box sx={style}>
-          <Typography
+          <DialogTitle
             id='modal-modal-title'
             component='div'
             className='text-center underline'
@@ -68,15 +73,15 @@ const SeeInvites = () => {
             Your Invites
             <CloseIcon
               className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
-              onClick={handleOpen}
+              onClick={handleClose}
             />
-          </Typography>
+          </DialogTitle>
           {userInvites.length ? (
             userInvites.map((invite) => (
               <div key={invite.id} className='flex justify-between'>
                 {invite.orgName}
                 <span>
-                  <button
+                  <Button
                     className='p-3'
                     onClick={(e) => {
                       onAcceptHandler(
@@ -89,19 +94,21 @@ const SeeInvites = () => {
                     }}
                   >
                     Accept
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={(e) => {
                       onDeclineHandler(e, invite.id);
                     }}
                   >
                     Decline
-                  </button>
+                  </Button>
                 </span>
               </div>
             ))
           ) : (
-            <h1 className='text-center mt-6'>You have no invites...</h1>
+            <DialogContentText className='text-center mt-6'>
+              You have no invites...
+            </DialogContentText>
           )}
         </Box>
       </Modal>

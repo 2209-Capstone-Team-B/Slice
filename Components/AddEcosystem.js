@@ -5,6 +5,8 @@ import Modal from '@mui/material/Modal';
 import axios from 'axios';
 import { AiOutlineDashboard, AiOutlinePlus } from 'react-icons/ai';
 import CloseIcon from '@mui/icons-material/Close';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
 
 const style = {
   position: 'absolute',
@@ -12,7 +14,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 600,
-  height: 450,
+  height: 490,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -29,8 +31,15 @@ export default function AddEcosystem({ id, user }) {
     `${user.firstName}-${user.lastName}`
   );
   const [type, setType] = React.useState('');
+  const [added, setAdded] = React.useState(false);
+  const [error, setError] = React.useState(false);
+
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setAdded(false);
+    setError(false);
+  };
 
   // const handleChange = (e) => {
   //   if (e.target.name === type) {
@@ -43,18 +52,23 @@ export default function AddEcosystem({ id, user }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post('/api/Ecosystem', {
-      id,
-      name,
-      type,
-      userName,
-      description,
-    });
-    setName('');
-    setUsername('');
-    setType('Bulletin');
-    setDescription('');
-    handleClose();
+    if (name.length > 0 && description.length > 0) {
+      await axios.post('/api/Ecosystem', {
+        id,
+        name,
+        type,
+        userName,
+        description,
+      });
+      setName('');
+      setUsername('');
+      setType('Bulletin');
+      setDescription('');
+      setAdded(true);
+      setError(false);
+    } else {
+      setError(true);
+    }
   };
 
   return (
@@ -128,12 +142,17 @@ export default function AddEcosystem({ id, user }) {
               <option name='Competition'>Competition</option>
               <option name='Event'>Event</option>
             </select>
-            <button
+            <Button
               type='submit'
               className='bg-slate-300 hover:bg-slate-200 text-black px-4 rounded-md h-1/6 items-center m-auto block'
             >
-              Add Ecosystem
-            </button>
+              {added ? (
+                <Alert severity='success'>Added</Alert>
+              ) : (
+                'Add Ecosystem'
+              )}
+            </Button>
+            {error && <Alert severity='error'>Dont leave empty</Alert>}
           </form>
         </Box>
       </Modal>
