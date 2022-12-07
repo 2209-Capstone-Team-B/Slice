@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { fetchEcosystems, fetchInvites, fetchUser } from '../Store';
+import { fetchEcosystems, fetchInvites, fetchUser, fetchNotifications } from '../Store';
 import { AiOutlineDashboard, AiOutlinePlus } from 'react-icons/ai';
 import { MdGroups } from 'react-icons/md';
 import Account from './account';
@@ -37,10 +37,12 @@ export default function Layout({ children }) {
       fetchInvites(user?.uid || userObject.id)
     );
     const unsubscribeUser = dispatch(fetchUser(user?.uid || userObject.id));
+    const unsubscribeNotifications = dispatch(fetchNotifications(user?.uid || userObject.id))
     return () => {
       unsubscribeEcos();
       unsubscribeInvites();
       unsubscribeUser();
+      unsubscribeNotifications()
     };
   }, []);
 

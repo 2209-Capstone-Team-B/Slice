@@ -6,6 +6,7 @@ import {
   fetchEcosystem,
   fetchEcosystemTasks,
   fetchEcosystemMembers,
+  fetchTaskHistory
 } from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
 import AddTask from '../../Components/AddTask';
@@ -25,9 +26,11 @@ import {
   query,
   collection,
   where,
+  getDoc,
   getDocs,
   updateDoc,
   serverTimestamp,
+  toDate
 } from 'firebase/firestore';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -45,7 +48,7 @@ export default function ecosystem() {
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useDispatch();
-  const { singleEcosystem, singleEcosystemTasks, ecosystemMembers } =
+  const { singleEcosystem, singleEcosystemTasks, ecosystemMembers, singleTaskHistory } =
     useSelector((state) => state);
 
   const unclaimedTasks = singleEcosystemTasks.filter(
@@ -55,15 +58,6 @@ export default function ecosystem() {
   const getTasks = async (id) => await dispatch(fetchEcosystemTasks(id));
 
   const toggleCompletedTask = async (id, status) => {
-    setDoc(
-      doc(db, 'Tasks', id),
-      {
-        completed: !status,
-        completedAt: serverTimestamp(),
-      },
-      { merge: true }
-    );
-
     //Build a query to find the right ecosystemMember
     const q = query(
       collection(db, 'EcosystemMembers'),
@@ -71,6 +65,17 @@ export default function ecosystem() {
       where('userId', '==', user.uid)
     );
     const docSnap = await getDocs(q);
+    const currentName = docSnap.docs[0].data().userName
+
+    await setDoc(
+      doc(db, 'Tasks', id),
+      {
+        completed: !status,
+        completedAt: serverTimestamp(),
+        userName: currentName
+      },
+      { merge: true }
+    );
     // docSnap.forEach((ecoMem) => console.log(ecoMem.ref));
 
     if (!status) {
@@ -88,6 +93,17 @@ export default function ecosystem() {
         });
       });
     }
+    //create notification
+    const currentTaskDoc = await getDoc(doc(db, 'Tasks', id))
+    const TaskObj = currentTaskDoc.data()
+
+    if (TaskObj.assignedTo !== TaskObj.owner){
+      await setDoc(doc(db, "Notifications", id), {
+        ...TaskObj, orgName: singleEcosystem.orgName, userName: currentName
+      });
+
+    }
+
     setOpen(false);
   };
 
@@ -95,10 +111,12 @@ export default function ecosystem() {
     const unsubscribeEcosystemMembers = dispatch(fetchEcosystemMembers(id));
     const unsubscribeEcosystem = dispatch(fetchEcosystem(id));
     const unsubscribeEcosystemTasks = dispatch(fetchEcosystemTasks(id));
+    const unsubscribeTaskHistory = dispatch(fetchTaskHistory(id))
     return () => {
       unsubscribeEcosystemMembers();
       unsubscribeEcosystemTasks();
       unsubscribeEcosystem();
+      unsubscribeTaskHistory()
     };
   }, [id]);
 
@@ -115,8 +133,8 @@ export default function ecosystem() {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 600,
-    height: 300,
+    width: 800,
+    height: 600,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -187,7 +205,7 @@ export default function ecosystem() {
                     label={`Members (${ecosystemMembers.length})`}
                     {...a11yProps(1)}
                   />
-                  {/* <Tab label="Item Three" {...a11yProps(2)} /> */}
+                  <Tab label="Task History" {...a11yProps(2)} />
                 </Tabs>
               </Box>
               <TabPanel value={value} index={0}>
@@ -208,9 +226,20 @@ export default function ecosystem() {
                   </div>
                 ))}
               </TabPanel>
-              {/* <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel> */}
+              <TabPanel value={value} index={2}>
+              <Typography
+                  id='modal-modal-title'
+                  component='div'
+                  className='text-center underline text-lg'
+                >
+                  Completed Task History (Last 30 Days)
+                </Typography>
+                {singleTaskHistory.map((task) => (
+              <div key={task.id}>
+                "{task.userName}" completed "{task.name}" on {task.completedAt.toDate().toUTCString()}
+              </div>
+            ))}
+      </TabPanel>
             </Box>
             <CloseIcon
               className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
@@ -267,7 +296,7 @@ export default function ecosystem() {
                   >
                     {task.name} due {task.due}
                     <div className='flex justify-around p-3'>
-                      {task.owner === user.uid && <EditTask task={task} />}
+                      {task.owner === user?.uid && <EditTask task={task} />}
                       <ClaimTask task={task} user={user} />
                     </div>
                   </div>
