@@ -61,7 +61,7 @@ const InvitePeople = () => {
   return (
     <div className='text-center flex justify-center'>
       <button
-        className='bg-amber-300 hover:bg-amber-200 rounded-2xl mx-8-0 p-2 h-11 m-2 w-1/2'
+        className='bg-slate-300 hover:bg-slate-200 rounded-2xl mx-8-0 p-2 h-11 m-2 w-1/2'
         onClick={handleOpen}
       >
         Invite
@@ -96,7 +96,7 @@ const InvitePeople = () => {
             ></input>
             <button
               type='submit'
-              className='bg-amber-300 hover:bg-amber-200 text-black px-4 rounded-md h-1/6 items-center m-auto block'
+              className='bg-slate-300 hover:bg-slate-200 text-black px-4 rounded-md h-1/6 items-center m-auto block'
               onClick={handleSubmit}
             >
               Add Person

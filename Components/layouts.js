@@ -65,7 +65,7 @@ export default function Layout({ children }) {
 
   return (
     <div className='min-h-screen flex flex-col'>
-      <header className='bg-amber-100 drop-shadow-md sticky top-0 h-14 flex justify-center items-center font-semibold uppercase border'>
+      <header className='bg-slate-100 drop-shadow-md sticky top-0 h-14 flex justify-center items-center font-semibold uppercase border'>
         <div className='flex items-center pl-10'>
           <Link href='/'>
             <p>Slice Logo</p>
@@ -80,8 +80,7 @@ export default function Layout({ children }) {
         {show ? (
           <div className='flex'>
             <aside
-
-              className='bg-amber-100 w-full md:w-60 p-3 inset-0 z-10'
+              className='bg-slate-100 w-full md:w-60 p-3 inset-0 z-10'
               id='collapseWidth'
             >
               <nav>
@@ -116,7 +115,7 @@ export default function Layout({ children }) {
                         </Link>
                       ))}
                     <div className='flex'>
-                      <div className='bg-amber-100 m-2 my-3 w-screen flex justify-start items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
+                      <div className='bg-slate-100 m-2 my-3 w-screen flex justify-start items-center border border-black duration-300 hover:scale-110 rounded-3xl'>
                         <AddEcosystem id={user.uid} user={userObject} />
                       </div>
                     </div>
@@ -132,7 +131,7 @@ export default function Layout({ children }) {
               <SeeInvites />
             </aside>
             <button
-              className='text-black p-3 mt-.5 w-1/4 bg-amber-200 bg-opacity-40 duration-300 transition duration-150 ease-in-out hover:scale-110 hover:shadow-lg h-14'
+              className='text-black p-3 mt-.5 w-1/4 bg-slate-200 bg-opacity-40 duration-300 transition duration-150 ease-in-out hover:scale-110 hover:shadow-lg h-14'
               type='button'
               data-bs-toggle='collapse'
               data-bs-target='#collapseWidth'
@@ -146,7 +145,7 @@ export default function Layout({ children }) {
         ) : (
           <nav>
             <button
-              className='text-black p-8 mt-.5 w-1/4 bg-amber-200 bg-opacity-40 duration-600 transition duration-150 ease-in-out hover:scale-110 hover:shadow-lg h-14 flex items-center'
+              className='text-black p-8 mt-.5 w-1/4 bg-slate-200 bg-opacity-40 duration-600 transition duration-150 ease-in-out hover:scale-110 hover:shadow-lg h-14 flex items-center'
               type='button'
               data-bs-toggle='collapse'
               data-bs-target='#collapseWidth'
@@ -169,7 +168,7 @@ export default function Layout({ children }) {
 function dashboard() {
   return (
     <Link key={'dashboard'} href={'/dashboard'} className='flex'>
-      <div className='bg-amber-100 m-2 my-3 w-screen flex items-center border border-black duration-600 hover:scale-110 rounded-3xl'>
+      <div className='bg-slate-100 m-2 my-3 w-screen flex items-center border border-black duration-600 hover:scale-110 rounded-3xl'>
         <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
           Dashboard
         </p>

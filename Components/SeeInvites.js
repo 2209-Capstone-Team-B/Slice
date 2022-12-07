@@ -47,7 +47,7 @@ const SeeInvites = () => {
   return (
     <div className='text-center flex justify-center'>
       <button
-        className='bg-amber-300 hover:bg-amber-200 rounded-2xl mx-8-0 p-2 h-11 m-2 w-1/2'
+        className='bg-slate-300 hover:bg-slate-200 rounded-2xl mx-8-0 p-2 h-11 m-2 w-1/2'
         onClick={handleOpen}
       >
         Invites ({userInvites.length})
@@ -101,9 +101,7 @@ const SeeInvites = () => {
               </div>
             ))
           ) : (
-            <h1 className='text-center mt-6'>
-              You have no invites...
-            </h1>
+            <h1 className='text-center mt-6'>You have no invites...</h1>
           )}
         </Box>
       </Modal>

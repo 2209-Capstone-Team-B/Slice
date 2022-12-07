@@ -7,7 +7,7 @@ import { db } from '../firebase';
 import { setDoc, doc, deleteDoc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import {leaveMember} from '../Store'
+import { leaveMember } from '../Store';
 
 const style = {
   position: 'absolute',
@@ -23,22 +23,21 @@ const style = {
   alignItems: 'center',
 };
 
-export default function LeaveOrg({ecosystemId}) {
+export default function LeaveOrg({ ecosystemId }) {
   const [open, setOpen] = React.useState(false);
-  const { singleEcosystem, loggedInUser} =
-    useSelector((state) => state)
+  const { singleEcosystem, loggedInUser } = useSelector((state) => state);
   const router = useRouter();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const handleOpen = () => {
     setOpen(true);
   };
-  const handleClose = async (e,closing) => {
+  const handleClose = async (e, closing) => {
     if (closing) {
       setOpen(false);
       return;
     }
-    router.push('/')
-    dispatch(leaveMember(loggedInUser.id, ecosystemId))
+    router.push('/');
+    dispatch(leaveMember(loggedInUser.id, ecosystemId));
 
     setOpen(false);
   };
@@ -47,7 +46,7 @@ export default function LeaveOrg({ecosystemId}) {
     <React.Fragment>
       <button
         onClick={handleOpen}
-        className='text-red-600 border border-red-600 rounded-3xl p-2 w-1/3 hover:bg-red-600 hover:text-white'
+        className='text-red-600 border border-red-600 rounded-3xl p-1 text-sm hover:bg-red-600 hover:text-white'
       >
         Leave Ecosystem
       </button>
@@ -68,7 +67,8 @@ export default function LeaveOrg({ecosystemId}) {
         >
           <div className='w-full flex flex-col items-center pt-4'>
             <h2 id='child-modal-title' className='p-2'>
-              Leaving will delete any/all uncompleted tasks you have created (even if currently claimed by another)
+              Leaving will delete any/all uncompleted tasks you have created
+              (even if currently claimed by another)
               <CloseIcon
                 className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
                 onClick={(e) => handleClose(e, true)}
@@ -78,7 +78,6 @@ export default function LeaveOrg({ecosystemId}) {
             <button
               onClick={() => {
                 handleClose();
-
               }}
               className='text-red-600 border border-red-600 rounded-3xl p-2 w-3/4 hover:bg-red-600 hover:text-white'
             >
@@ -89,4 +88,4 @@ export default function LeaveOrg({ecosystemId}) {
       </Modal>
     </React.Fragment>
   );
-            }
+}
