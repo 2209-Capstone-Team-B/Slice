@@ -220,12 +220,14 @@ export default function ecosystem() {
               </TabPanel>
               <TabPanel value={value} index={0} className='p-1'>
                 Description: {singleEcosystem.description}
+              </TabPanel>
+              {value === 0 && (
                 <EditDescription
                   curDescription={singleEcosystem.description}
                   orgId={singleEcosystem.id}
                   curEcoName={singleEcosystem.orgName}
                 />
-              </TabPanel>
+              )}
               <TabPanel value={value} index={1}>
                 <Typography
                   id='modal-modal-title'
