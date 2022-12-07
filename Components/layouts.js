@@ -5,7 +5,12 @@ import { useAuth } from '../context/AuthContext';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { fetchEcosystems, fetchInvites, fetchUser, fetchNotifications } from '../Store';
+import {
+  fetchEcosystems,
+  fetchInvites,
+  fetchUser,
+  fetchNotifications,
+} from '../Store';
 import { AiOutlineDashboard, AiOutlinePlus } from 'react-icons/ai';
 import { MdGroups } from 'react-icons/md';
 import Account from './account';
@@ -33,19 +38,15 @@ export default function Layout({ children }) {
   const [ecoId, setEcoId] = useState(singleEcosystem.id);
 
   useEffect(() => {
-    const unsubscribeEcos = dispatch(
-      fetchEcosystems(user?.uid || userObject.id)
-    );
-    const unsubscribeInvites = dispatch(
-      fetchInvites(user?.uid || userObject.id)
-    );
-    const unsubscribeUser = dispatch(fetchUser(user?.uid || userObject.id));
-    const unsubscribeNotifications = dispatch(fetchNotifications(user?.uid || userObject.id))
+    const unsubscribeEcos = dispatch(fetchEcosystems(user?.uid));
+    const unsubscribeInvites = dispatch(fetchInvites(user?.uid));
+    const unsubscribeUser = dispatch(fetchUser(user?.uid));
+    const unsubscribeNotifications = dispatch(fetchNotifications(user?.uid));
     return () => {
       unsubscribeEcos();
       unsubscribeInvites();
       unsubscribeUser();
-      unsubscribeNotifications()
+      unsubscribeNotifications();
     };
   }, []);
 
