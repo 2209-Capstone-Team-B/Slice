@@ -5,6 +5,8 @@ import Modal from '@mui/material/Modal';
 import axios from 'axios';
 import { AiOutlineDashboard, AiOutlinePlus } from 'react-icons/ai';
 import CloseIcon from '@mui/icons-material/Close';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const style = {
   position: 'absolute',
@@ -22,15 +24,18 @@ const style = {
 };
 
 export default function AddEcosystem({ id, user }) {
+  const userObject = useSelector((state) => state.loggedInUser);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
-  const [userName, setUsername] = React.useState(
-    `${user.firstName}-${user.lastName}`
-  );
+  const [userName, setUsername] = React.useState('');
   const [type, setType] = React.useState('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    setUsername(`${userObject.firstName}-${userObject.lastName}`);
+  }, [userObject]);
 
   // const handleChange = (e) => {
   //   if (e.target.name === type) {
