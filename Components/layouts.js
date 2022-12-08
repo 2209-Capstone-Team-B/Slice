@@ -5,7 +5,12 @@ import { useAuth } from '../context/AuthContext';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { fetchEcosystems, fetchInvites, fetchUser, fetchNotifications } from '../Store';
+import {
+  fetchEcosystems,
+  fetchInvites,
+  fetchUser,
+  fetchNotifications,
+} from '../Store';
 import { AiOutlineDashboard, AiOutlinePlus } from 'react-icons/ai';
 import { MdGroups } from 'react-icons/md';
 import Account from './account';
@@ -16,6 +21,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { GiOrangeSlice } from 'react-icons/gi';
 
 export default function Layout({ children }) {
   const [showEcos, setShowEcos] = useState(true);
@@ -33,19 +39,15 @@ export default function Layout({ children }) {
   const [ecoId, setEcoId] = useState(singleEcosystem.id);
 
   useEffect(() => {
-    const unsubscribeEcos = dispatch(
-      fetchEcosystems(user?.uid || userObject.id)
-    );
-    const unsubscribeInvites = dispatch(
-      fetchInvites(user?.uid || userObject.id)
-    );
-    const unsubscribeUser = dispatch(fetchUser(user?.uid || userObject.id));
-    const unsubscribeNotifications = dispatch(fetchNotifications(user?.uid || userObject.id))
+    const unsubscribeEcos = dispatch(fetchEcosystems(user?.uid));
+    const unsubscribeInvites = dispatch(fetchInvites(user?.uid));
+    const unsubscribeUser = dispatch(fetchUser(user?.uid));
+    const unsubscribeNotifications = dispatch(fetchNotifications(user?.uid));
     return () => {
       unsubscribeEcos();
       unsubscribeInvites();
       unsubscribeUser();
-      unsubscribeNotifications()
+      unsubscribeNotifications();
     };
   }, []);
 
@@ -61,13 +63,16 @@ export default function Layout({ children }) {
 
   return (
     <div className='min-h-screen flex flex-col'>
-      <header className='bg-slate-100 drop-shadow-md sticky top-0 h-14 flex justify-center items-center font-semibold uppercase border z-50'>
-        <div className='flex items-center pl-10'>
-          <Link href='/'>
-            <p>Slice Logo</p>
+      <header className='bg-slate-100 drop-shadow-md sticky top-0 h-14 flex justify-start items-center border z-50'>
+        <div className='pl-10'>
+          <Link className='flex' href='/'>
+            <GiOrangeSlice color='orange' size='50' />
+            <h3 className='flex text-5xl font-serif pl-2 text-blue-500'>
+              Slice
+            </h3>
           </Link>
         </div>
-        <h3 className='flex items-center'> </h3>
+
         <div className='flex pr-6 items-center absolute right-0'>
           <Account />
         </div>
@@ -111,7 +116,7 @@ export default function Layout({ children }) {
                               <MdGroups />
                             </div>
                           ) : (
-                            <div className='bg-slate-200 m-2 my-3 w-screen flex items-center border border-red-600 duration-300 rounded-3xl scale-110 shadow-md'>
+                            <div className='bg-slate-200 m-2 my-3 w-screen flex items-center border border-blue-500 duration-300 rounded-3xl scale-110 shadow-md shadow-blue-500'>
                               <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
                                 {eco.orgName}
                               </p>
@@ -189,7 +194,7 @@ export default function Layout({ children }) {
           setEcoId('');
         }}
       >
-        <div className='bg-slate-200 m-2 my-3 w-screen flex items-center border border-red-600 duration-300 scale-110 rounded-3xl shadow-md'>
+        <div className='bg-slate-200 m-2 my-3 w-screen flex items-center border border-blue-500 duration-300 scale-110 rounded-3xl shadow-md shadow-blue-500'>
           <p className='flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12'>
             Dashboard
           </p>

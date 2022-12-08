@@ -5,11 +5,18 @@ import {
   Legend,
   registerables,
 } from 'chart.js';
+import { useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(...registerables, Tooltip, Legend);
 
 const BarGraph = ({ ecosystemMembers }) => {
+  useEffect(() => {
+    ChartJS.defaults.plugins.title.text = 'Number of Tasks Completed';
+    ChartJS.defaults.plugins.title.display = true;
+    ChartJS.defaults.plugins.legend.display = false;
+  });
+
   const data = {
     labels: ecosystemMembers.map((member) => member.userName),
     datasets: [

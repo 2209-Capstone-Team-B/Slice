@@ -8,6 +8,7 @@ import { setDoc, doc, deleteDoc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { leaveMember } from '../Store';
+import { RxExit } from 'react-icons/rx';
 
 const style = {
   position: 'absolute',
@@ -46,9 +47,9 @@ export default function LeaveOrg({ ecosystemId }) {
     <React.Fragment>
       <button
         onClick={handleOpen}
-        className='text-red-600 border border-red-600 rounded-3xl p-1 text-sm hover:bg-red-600 hover:text-white'
+        className='flex text-sm items-center hover:bg-red-500 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-red-400'
       >
-        Leave Ecosystem
+        Leave Ecosystem <RxExit size={23} className='pl-2' />
       </button>
       <Modal
         hideBackdrop

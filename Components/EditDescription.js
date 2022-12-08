@@ -9,8 +9,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { db } from '../firebase';
 import { updateDoc, doc } from 'firebase/firestore';
+import { useDispatch} from 'react-redux';
+import {_updateEcosystem} from '../Store'
 
 const EditDescription = ({ curDescription, orgId, curEcoName }) => {
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [saved, setSave] = React.useState(false);
   const [description, setDescription] = React.useState(curDescription);
@@ -21,22 +24,23 @@ const EditDescription = ({ curDescription, orgId, curEcoName }) => {
   };
   const handleClose = async (e, closing) => {
     if (closing) {
-      setOpen(!open);
-      setSave(!saved);
+      setOpen(false);
+      setSave(false);
     }
   };
 
-  const updateInfo = async () => {
-    setSave(!saved);
-
+  const updateInfo = async (e) => {
+    e.preventDefault();
     const docRef = doc(db, 'Ecosystem', orgId);
 
     await updateDoc(docRef, {
       description,
       orgName: ecosystemName,
     });
+    dispatch(_updateEcosystem({description, orgName: ecosystemName, id: orgId}))
+    setSave(true);
   };
-
+  console.log(open);
   return (
     <div className='p-1'>
       <button
@@ -80,7 +84,11 @@ const EditDescription = ({ curDescription, orgId, curEcoName }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={updateInfo}>
+          <Button
+            onClick={(e) => {
+              updateInfo(e);
+            }}
+          >
             {saved ? <Alert severity='success'>Saved</Alert> : 'Save'}
           </Button>
         </DialogActions>
