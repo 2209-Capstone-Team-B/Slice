@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import {
   collection,
   query,
@@ -6,12 +6,13 @@ import {
   onSnapshot,
   doc,
   getDoc,
-} from 'firebase/firestore';
-import { db } from '../firebase.js';
+} from "firebase/firestore";
+import { db } from "../firebase.js";
 
 // Actions
 
-const GET_ECOSYSTEMS = 'GET_ECOSYSTEMS';
+const GET_ECOSYSTEMS = "GET_ECOSYSTEMS";
+const UPDATE_ECOSYSTEM = "UPDATE_ECOSYSTEM";
 
 // Action Creators
 const _getECOSYSTEMS = (ecosystems) => {
@@ -21,16 +22,23 @@ const _getECOSYSTEMS = (ecosystems) => {
   };
 };
 
+export const _updateEcosystem = (ecosystem) => {
+  return {
+    type: UPDATE_ECOSYSTEM,
+    ecosystem,
+  };
+};
+
 // Thunks
 export const fetchEcosystems = (userId) => (dispatch) => {
   const orgs = query(
-    collection(db, 'EcosystemMembers'),
-    where('userId', '==', userId)
+    collection(db, "EcosystemMembers"),
+    where("userId", "==", userId)
   );
   const subscriber = onSnapshot(orgs, async (querySnapshot) => {
     const ecosystems = await Promise.all(
       querySnapshot.docs.map(async (ecoMember) => {
-        const docRef = doc(db, 'Ecosystem', ecoMember.data().ecosystemId);
+        const docRef = doc(db, "Ecosystem", ecoMember.data().ecosystemId);
         const docSnap = await getDoc(docRef);
         return { ...docSnap.data(), id: docSnap.id };
       })
@@ -48,6 +56,15 @@ export default function userEcosystems(state = initialState, action) {
   switch (action.type) {
     case GET_ECOSYSTEMS: {
       return action.ecosystems;
+    }
+    case UPDATE_ECOSYSTEM: {
+      return state.map((eco) => {
+        if (eco.id === action.ecosystem.id) {
+          return { ...eco, ...action.ecosystem };
+        } else {
+          return eco;
+        }
+      });
     }
     default:
       return state;
