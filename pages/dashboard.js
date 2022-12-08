@@ -33,8 +33,6 @@ export default function Dashboard() {
   const completedTasks = tasks.filter((task) => task.completed === true);
   const incompleteTasks = tasks.filter((task) => task.completed === false);
 
-  console.log(tasks);
-
   return (
     <div>
       {currentUser ? (
@@ -123,10 +121,13 @@ export default function Dashboard() {
             <ul className='list-decimal p-3'>
               {notifications.length > 0 ? (
                 notifications.map((note) => (
-                  <li className='p-2' key={note.id}>
-                    "{note.userName}" in "{note.orgName}" completed your task "
-                    {note.name}" on {note.completedAt.toDate().toUTCString()}
-                  </li>
+                  <>
+                    <li className='p-2' key={note.id}>
+                      "{note.userName}" in "{note.orgName}" completed your task
+                      "{note.name}" on {note.completedAt.toDate().toUTCString()}
+                    </li>
+                    <hr className='text-cyan-300' />
+                  </>
                 ))
               ) : (
                 <DialogContentText className='text-center'>

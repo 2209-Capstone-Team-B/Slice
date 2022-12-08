@@ -82,7 +82,6 @@ export default function ecosystem() {
       },
       { merge: true }
     );
-    // docSnap.forEach((ecoMem) => console.log(ecoMem.ref));
 
     if (!status) {
       docSnap.forEach(async (ecoMember) => {
