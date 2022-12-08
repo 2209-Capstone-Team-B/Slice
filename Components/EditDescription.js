@@ -9,8 +9,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { db } from '../firebase';
 import { updateDoc, doc } from 'firebase/firestore';
+import { useDispatch} from 'react-redux';
+import {_updateEcosystem} from '../Store'
 
 const EditDescription = ({ curDescription, orgId, curEcoName }) => {
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [saved, setSave] = React.useState(false);
   const [description, setDescription] = React.useState(curDescription);
@@ -34,6 +37,7 @@ const EditDescription = ({ curDescription, orgId, curEcoName }) => {
       description,
       orgName: ecosystemName,
     });
+    dispatch(_updateEcosystem({description, orgName: ecosystemName, id: orgId}))
     setSave(true);
   };
   console.log(open);
