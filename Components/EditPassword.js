@@ -67,7 +67,7 @@ function EditModal({ close, passUser }) {
   return (
     <React.Fragment>
       <button
-        className='text-blue-600 border border-blue-600 rounded-3xl p-2 hover:bg-blue-600 hover:text-white'
+        className='border bg-orange-300 rounded-lg p-1 px-3 hover:bg-orange-400'
         onClick={handleOpen}
       >
         Edit Password

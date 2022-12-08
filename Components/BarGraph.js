@@ -12,6 +12,8 @@ ChartJS.register(...registerables, Tooltip, Legend);
 
 const BarGraph = ({ ecosystemMembers }) => {
   useEffect(() => {
+    ChartJS.defaults.plugins.title.text = 'Number of Tasks Completed';
+    ChartJS.defaults.plugins.title.display = true;
     ChartJS.defaults.plugins.legend.display = false;
   });
 

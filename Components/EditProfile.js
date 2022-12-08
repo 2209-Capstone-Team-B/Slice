@@ -52,7 +52,7 @@ export default function EditProfile({ close, userObject }) {
       <div className='flex justify-around'>
         <button
           onClick={handleOpen}
-          className='text-green-600 border border-green-600 rounded-3xl p-2 hover:bg-green-600 hover:text-white'
+          className='border bg-orange-300 rounded-lg p-1 px-3 hover:bg-orange-400'
         >
           Edit Info
         </button>
