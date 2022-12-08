@@ -1,15 +1,15 @@
-import { AuthProvider } from '../context/AuthContext';
-import '../styles/globals.css';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '../firebase';
-import Layout from '../Components/layouts';
-import store, { fetchUser } from '../Store';
-import { useEffect } from 'react';
-import { Provider } from 'react-redux';
-import Account from '../Components/account';
+import { AuthProvider } from "../context/AuthContext";
+import "../styles/globals.css";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../firebase";
+import Layout from "../Components/layouts";
+import store, { fetchUser } from "../Store";
+import { useEffect } from "react";
+import { Provider } from "react-redux";
+import Account from "../Components/account";
+import Loading from "../Components/Loading";
 
 function MyApp({ Component, pageProps }) {
-
   const [user, loading] = useAuthState(auth);
 
   /*   useEffect(()=>{
@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps }) {
   }, []) */
 
   // you can grab the entire user object on state.loggedInUser
-
+  if (loading) return <Loading />;
   return (
     <Provider store={store}>
       <AuthProvider>

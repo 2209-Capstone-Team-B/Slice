@@ -36,13 +36,13 @@ const theme = createTheme();
 export default function VerifyEmail() {
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-    });
+    // const data = new FormData(event.currentTarget);
+    // console.log({
+    //   email: data.get("email"),
+    // });
     const auth = getAuth();
     sendEmailVerification(auth.currentUser).then(() => {
-      // Email verification sent!
+      console.log("Email verification sent!");
       // ...
     });
   };
@@ -83,7 +83,7 @@ export default function VerifyEmail() {
               </Grid>
             </Grid> */}
           <Button
-            onSubmit={handleSubmit}
+            onClick={handleSubmit}
             type="submit"
             fullWidth
             variant="contained"
