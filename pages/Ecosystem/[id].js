@@ -19,6 +19,7 @@ import Typography from '@mui/material/Typography';
 import ClaimTask from '../../Components/ClaimTask';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { BiCog } from 'react-icons/bi';
 import {
   setDoc,
   doc,
@@ -182,15 +183,19 @@ export default function ecosystem() {
   }
   return (
     <>
-      <div className='text-center text-3xl pt-6'>
+      <div className='text-center text-5xl pt-6 font-serif text-blue-500'>
         {singleEcosystem.orgName}
-        <h1
-          className='text-sm duration-300 hover:scale-110 cursor-pointer p-2'
-          onClick={handleOpen}
-        >
-          Channel Details {/* ({ecosystemMembers.length}) */}
-        </h1>
-        <LeaveOrg ecosystemId={singleEcosystem.id} />
+        <div className='flex justify-center mt-5'>
+          <button
+            onClick={handleOpen}
+            className='flex text-sm items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300'
+          >
+            Channel Details <BiCog size={25} className='pl-2' />
+          </button>
+          <LeaveOrg ecosystemId={singleEcosystem.id} />
+          {/* ({ecosystemMembers.length}) */}
+        </div>
+
         <Modal
           open={open}
           onClose={handleOpen}
@@ -268,6 +273,9 @@ export default function ecosystem() {
       <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
         <div className='flex h-1/2 w-full'>
           <div className='border border-gray-200 rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
+            <p className='text-center font-serif text-blue-600 pt-2'>
+              Group Members
+            </p>
             <InvitePeople />
             <div className='flex flex-wrap justify-center'>
               {ecosystemMembers.map((member, i) => (
@@ -303,6 +311,9 @@ export default function ecosystem() {
             </div>
           </div>
           <div className='border border-gray-200 rounded-3xl justify-center w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
+            <p className='text-center font-serif text-blue-600 pt-2'>
+              Unassigned Tasks
+            </p>
             <AddTask id={id} getTasks={getTasks} />
             <div className='flex flex-wrap justify-center'>
               {unclaimedTasks.length ? (
@@ -325,7 +336,7 @@ export default function ecosystem() {
           </div>
         </div>
         <div className='flex h-1/2 w-full justify-center'>
-          <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] p-7'>
+          <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
             <BarGraph ecosystemMembers={ecosystemMembers} className='w-full' />
           </div>
         </div>

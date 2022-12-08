@@ -38,12 +38,12 @@ export default function Dashboard() {
   return (
     <div>
       {currentUser ? (
-        <div className='text-center text-3xl pt-6 grid grid-auto-fit-sm'>
-          Hello {userObject.firstName}
-        </div>
+        <h2 className='text-center text-3xl pt-6 grid grid-auto-fit-sm font-serif text-blue-500'>
+          Welcome to your slice, {userObject.firstName}!
+        </h2>
       ) : null}
-      <div className='bg-white h-screen grid lg:grid-cols-2'>
-        <div className='text-black lg:w-11/12 h-3/4 m-auto rounded-3xl flex flex-col shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] overflow-auto'>
+      <div className='bg-white h-screen grid lg:grid-cols-2 pr-0 pl-28 pt-8'>
+        <div className='text-black lg:w-11/12 h-3/4 rounded-3xl flex flex-col shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] overflow-auto'>
           <div className='flex w-full h-96 justify-center items-center'>
             {completedTasks.length || incompleteTasks.length ? (
               <Chart
@@ -110,20 +110,20 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <div className='w-11/12 h-3/4 m-auto rounded-3xl relative'>
+        <div className='w-11/12 h-3/4 rounded-3xl relative'>
           <div className='text-black p-3 mb-10 w-11/12 height rounded-3xl'>
             <div className='flex justify-center items-center w-full h-full p-10'>
               <MyCalendar />
             </div>
           </div>
-          <div className='text-black border border-gray-200 p-3 w-11/12 height rounded-3xl absolute bottom-0 left-0 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
+          <div className='text-black border border-gray-200 p-3 w-11/12 height rounded-3xl absolute bottom-0 left-0 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] overflow-auto'>
             <header className='text-center underline'>
               Task Completion Notifications (last 7 days)
             </header>
             <ul className='list-decimal p-3'>
               {notifications.length > 0 ? (
                 notifications.map((note) => (
-                  <li key={note.id}>
+                  <li className='p-2' key={note.id}>
                     "{note.userName}" in "{note.orgName}" completed your task "
                     {note.name}" on {note.completedAt.toDate().toUTCString()}
                   </li>
