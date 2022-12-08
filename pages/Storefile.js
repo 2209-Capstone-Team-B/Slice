@@ -41,7 +41,6 @@ import LeaveOrg from '../../Components/LeaveOrg.js';
 import BarGraph from '../../Components/BarGraph';
 import CompleteTask from '../../Components/CompleteTask';
 import EditDescription from '../../Components/EditDescription';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -271,102 +270,75 @@ export default function ecosystem() {
         </Modal>
       </div>
       <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
-        <DragDropContext>
-          <div className='flex h-1/2 w-full'>
-            <Droppable droppableId='claimedTasks'>
-              {(provided) => (
+        <div className='flex h-1/2 w-full'>
+          <div className='border border-gray-200 rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
+            <p className='text-center font-serif text-blue-600 pt-2'>
+              Group Members
+            </p>
+            <InvitePeople />
+            <div className='flex flex-wrap justify-center'>
+              {ecosystemMembers.map((member, i) => (
                 <div
-                  className='border border-gray-200 rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
+                  key={i}
+                  className='border border-gray-200 text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto shadow-md'
                 >
-                  <p className='text-center font-serif text-blue-600 pt-2'>
-                    Group Members
-                  </p>
-                  <InvitePeople />
-                  <div className='flex flex-wrap justify-center'>
-                    {ecosystemMembers.map((member, i) => (
-                      <div
-                        key={i}
-                        className='border border-gray-200 text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto shadow-md'
-                      >
-                        <p className='text-lg font-bold'>{member.userName}</p>
-                        <ol className='list-decimal p-3'>
-                          {singleEcosystemTasks.map((task, idx) => {
-                            if (
-                              task.assignedTo === member.userId &&
-                              !task.completed
-                            ) {
-                              return (
-                                <div className='flex' key={idx}>
-                                  {task.assignedTo === user?.uid && (
-                                    <CompleteTask
-                                      task={task}
-                                      toggle={toggleCompletedTask}
-                                    />
-                                  )}
-                                  <li key={idx} className='text-left p-1 ml-2'>
-                                    {task.name}
-                                  </li>
-                                </div>
-                              );
-                            }
-                          })}
-                        </ol>
-                      </div>
-                    ))}
-                    {provided.placeholder}
-                  </div>
+                  <p className='text-lg font-bold'>{member.userName}</p>
+                  <ol className='list-decimal p-3'>
+                    {singleEcosystemTasks.map((task, idx) => {
+                      if (
+                        task.assignedTo === member.userId &&
+                        !task.completed
+                      ) {
+                        return (
+                          <div className='flex' key={idx}>
+                            {task.assignedTo === user?.uid && (
+                              <CompleteTask
+                                task={task}
+                                toggle={toggleCompletedTask}
+                              />
+                            )}
+                            <li key={idx} className='text-left p-1 ml-2'>
+                              {task.name}
+                            </li>
+                          </div>
+                        );
+                      }
+                    })}
+                  </ol>
                 </div>
-              )}
-            </Droppable>
-            <div className='border border-gray-200 rounded-3xl justify-center w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
-              <p className='text-center font-serif text-blue-600 pt-2'>
-                Unassigned Tasks
-              </p>
-              <AddTask id={id} getTasks={getTasks} />
-              <Droppable droppableId='unclaimedTasks'>
-                {(provided) => (
-                  <div
-                    className='flex flex-wrap justify-center'
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                  >
-                    {unclaimedTasks.length ? (
-                      unclaimedTasks.map((task, i) => (
-                        <Draggable
-                          key={task.id}
-                          draggableId={task.id}
-                          index={i}
-                        >
-                          {(provided) => (
-                            <div
-                              className='border border-gray-200 text-center w-3/4 rounded-2xl p-2 m-2 shadow-md'
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              ref={provided.innerRef}
-                            >
-                              {task.name} due {task.due}
-                              <div className='flex justify-around p-3'>
-                                {task.owner === user?.uid && (
-                                  <EditTask task={task} />
-                                )}
-                                <ClaimTask task={task} user={user} />
-                              </div>
-                              {provided.placeholder}
-                            </div>
-                          )}
-                        </Draggable>
-                      ))
-                    ) : (
-                      <h1 className='mt-10 items-end'>No Tasks To Claim!</h1>
-                    )}
-                  </div>
-                )}
-              </Droppable>
+              ))}
             </div>
           </div>
-        </DragDropContext>
+
+          <div
+            className='border border-gray-200 rounded-3xl justify-center w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'
+            ref={provided.innerRef}
+          >
+            <p className='text-center font-serif text-blue-600 pt-2'>
+              Unassigned Tasks
+            </p>
+
+            <AddTask id={id} getTasks={getTasks} />
+            <div className='flex flex-wrap justify-center'>
+              {unclaimedTasks.length ? (
+                unclaimedTasks.map((task, i) => (
+                  <div
+                    key={task.id}
+                    className='border border-gray-200 text-center w-3/4 rounded-2xl p-2 m-2 shadow-md'
+                  >
+                    {task.name} due {task.due}
+                    <div className='flex justify-around p-3'>
+                      {task.owner === user?.uid && <EditTask task={task} />}
+                      <ClaimTask task={task} user={user} />
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <h1 className='mt-10 items-end'>No Tasks To Claim!</h1>
+              )}
+            </div>
+          </div>
+        </div>
         <div className='flex h-1/2 w-full justify-center'>
           <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
             <BarGraph ecosystemMembers={ecosystemMembers} className='w-full' />
