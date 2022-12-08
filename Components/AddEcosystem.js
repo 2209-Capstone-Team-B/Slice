@@ -31,7 +31,7 @@ export default function AddEcosystem({ id, user }) {
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [userName, setUsername] = React.useState('');
-  const [type, setType] = React.useState('');
+  const [type, setType] = React.useState('Bulletin');
   const [added, setAdded] = React.useState(false);
   const [error, setError] = React.useState(false);
 
