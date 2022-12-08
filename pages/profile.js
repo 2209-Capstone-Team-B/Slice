@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import { auth, db } from '../firebase';
-import { serverTimestamp, doc, setDoc } from 'firebase/firestore';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useAuth } from '../context/AuthContext';
-import Chart from './Chart';
-import EditProfile from '../Components/EditProfile';
-import EditPassword from '../Components/EditPassword';
-import { getAuth, updatePassword } from 'firebase/auth';
+import React, { useState } from "react";
+import { auth, db } from "../firebase";
+import { serverTimestamp, doc, setDoc } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useAuth } from "../context/AuthContext";
+import Chart from "./Chart";
+import EditProfile from "../Components/EditProfile";
+import EditPassword from "../Components/EditPassword";
+import { getAuth, updatePassword } from "firebase/auth";
+import VerifyEmail from "../Components/VerifyEmail";
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -18,6 +19,7 @@ export default function Dashboard() {
   const router = useRouter();
   const data = router.query;
   const userObject = useSelector((state) => state.loggedInUser);
+  console.log(user);
 
   const passUser = auth.currentUser;
 
@@ -25,7 +27,7 @@ export default function Dashboard() {
     if (user && Object.keys(data).length !== 0) {
       const updateDb = async () => {
         await setDoc(
-          doc(db, 'Users', user.uid),
+          doc(db, "Users", user.uid),
           {
             email: user.email,
             firstName: data.firstName,
@@ -69,6 +71,13 @@ export default function Dashboard() {
             <div className='flex items-center justify-around h-1/4'>
               <EditProfile userObject={userObject} />
               <EditPassword passUser={passUser} />
+              <div className="flex justify-around">
+                {user?.emailVerified ? (
+                  "Thanks for verifying!"
+                ) : (
+                  <VerifyEmail />
+                )}
+              </div>
             </div>
           </div>
         </div>
