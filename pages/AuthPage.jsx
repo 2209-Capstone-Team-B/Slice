@@ -159,6 +159,7 @@ const AuthPage = () => {
               >
                 <Image
                   src="/btn_google_signin_light_pressed_web.png"
+                  alt=""
                   width="200"
                   height="200"
                   unoptimized
