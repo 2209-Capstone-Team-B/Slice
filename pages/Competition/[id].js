@@ -7,19 +7,22 @@ import {
   fetchEcosystemTasks,
   fetchEcosystemMembers,
   fetchTaskHistory,
+  fetchRequests,
+  fetchAdmin,
+  testAdmin
 } from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
-import AddTask from '../../Components/AddTask';
+import AddCompetitionTask from '../../Components/AddCompetitionTask.js'
 import EditTask from '../../Components/EditTask';
 import InvitePeople from '../../Components/InvitePeople';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import ClaimTask from '../../Components/ClaimTask';
+import ClaimReward from '../../Components/ClaimReward';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { BiCog } from 'react-icons/bi';
+import { BiCog, BiMessageDetail } from 'react-icons/bi';
 import {
   setDoc,
   doc,
@@ -39,7 +42,8 @@ import PropTypes from 'prop-types';
 import Container from '@mui/material/Container';
 import LeaveOrg from '../../Components/LeaveOrg.js';
 import BarGraph from '../../Components/BarGraph';
-import CompleteTask from '../../Components/CompleteTask';
+import ApproveRequest from '../../Components/ApproveRequest.js';
+import DenyRequest from '../../Components/DenyRequest.js'
 import EditDescription from '../../Components/EditDescription';
 
 export default function ecosystem() {
@@ -55,75 +59,26 @@ export default function ecosystem() {
     singleEcosystemTasks,
     ecosystemMembers,
     singleTaskHistory,
+    singleRewardRequests,
+    isAdmin
   } = useSelector((state) => state);
 
-  const unclaimedTasks = singleEcosystemTasks.filter(
-    (task) => task.assignedTo === null
-  );
-
-  const getTasks = async (id) => await dispatch(fetchEcosystemTasks(id));
-
-  const toggleCompletedTask = async (id, status) => {
-    //Build a query to find the right ecosystemMember
-    const q = query(
-      collection(db, 'EcosystemMembers'),
-      where('ecosystemId', '==', singleEcosystem.id),
-      where('userId', '==', user.uid)
-    );
-    const docSnap = await getDocs(q);
-    const currentName = docSnap.docs[0].data().userName;
-
-    await setDoc(
-      doc(db, 'Tasks', id),
-      {
-        completed: !status,
-        completedAt: serverTimestamp(),
-        userName: currentName,
-      },
-      { merge: true }
-    );
-    // docSnap.forEach((ecoMem) => console.log(ecoMem.ref));
-
-    if (!status) {
-      docSnap.forEach(async (ecoMember) => {
-        let newAmount = ecoMember.data().currencyAmount + 1;
-        await updateDoc(ecoMember.ref, {
-          currencyAmount: newAmount,
-        });
-      });
-    } else {
-      docSnap.forEach(async (ecoMember) => {
-        let newAmount = ecoMember.data().currencyAmount - 1;
-        await updateDoc(ecoMember.ref, {
-          currencyAmount: newAmount,
-        });
-      });
-    }
-    //create notification
-    const currentTaskDoc = await getDoc(doc(db, 'Tasks', id));
-    const TaskObj = currentTaskDoc.data();
-
-    if (TaskObj.assignedTo !== TaskObj.owner) {
-      await setDoc(doc(db, 'Notifications', id), {
-        ...TaskObj,
-        orgName: singleEcosystem.orgName,
-        userName: currentName,
-      });
-    }
-
-    setOpen(false);
-  };
 
   useEffect(() => {
     const unsubscribeEcosystemMembers = dispatch(fetchEcosystemMembers(id));
     const unsubscribeEcosystem = dispatch(fetchEcosystem(id));
     const unsubscribeEcosystemTasks = dispatch(fetchEcosystemTasks(id));
     const unsubscribeTaskHistory = dispatch(fetchTaskHistory(id));
+    const unsubscribeRewardRequests = dispatch(fetchRequests(id))
+    const unsubscribeAdmin = dispatch(fetchAdmin(id, user?.uid))
+    //dispatch(testAdmin(id, user?.uid))
     return () => {
       unsubscribeEcosystemMembers();
       unsubscribeEcosystemTasks();
       unsubscribeEcosystem();
       unsubscribeTaskHistory();
+      unsubscribeRewardRequests()
+      unsubscribeAdmin()
     };
   }, [id]);
 
@@ -190,12 +145,11 @@ export default function ecosystem() {
             onClick={handleOpen}
             className='flex text-sm items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300'
           >
-            Channel Details <BiCog size={25} className='pl-2' />
+            Messages <BiMessageDetail size={25} className='pl-2' />
           </button>
           <LeaveOrg ecosystemId={singleEcosystem.id} />
           {/* ({ecosystemMembers.length}) */}
         </div>
-
         <Modal
           open={open}
           onClose={handleOpen}
@@ -272,7 +226,7 @@ export default function ecosystem() {
       </div>
       <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
         <div className='flex h-1/2 w-full'>
-          <div className='border border-gray-200 rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
+          <div className='flex flex-col border border-gray-200 rounded-3xl w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
             <p className='text-center font-serif text-blue-600 pt-2'>
               Group Members
             </p>
@@ -285,21 +239,23 @@ export default function ecosystem() {
                 >
                   <p className='text-lg font-bold'>{member.userName}</p>
                   <ol className='list-decimal p-3'>
-                    {singleEcosystemTasks.map((task, idx) => {
+                    {singleRewardRequests.map((request, idx) => {
                       if (
-                        task.assignedTo === member.userId &&
-                        !task.completed
+                        request.userId === member.userId
                       ) {
                         return (
                           <div className='flex' key={idx}>
-                            {task.assignedTo === user?.uid && (
-                              <CompleteTask
-                                task={task}
-                                toggle={toggleCompletedTask}
+                            {isAdmin && (
+                               <>
+                              <ApproveRequest
+                                request={request}
+                               /*  toggle={toggleCompletedTask} */
                               />
+                              <DenyRequest request={request} />
+                              </>
                             )}
                             <li key={idx} className='text-left p-1 ml-2'>
-                              {task.name}
+                              {request.name}
                             </li>
                           </div>
                         );
@@ -312,32 +268,32 @@ export default function ecosystem() {
           </div>
           <div className='border border-gray-200 rounded-3xl justify-center w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
             <p className='text-center font-serif text-blue-600 pt-2'>
-              Unassigned Tasks
+              Tasks
             </p>
-            <AddTask id={id} getTasks={getTasks} />
+           {isAdmin && (<AddCompetitionTask id={id} />)}
             <div className='flex flex-wrap justify-center'>
-              {unclaimedTasks.length ? (
-                unclaimedTasks.map((task, i) => (
+              {singleEcosystemTasks.length > 0 ? (
+                singleEcosystemTasks.map((task, i) => (
                   <div
                     key={i}
                     className='border border-gray-200 text-center w-3/4 rounded-2xl p-2 m-2 shadow-md'
                   >
-                    {task.name} due {task.due}
+                    {task.name} : {task.reward} point reward
                     <div className='flex justify-around p-3'>
-                      {task.owner === user?.uid && <EditTask task={task} />}
-                      <ClaimTask task={task} user={user} />
+                     {isAdmin && (<EditTask task={task} />)}
+                      <ClaimReward task={task} user={user} />
                     </div>
                   </div>
                 ))
               ) : (
-                <h1 className='mt-10 items-end'>No Tasks To Claim!</h1>
+                <h1 className='mt-10 items-end'>No Tasks</h1>
               )}
             </div>
           </div>
         </div>
         <div className='flex h-1/2 w-full justify-center'>
           <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
-            <BarGraph ecosystemMembers={ecosystemMembers} className='w-full' />
+            <BarGraph ecosystemMembers={ecosystemMembers} title = "Leaderboard"className='w-full' />
           </div>
         </div>
       </div>

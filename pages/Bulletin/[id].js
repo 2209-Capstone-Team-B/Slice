@@ -7,6 +7,7 @@ import {
   fetchEcosystemTasks,
   fetchEcosystemMembers,
   fetchTaskHistory,
+  fetchAnnouncements,
 } from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
 import AddTask from '../../Components/AddTask';
@@ -17,7 +18,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ClaimTask from '../../Components/ClaimTask';
-import { BiCog } from 'react-icons/bi';
+import { BiCog, BiMessageDetail } from 'react-icons/bi';
 import {
   setDoc,
   doc,
@@ -40,6 +41,7 @@ import BarGraph from '../../Components/BarGraph';
 import CompleteTask from '../../Components/CompleteTask';
 import EditDescription from '../../Components/EditDescription';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import EcoAnnouncement from '../../Components/EcoAnnouncement';
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -59,8 +61,6 @@ export default function ecosystem() {
   const unclaimedTasks = singleEcosystemTasks.filter(
     (task) => task.assignedTo === null
   );
-
-  const getTasks = async (id) => await dispatch(fetchEcosystemTasks(id));
 
   const toggleCompletedTask = async (id, status) => {
     //Build a query to find the right ecosystemMember
@@ -117,11 +117,13 @@ export default function ecosystem() {
     const unsubscribeEcosystem = dispatch(fetchEcosystem(id));
     const unsubscribeEcosystemTasks = dispatch(fetchEcosystemTasks(id));
     const unsubscribeTaskHistory = dispatch(fetchTaskHistory(id));
+    const unsubscribeAnnouncements = dispatch(fetchAnnouncements(id));
     return () => {
       unsubscribeEcosystemMembers();
       unsubscribeEcosystemTasks();
       unsubscribeEcosystem();
       unsubscribeTaskHistory();
+      unsubscribeAnnouncements();
     };
   }, [id]);
 
@@ -215,7 +217,8 @@ export default function ecosystem() {
             onClick={handleOpen}
             className='flex text-sm items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300'
           >
-            Channel Details <BiCog size={25} className='pl-2' />
+            Messages
+            <BiMessageDetail size={25} className='pl-2' />
           </button>
           <LeaveOrg ecosystemId={singleEcosystem.id} />
           {/* ({ecosystemMembers.length}) */}
@@ -226,7 +229,7 @@ export default function ecosystem() {
           aria-labelledby='modal-modal-title'
           aria-describedby='modal-modal-description'
         >
-          <Box sx={style}>
+          <Box className='overflow-auto' sx={style}>
             <Box sx={{ width: '100%' }}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs
@@ -236,28 +239,39 @@ export default function ecosystem() {
                   TabIndicatorProps={{ style: { background: '#FEF3C7' } }}
                   textColor='inherit'
                 >
-                  <Tab label='About' {...a11yProps(0)} />
+                  <Tab label='Messages' {...a11yProps(0)} />
+                  <Tab label='About' {...a11yProps(1)} />
                   <Tab
                     label={`Members (${ecosystemMembers.length})`}
-                    {...a11yProps(1)}
+                    {...a11yProps(2)}
                   />
-                  <Tab label='Task History' {...a11yProps(2)} />
+                  <Tab label='Task History' {...a11yProps(3)} />
                 </Tabs>
               </Box>
-              <TabPanel value={value} index={0} className='p-1'>
+              <TabPanel value={value} index={0}>
+                <Typography
+                  id='modal-modal-title'
+                  component='div'
+                  className='text-center underline text-lg'
+                >
+                  Messages for '{singleEcosystem.orgName}'
+                </Typography>
+                <EcoAnnouncement />
+              </TabPanel>
+              <TabPanel value={value} index={1} className='p-1'>
                 Ecosystem Name: {singleEcosystem.orgName}
               </TabPanel>
-              <TabPanel value={value} index={0} className='p-1'>
+              <TabPanel value={value} index={1} className='p-1'>
                 Description: {singleEcosystem.description}
               </TabPanel>
-              {value === 0 && (
+              {value === 1 && (
                 <EditDescription
                   curDescription={singleEcosystem.description}
                   orgId={singleEcosystem.id}
                   curEcoName={singleEcosystem.orgName}
                 />
               )}
-              <TabPanel value={value} index={1}>
+              <TabPanel value={value} index={2}>
                 <Typography
                   id='modal-modal-title'
                   component='div'
@@ -271,7 +285,7 @@ export default function ecosystem() {
                   </div>
                 ))}
               </TabPanel>
-              <TabPanel value={value} index={2}>
+              <TabPanel value={value} index={3}>
                 <Typography
                   id='modal-modal-title'
                   component='div'
@@ -296,7 +310,7 @@ export default function ecosystem() {
       </div>
       <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
         <div className='flex h-1/2 w-full'>
-          <div className='border border-gray-200 rounded-3xl grid grid-rows-[1rem, 3rem] w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
+          <div className='border border-gray-200 rounded-3xl w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
             <p className='text-center font-serif text-blue-600 pt-2'>
               Group Members
             </p>
@@ -409,10 +423,11 @@ export default function ecosystem() {
         </div>
         <div className='flex h-1/2 w-full justify-center'>
           <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
-            <BarGraph ecosystemMembers={ecosystemMembers} className='w-full' />
+            <BarGraph ecosystemMembers={ecosystemMembers} title = 'Number of Tasks Completed' className='w-full' />
           </div>
         </div>
       </div>
     </DragDropContext>
   );
 }
+           

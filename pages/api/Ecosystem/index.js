@@ -1,5 +1,5 @@
 import { db } from '../../../firebase.js';
-import { collection, addDoc, query, getDoc, where } from 'firebase/firestore';
+import { collection, addDoc, query, getDoc, where, setDoc, doc } from 'firebase/firestore';
 
 function randomInteger(max) {
   return Math.floor(Math.random() * (max + 1));
@@ -30,6 +30,9 @@ export default async (req, res) => {
       currencyAmount: 0,
       color: randomRgbColor(),
     });
+    if (type === "Competition"){
+      await setDoc(doc(db, "Ecosystem", docSnap.id, "Admin", id), {userId: id})
+    }
     res.send('Hello');
   } else {
     // Handle any other HTTP method

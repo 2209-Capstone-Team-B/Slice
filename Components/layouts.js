@@ -23,6 +23,7 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { GiOrangeSlice } from "react-icons/gi";
 
+
 export default function Layout({ children }) {
   const [showEcos, setShowEcos] = useState(true);
   const dispatch = useDispatch();
@@ -74,6 +75,7 @@ export default function Layout({ children }) {
         </div>
 
         <div className="flex pr-6 items-center absolute right-0">
+
           <Account />
         </div>
       </header>
@@ -116,8 +118,10 @@ export default function Layout({ children }) {
                               <MdGroups />
                             </div>
                           ) : (
+
                             <div className="bg-slate-200 m-2 my-3 w-screen flex items-center border border-blue-500 duration-300 rounded-3xl scale-110 shadow-md shadow-blue-500">
                               <p className="flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12">
+
                                 {eco.orgName}
                               </p>
                               <MdGroups />
@@ -194,8 +198,10 @@ export default function Layout({ children }) {
           setEcoId("");
         }}
       >
+
         <div className="bg-slate-200 m-2 my-3 w-screen flex items-center border border-blue-500 duration-300 scale-110 rounded-3xl shadow-md shadow-blue-500">
           <p className="flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12">
+
             Dashboard
           </p>
           <AiOutlineDashboard />
