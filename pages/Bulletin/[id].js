@@ -17,8 +17,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ClaimTask from '../../Components/ClaimTask';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { BiCog } from 'react-icons/bi';
 import {
   setDoc,
@@ -41,6 +39,7 @@ import LeaveOrg from '../../Components/LeaveOrg.js';
 import BarGraph from '../../Components/BarGraph';
 import CompleteTask from '../../Components/CompleteTask';
 import EditDescription from '../../Components/EditDescription';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -82,7 +81,6 @@ export default function ecosystem() {
       },
       { merge: true }
     );
-    // docSnap.forEach((ecoMem) => console.log(ecoMem.ref));
 
     if (!status) {
       docSnap.forEach(async (ecoMember) => {
@@ -181,10 +179,37 @@ export default function ecosystem() {
       'aria-controls': `simple-tabpanel-${index}`,
     };
   }
+  const onDragEnd = (result) => {
+    const ecomemberIds = ecosystemMembers.map((member) => {
+      return member.id;
+    });
+    if (!result.destination) return;
+    if (
+      result.destination.droppableId === result.source.droppableId &&
+      result.destination.index === result.source.index
+    )
+      return;
+    if (ecomemberIds.includes(result.draggableId)) return;
+    const index = result.destination.index;
+    const task = unclaimedTasks.find((task) => task.id === result.draggableId);
+    const member = ecosystemMembers[index];
+
+    if (result.destination.droppableId === 'claimedTasks' && task) {
+      setDoc(
+        doc(db, 'Tasks', task.id),
+        { assignedTo: member.userId },
+        { merge: true }
+      );
+    } else if (result.destination.droppableId === 'unclaimedTasks') {
+      const [reorderedItem] = unclaimedTasks.splice(result.source.index, 1);
+      unclaimedTasks.splice(result.destination.index, 0, reorderedItem);
+    }
+  };
+
   return (
-    <>
+    <DragDropContext onDragEnd={onDragEnd}>
       <div className='text-center text-5xl pt-6 font-serif text-blue-500'>
-        {singleEcosystem.orgName}
+        You are in Competition: {singleEcosystem.orgName}
         <div className='flex justify-center mt-5'>
           <button
             onClick={handleOpen}
@@ -195,7 +220,6 @@ export default function ecosystem() {
           <LeaveOrg ecosystemId={singleEcosystem.id} />
           {/* ({ecosystemMembers.length}) */}
         </div>
-
         <Modal
           open={open}
           onClose={handleOpen}
@@ -277,63 +301,111 @@ export default function ecosystem() {
               Group Members
             </p>
             <InvitePeople />
-            <div className='flex flex-wrap justify-center'>
-              {ecosystemMembers.map((member, i) => (
+            <Droppable droppableId='claimedTasks'>
+              {(provided, snapshot) => (
                 <div
-                  key={i}
-                  className='border border-gray-200 text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto shadow-md'
+                  className='flex flex-wrap justify-center'
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
                 >
-                  <p className='text-lg font-bold'>{member.userName}</p>
-                  <ol className='list-decimal p-3'>
-                    {singleEcosystemTasks.map((task, idx) => {
-                      if (
-                        task.assignedTo === member.userId &&
-                        !task.completed
-                      ) {
-                        return (
-                          <div className='flex' key={idx}>
-                            {task.assignedTo === user?.uid && (
-                              <CompleteTask
-                                task={task}
-                                toggle={toggleCompletedTask}
-                              />
-                            )}
-                            <li key={idx} className='text-left p-1 ml-2'>
-                              {task.name}
-                            </li>
-                          </div>
-                        );
-                      }
-                    })}
-                  </ol>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className='border border-gray-200 rounded-3xl justify-center w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
-            <p className='text-center font-serif text-blue-600 pt-2'>
-              Unassigned Tasks
-            </p>
-            <AddTask id={id} getTasks={getTasks} />
-            <div className='flex flex-wrap justify-center'>
-              {unclaimedTasks.length ? (
-                unclaimedTasks.map((task, i) => (
-                  <div
-                    key={i}
-                    className='border border-gray-200 text-center w-3/4 rounded-2xl p-2 m-2 shadow-md'
-                  >
-                    {task.name} due {task.due}
-                    <div className='flex justify-around p-3'>
-                      {task.owner === user?.uid && <EditTask task={task} />}
-                      <ClaimTask task={task} user={user} />
+                  {ecosystemMembers.map((member, i) => (
+                    <div
+                      key={member.id}
+                      className={`${
+                        snapshot.isDraggingOver
+                          ? 'shadow-[0_15px_100px_-15px_rgba(0,0,0,0.3)]'
+                          : ''
+                      } border border-gray-200 text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto shadow-md`}
+                    >
+                      <p className='text-lg font-bold'>{member.userName}</p>
+                      <Draggable draggableId={member.id} index={i}>
+                        {(provided) => (
+                          <ol
+                            className='list-decimal p-3'
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            ref={provided.innerRef}
+                          >
+                            {singleEcosystemTasks.map((task, idx) => {
+                              if (
+                                task.assignedTo === member.userId &&
+                                !task.completed
+                              ) {
+                                return (
+                                  <div className='flex' key={idx}>
+                                    {task.assignedTo === user?.uid && (
+                                      <CompleteTask
+                                        task={task}
+                                        toggle={toggleCompletedTask}
+                                      />
+                                    )}
+                                    <li
+                                      key={idx}
+                                      className='text-left p-1 ml-2'
+                                    >
+                                      {task.name}
+                                    </li>
+                                  </div>
+                                );
+                              }
+                            })}
+                            {provided.placeholder}
+                          </ol>
+                        )}
+                      </Draggable>
                     </div>
-                  </div>
-                ))
-              ) : (
-                <h1 className='mt-10 items-end'>No Tasks To Claim!</h1>
+                  ))}
+                </div>
               )}
-            </div>
+            </Droppable>
           </div>
+
+          <Droppable droppableId='unclaimedTasks'>
+            {(provided) => (
+              <div
+                className='border border-gray-200 rounded-3xl justify-center w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                <p className='text-center font-serif text-blue-600 pt-2'>
+                  Unassigned Tasks
+                </p>
+
+                <AddTask id={id} getTasks={getTasks} />
+                <div className='flex flex-wrap justify-center'>
+                  {unclaimedTasks.length ? (
+                    unclaimedTasks.map((task, i) => (
+                      <Draggable key={task.id} draggableId={task.id} index={i}>
+                        {(provided, snapshot) => (
+                          <div
+                            className={`${
+                              snapshot.draggingOver
+                                ? 'shadow-[0_15px_100px_-15px_rgba(0,0,0,0.6)]'
+                                : ''
+                            } border border-gray-200 text-center w-3/4 rounded-2xl p-2 m-2 shadow-md`}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            ref={provided.innerRef}
+                          >
+                            {task.name} due {task.due}
+                            <div className='flex justify-around p-3'>
+                              {task.owner === user?.uid && (
+                                <EditTask task={task} />
+                              )}
+                              <ClaimTask task={task} user={user} />
+                            </div>
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </Draggable>
+                    ))
+                  ) : (
+                    <h1 className='mt-10 items-end'>No Tasks To Claim!</h1>
+                  )}
+                </div>
+              </div>
+            )}
+          </Droppable>
         </div>
         <div className='flex h-1/2 w-full justify-center'>
           <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
@@ -341,6 +413,6 @@ export default function ecosystem() {
           </div>
         </div>
       </div>
-    </>
+    </DragDropContext>
   );
 }
