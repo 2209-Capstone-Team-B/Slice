@@ -21,6 +21,7 @@ const _getECOSYSTEM_TASKS = (tasks) => {
   };
 };
 
+
 /* export const fetchEcosystemTasks = (id) => async (dispatch) => {
   const q = await query(
     collection(db, 'Tasks'),
@@ -49,6 +50,7 @@ export const fetchEcosystemTasks = (ecoId) => (dispatch) => {
   });
   return subscriber;
 };
+
 
 // Reducer
 export default function userEcosystem(state = [], action) {
