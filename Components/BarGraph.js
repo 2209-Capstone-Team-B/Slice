@@ -10,9 +10,9 @@ import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(...registerables, Tooltip, Legend);
 
-const BarGraph = ({ ecosystemMembers }) => {
+const BarGraph = ({ ecosystemMembers, title }) => {
   useEffect(() => {
-    ChartJS.defaults.plugins.title.text = 'Number of Tasks Completed';
+    ChartJS.defaults.plugins.title.text = title;
     ChartJS.defaults.plugins.title.display = true;
     ChartJS.defaults.plugins.legend.display = false;
   });

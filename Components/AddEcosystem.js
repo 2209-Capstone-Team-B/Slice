@@ -5,10 +5,11 @@ import Modal from '@mui/material/Modal';
 import axios from 'axios';
 import { AiOutlineDashboard, AiOutlinePlus } from 'react-icons/ai';
 import CloseIcon from '@mui/icons-material/Close';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
+import {addEcosystem} from '../Store'
 
 const style = {
   position: 'absolute',
@@ -26,6 +27,7 @@ const style = {
 };
 
 export default function AddEcosystem({ id, user }) {
+  const dispatch = useDispatch()
   const userObject = useSelector((state) => state.loggedInUser);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
@@ -55,16 +57,23 @@ export default function AddEcosystem({ id, user }) {
   //   }
   // };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (name.length > 0 && description.length > 0) {
-      await axios.post('/api/Ecosystem', {
+    /*   await axios.post('/api/Ecosystem', {
         id,
         name,
         type,
         userName,
         description,
-      });
+      }) */
+      dispatch(addEcosystem({
+        id,
+        name,
+        type,
+        userName,
+        description,
+      }))
       setName('');
       setUsername('');
       setType('Bulletin');

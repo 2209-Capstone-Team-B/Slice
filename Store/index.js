@@ -11,6 +11,8 @@ import userTasks from './userTasks.js';
 import userInvites from './userInvites.js';
 import notifications from './notifications.js'
 import singleTaskHistory from './taskHistory.js'
+import singleRewardRequests from './rewardRequests.js'
+import isAdmin from './isAdmin.js'
 
 const reducer = combineReducers({
   loggedInUser,
@@ -21,7 +23,9 @@ const reducer = combineReducers({
   userInvites,
   ecosystemMembers,
   notifications,
-  singleTaskHistory
+  singleTaskHistory,
+  singleRewardRequests,
+  isAdmin
 });
 
 const middleware = composeWithDevTools(
@@ -40,3 +44,5 @@ export * from './userTasks.js';
 export * from './userInvites.js';
 export * from './notifications.js'
 export * from './taskHistory.js'
+export * from './rewardRequests.js'
+export * from './isAdmin.js'
