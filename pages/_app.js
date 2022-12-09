@@ -4,30 +4,27 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase";
 import Layout from "../Components/layouts";
 import store, { fetchUser } from "../Store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import Account from "../Components/account";
 import Loading from "../Components/Loading";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }) {
   const [user, loading] = useAuthState(auth);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const router = useRouter();
 
-  /*   useEffect(()=>{
- if (user){
-  const getUser = async() =>{
-    try {
-      await fetchUser(user.uid)
-    } catch (error) {
-     console.log(error)
+  useEffect(() => {
+    if (!user && !loggedIn) {
+      router.push("/");
+    } else {
+      setLoggedIn(true);
     }
-  }
-  getUser()
- }
+  }, []);
 
-  }, []) */
-
-  // you can grab the entire user object on state.loggedInUser
   if (loading) return <Loading />;
+  // you can grab the entire user object on state.loggedInUser
   return (
     <Provider store={store}>
       <AuthProvider>

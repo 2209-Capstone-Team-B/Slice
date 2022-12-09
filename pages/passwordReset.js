@@ -12,6 +12,8 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useRouter } from "next/router";
 
 function Copyright(props) {
   return (
@@ -34,6 +36,10 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function PasswordReset() {
+  const router = useRouter();
+  // const [user] = useAuthState(auth);
+  // if (!user) router.push("/");
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

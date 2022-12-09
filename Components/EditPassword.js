@@ -11,6 +11,7 @@ import {
   reauthenticateWithCredential,
   EmailAuthProvider,
 } from 'firebase/auth';
+import { Alert } from '@mui/material';
 
 const auth = getAuth();
 const userPass = auth.currentUser;
@@ -29,40 +30,54 @@ const style = {
   alignItems: 'center',
 };
 
-function promptForCredentials() {
-  let signIn = prompt('Enter old password');
-  return signIn;
-}
+// function promptForCredentials() {
+//   let signIn = prompt('Enter old password');
+//   return signIn;
+// }
 
 function EditModal({ close, passUser }) {
   const [password, setPassword] = React.useState('');
+  const [oldPassword, setOldPassword] = React.useState('');
+  const [error, setError] = React.useState('');
   const [confirm, setConfirm] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     // TODO(you): prompt the user to re-provide their sign-in credentials
+    setOpen(true);
+  };
+  const handleClose = async (e, closing) => {
+    if (closing) {
+      setOldPassword('');
+      setPassword('');
+      setOpen(!open);
+      setError(false);
+      setConfirm(false);
+      // return;
+    }
+  };
+  const handleSubmit = async () => {
     const credential = EmailAuthProvider.credential(
       passUser.email,
-      promptForCredentials()
+      oldPassword
     );
-    console.log('credintial >>>', credential);
     reauthenticateWithCredential(passUser, credential)
       .then(() => {
         // User re-authenticated.
-        setOpen(!open);
+        updatePassword(passUser, password);
+        setConfirm(true);
+        setOldPassword('');
+        setPassword('');
+        setError(false);
+        setTimeout(() => {
+          handleClose(null, true);
+        }, 1000);
       })
       .catch((error) => {
         // An error ocurred
         // ...
-        alert('Incorrect Password!');
+        setError(true);
+        // alert('Incorrect Password!');
       });
-  };
-  const handleClose = async (e, closing) => {
-    if (closing) {
-      setOpen(!open);
-      // return;
-    }
-
-    updatePassword(passUser, password);
   };
   return (
     <React.Fragment>
@@ -73,7 +88,6 @@ function EditModal({ close, passUser }) {
         Edit Password
       </button>
       <Modal
-        hideBackdrop
         open={open}
         onClose={(e) => handleClose(e, true)}
         aria-labelledby='child-modal-title'
@@ -93,9 +107,16 @@ function EditModal({ close, passUser }) {
             </h2>
             <div className='flex'>
               <div className='flex flex-col justify-around w-1/4'>
-                <p className='text-right pt-2'>Password</p>
+                <p className='text-right pt-2'>Old Password</p>
+                <p className='text-right pt-2'>New Password</p>
               </div>
               <form className='w-3/4'>
+                <input
+                  value={oldPassword}
+                  type='password'
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  className='block border-2 m-auto my-4 w-5/6 border-black text-center rounded-xl'
+                ></input>
                 <input
                   value={password}
                   type='password'
@@ -104,17 +125,27 @@ function EditModal({ close, passUser }) {
                 ></input>
               </form>
             </div>
+            <div>
+              {error ? (
+                <p className='text-red-600 text-center'>
+                  * Old password is incorrect
+                </p>
+              ) : null}
+            </div>
             <div className='flex justify-center w-full'>
-              <button
-                className='text-blue-600 border border-blue-600 w-3/4 rounded-3xl p-2 hover:bg-blue-600 hover:text-white'
-                onClick={(e) => {
-                  setConfirm(true);
-                  handleClose(e, true);
-                  close();
-                }}
-              >
-                Confirm Edit
-              </button>
+              {confirm && !error ? (
+                <Alert severity='success'>Added</Alert>
+              ) : (
+                <button
+                  className='text-blue-600 border border-blue-600 w-3/4 rounded-3xl p-2 hover:bg-blue-600 hover:text-white'
+                  onClick={(e) => {
+                    handleSubmit();
+                    close();
+                  }}
+                >
+                  Confirm Edit
+                </button>
+              )}
             </div>
           </div>
         </Box>
