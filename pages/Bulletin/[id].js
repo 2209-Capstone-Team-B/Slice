@@ -7,6 +7,7 @@ import {
   fetchEcosystemTasks,
   fetchEcosystemMembers,
   fetchTaskHistory,
+  fetchAnnouncements,
 } from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
 import AddTask from '../../Components/AddTask';
@@ -41,6 +42,7 @@ import LeaveOrg from '../../Components/LeaveOrg.js';
 import BarGraph from '../../Components/BarGraph';
 import CompleteTask from '../../Components/CompleteTask';
 import EditDescription from '../../Components/EditDescription';
+import EcoAnnouncement from '../../Components/EcoAnnouncement';
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -119,11 +121,13 @@ export default function ecosystem() {
     const unsubscribeEcosystem = dispatch(fetchEcosystem(id));
     const unsubscribeEcosystemTasks = dispatch(fetchEcosystemTasks(id));
     const unsubscribeTaskHistory = dispatch(fetchTaskHistory(id));
+    const unsubscribeAnnouncements = dispatch(fetchAnnouncements(id));
     return () => {
       unsubscribeEcosystemMembers();
       unsubscribeEcosystemTasks();
       unsubscribeEcosystem();
       unsubscribeTaskHistory();
+      unsubscribeAnnouncements();
     };
   }, [id]);
 
@@ -202,7 +206,7 @@ export default function ecosystem() {
           aria-labelledby='modal-modal-title'
           aria-describedby='modal-modal-description'
         >
-          <Box sx={style}>
+          <Box className='overflow-auto' sx={style}>
             <Box sx={{ width: '100%' }}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs
@@ -212,28 +216,39 @@ export default function ecosystem() {
                   TabIndicatorProps={{ style: { background: '#FEF3C7' } }}
                   textColor='inherit'
                 >
-                  <Tab label='About' {...a11yProps(0)} />
+                  <Tab label='Messages' {...a11yProps(0)} />
+                  <Tab label='About' {...a11yProps(1)} />
                   <Tab
                     label={`Members (${ecosystemMembers.length})`}
-                    {...a11yProps(1)}
+                    {...a11yProps(2)}
                   />
-                  <Tab label='Task History' {...a11yProps(2)} />
+                  <Tab label='Task History' {...a11yProps(3)} />
                 </Tabs>
               </Box>
-              <TabPanel value={value} index={0} className='p-1'>
+              <TabPanel value={value} index={0}>
+                <Typography
+                  id='modal-modal-title'
+                  component='div'
+                  className='text-center underline text-lg'
+                >
+                  Messages for '{singleEcosystem.orgName}'
+                </Typography>
+                <EcoAnnouncement />
+              </TabPanel>
+              <TabPanel value={value} index={1} className='p-1'>
                 Ecosystem Name: {singleEcosystem.orgName}
               </TabPanel>
-              <TabPanel value={value} index={0} className='p-1'>
+              <TabPanel value={value} index={1} className='p-1'>
                 Description: {singleEcosystem.description}
               </TabPanel>
-              {value === 0 && (
+              {value === 1 && (
                 <EditDescription
                   curDescription={singleEcosystem.description}
                   orgId={singleEcosystem.id}
                   curEcoName={singleEcosystem.orgName}
                 />
               )}
-              <TabPanel value={value} index={1}>
+              <TabPanel value={value} index={2}>
                 <Typography
                   id='modal-modal-title'
                   component='div'
@@ -247,7 +262,7 @@ export default function ecosystem() {
                   </div>
                 ))}
               </TabPanel>
-              <TabPanel value={value} index={2}>
+              <TabPanel value={value} index={3}>
                 <Typography
                   id='modal-modal-title'
                   component='div'
