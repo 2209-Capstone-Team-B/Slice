@@ -1,14 +1,10 @@
-import axios from 'axios';
 import {
   collection,
   query,
   where,
   onSnapshot,
-  doc,
-  getDoc,
-  getDocs,
-  deleteDoc,
   orderBy,
+  limit,
 } from 'firebase/firestore';
 import { db } from '../firebase.js';
 
@@ -24,7 +20,9 @@ const _getANNOUNCEMENTS = (announcements) => {
 export const fetchAnnouncements = (ecoId) => (dispatch) => {
   const announcements = query(
     collection(db, 'Messages'),
-    where('sentTo', '==', ecoId)
+    where('sentTo', '==', ecoId),
+    orderBy('created', 'desc'),
+    limit(50)
   );
   const subscriber = onSnapshot(announcements, (querySnapshot) => {
     const userAnnouncements = querySnapshot.docs.map((doc) => ({

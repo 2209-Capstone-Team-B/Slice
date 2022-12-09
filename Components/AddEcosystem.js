@@ -124,6 +124,7 @@ export default function AddEcosystem({ id, user }) {
               name='name'
               placeholder='Enter a name for your ecosystem...'
               value={name}
+              maxlength='16'
               onChange={(e) => setName(e.target.value)}
             />
             <label className='float-left w-16 text-left'>Username:</label>
