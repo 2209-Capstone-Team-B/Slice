@@ -75,7 +75,6 @@ export default function AddEcosystem({ id, user }) {
         description,
       }))
       setName('');
-      setUsername('');
       setType('Bulletin');
       setDescription('');
       setAdded(true);

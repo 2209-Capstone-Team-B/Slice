@@ -93,6 +93,8 @@ const AuthPage = () => {
     await updateDb().catch(console.error);
   };
 
+  if (currentUser) router.push("/dashboard");
+
   return (
     <div className="flex items-center justify-center sm:h-screen mb-0 bg-center bg-cover custom-img border">
       <div className="absolute top-0 right-0 bottom-0 left-0 bg-black/70 z-[2]" />

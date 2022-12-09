@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Chart = ({ completed, incomplete }) => {
+  useEffect(() => {
+    ChartJS.defaults.plugins.title.text = 'My Tasks';
+    ChartJS.defaults.plugins.title.display = true;
+    ChartJS.defaults.plugins.legend.display = true;
+  });
   const data = {
     labels: ['Completed', 'Incomplete'],
     datasets: [
