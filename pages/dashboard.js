@@ -125,10 +125,13 @@ export default function Dashboard() {
             <ul className="list-decimal p-3">
               {notifications.length > 0 ? (
                 notifications.map((note) => (
-                  <li className="p-2" key={note.id}>
-                    "{note.userName}" in "{note.orgName}" completed your task "
-                    {note.name}" on {note.completedAt.toDate().toUTCString()}
-                  </li>
+                  <>
+                    <li className='p-2' key={note.id}>
+                      "{note.userName}" in "{note.orgName}" completed your task
+                      "{note.name}" on {note.completedAt.toDate().toUTCString()}
+                    </li>
+                    <hr className='bg-gray-500 rounded-xl h-0.5' />
+                  </>
                 ))
               ) : (
                 <DialogContentText className="text-center">
