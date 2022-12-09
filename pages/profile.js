@@ -23,24 +23,25 @@ export default function Dashboard() {
   if (!user) router.push("/");
 
   const passUser = auth.currentUser;
-
-  useEffect(() => {
-    if (user && Object.keys(data).length !== 0) {
-      const updateDb = async () => {
-        await setDoc(
-          doc(db, "Users", user.uid),
-          {
-            email: user.email,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            created: serverTimestamp(),
-          },
-          { merge: true }
-        );
-      };
-      updateDb().catch(console.error);
-    }
-  }, [user]);
+  if (user) {
+    useEffect(() => {
+      if (user && Object.keys(data).length !== 0) {
+        const updateDb = async () => {
+          await setDoc(
+            doc(db, "Users", user.uid),
+            {
+              email: user.email,
+              firstName: data.firstName,
+              lastName: data.lastName,
+              created: serverTimestamp(),
+            },
+            { merge: true }
+          );
+        };
+        updateDb().catch(console.error);
+      }
+    }, [user]);
+  }
 
   return (
     <div className="mt-10">

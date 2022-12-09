@@ -23,12 +23,14 @@ export default function Dashboard() {
   const notifications = useSelector((state) => state.notifications);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const unsubscribe = dispatch(fetchTasks(user?.uid || userObject.id));
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  if (user) {
+    useEffect(() => {
+      const unsubscribe = dispatch(fetchTasks(user?.uid || userObject.id));
+      return () => {
+        unsubscribe();
+      };
+    }, []);
+  }
 
   const completedTasks = tasks.filter((task) => task.completed === true);
   const incompleteTasks = tasks.filter((task) => task.completed === false);
