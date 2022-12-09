@@ -1,5 +1,7 @@
 import axios from "axios";
 import {
+  setDoc,
+  addDoc,
   collection,
   query,
   where,
@@ -8,6 +10,18 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { db } from "../firebase.js";
+
+function randomInteger(max) {
+  return Math.floor(Math.random() * (max + 1));
+}
+
+function randomRgbColor() {
+  let r = randomInteger(255);
+  let g = randomInteger(255);
+  let b = randomInteger(255);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
 
 // Actions
 
@@ -47,6 +61,27 @@ export const fetchEcosystems = (userId) => (dispatch) => {
   });
   return subscriber;
 };
+
+export const addEcosystem = (eco) => async (dispatch) => {
+  const { id, name, type, userName, description } = eco
+  const docRef = await addDoc(collection(db, 'Ecosystem'), {
+    orgName: name,
+    type,
+    description
+  });
+  const docSnap = await getDoc(docRef);
+  console.log(id);
+  addDoc(collection(db, 'EcosystemMembers'), {
+    userId: id,
+    userName,
+    ecosystemId: docSnap.id,
+    currencyAmount: 0,
+    color: randomRgbColor(),
+  });
+  if (type === "Competition"){
+    setDoc(doc(db, "Ecosystem", docSnap.id, "Admin", id), {userId: id})
+  }
+}
 
 // Initial State
 const initialState = [];

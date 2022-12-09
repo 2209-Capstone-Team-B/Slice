@@ -63,8 +63,6 @@ export default function ecosystem() {
     (task) => task.assignedTo === null
   );
 
-  const getTasks = async (id) => await dispatch(fetchEcosystemTasks(id));
-
   const toggleCompletedTask = async (id, status) => {
     //Build a query to find the right ecosystemMember
     const q = query(
@@ -329,7 +327,7 @@ export default function ecosystem() {
             <p className='text-center font-serif text-blue-600 pt-2'>
               Unassigned Tasks
             </p>
-            <AddTask id={id} getTasks={getTasks} />
+            <AddTask id={id} />
             <div className='flex flex-wrap justify-center'>
               {unclaimedTasks.length ? (
                 unclaimedTasks.map((task, i) => (
@@ -352,7 +350,7 @@ export default function ecosystem() {
         </div>
         <div className='flex h-1/2 w-full justify-center'>
           <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
-            <BarGraph ecosystemMembers={ecosystemMembers} className='w-full' />
+            <BarGraph ecosystemMembers={ecosystemMembers} title = 'Number of Tasks Completed' className='w-full' />
           </div>
         </div>
       </div>

@@ -12,11 +12,11 @@ import { auth, db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Alert from '@mui/material/Alert';
 
-export default function AddTask({ id}) {
+export default function AddCompetitionTask({ id }) {
   const [user, loading] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
-  const [due, setDue] = React.useState('');
+  const [reward, setReward] = React.useState(1);
   const [added, setAdded] = React.useState(false);
   const [error, setError] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -31,15 +31,15 @@ export default function AddTask({ id}) {
     if (name.length > 0) {
       await axios.post(`/api/Ecosystem/${id}`, {
         name,
-        due,
+        reward: +reward,
         ecosystemId: id,
-        assignedTo: null,
+        /* assignedTo: null,
         owner: user.uid,
         completed: false,
-        completedAt: null,
+        completedAt: null, */
       });
       setName('');
-      setDue('');
+      setReward(1);
       setAdded(true);
       setError(false);
     } else {
@@ -80,17 +80,17 @@ export default function AddTask({ id}) {
           />
         </DialogContent>
         <DialogContent>
-          <DialogContentText className='w-screen'>Due</DialogContentText>
+          <DialogContentText className='w-screen'>Reward</DialogContentText>
           <TextField
             autoFocus
             margin='dense'
             id='name'
-            type='date'
+            type='number'
             fullWidth
             variant='standard'
             name='name'
-            value={due}
-            onChange={(e) => setDue(e.target.value)}
+            value={reward}
+            onChange={(e) => setReward(+e.target.value)}
             className='w-screen'
           />
         </DialogContent>
