@@ -211,7 +211,7 @@ export default function ecosystem() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className='text-center text-5xl pt-6 font-serif text-blue-500'>
-        You are in Competition: {singleEcosystem.orgName}
+        {singleEcosystem.orgName}
         <div className='flex justify-center mt-5'>
           <button
             onClick={handleOpen}
@@ -385,7 +385,7 @@ export default function ecosystem() {
                   Unassigned Tasks
                 </p>
 
-                <AddTask id={id} getTasks={getTasks} />
+                <AddTask id={id} />
                 <div className='flex flex-wrap justify-center'>
                   {unclaimedTasks.length ? (
                     unclaimedTasks.map((task, i) => (
@@ -430,4 +430,3 @@ export default function ecosystem() {
     </DragDropContext>
   );
 }
-           
