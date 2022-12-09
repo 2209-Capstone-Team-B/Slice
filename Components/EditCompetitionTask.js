@@ -1,0 +1,216 @@
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
+import { db } from '../firebase';
+import { setDoc, doc, deleteDoc } from 'firebase/firestore';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+  pt: 0,
+  borderRadius: 5,
+  alignItems: 'center',
+};
+
+// Child modal to edit a task
+
+function EditModal({ close, task }) {
+  const [name, setName] = React.useState(task.name);
+  const [reward, setReward] = React.useState(task.reward);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = (e, closing) => {
+    if (closing) {
+      setOpen(false);
+      return;
+    }
+    setDoc(
+      doc(db, 'Tasks', task.id),
+      { name, reward},
+      { merge: true }
+    );
+    setOpen(false);
+  };
+  return (
+    <React.Fragment>
+      <button
+        className='text-blue-600 border border-blue-600 rounded-3xl p-2 w-1/3 hover:bg-blue-600 hover:text-white'
+        onClick={handleOpen}
+      >
+        Edit Task
+      </button>
+      <Modal
+        hideBackdrop
+        open={open}
+        onClose={(e) => handleClose(e, true)}
+        aria-labelledby='child-modal-title'
+        aria-describedby='child-modal-description'
+      >
+        <Box sx={{ ...style, width: 450, height: 350 }}>
+          <div className='flex flex-col justify-around h-full'>
+            <CloseIcon
+              className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
+              onClick={(e) => handleClose(e, true)}
+            />
+            <h2
+              id='child-modal-title'
+              className='flex items-center justify-center'
+            >
+              Editing Task
+            </h2>
+            <div className='flex'>
+              <div className='flex flex-col justify-around w-1/4'>
+                <p className='text-right pt-2'>Name</p>
+                <p className='text-right'>Reward</p>
+              </div>
+              <form className='w-3/4'>
+                <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className='block border-2 m-auto my-4 w-5/6 border-black text-center rounded-xl'
+                ></input>
+                <input
+                  value={reward}
+                  type='number'
+                  onChange={(e) => setReward(+e.target.value)}
+                  className='block border-2 m-auto my-4 w-5/6 border-black text-center rounded-xl'
+                ></input>
+              </form>
+            </div>
+            <div className='flex justify-center w-full'>
+              <button
+                className='text-blue-600 border border-blue-600 w-3/4 rounded-3xl p-2 hover:bg-blue-600 hover:text-white'
+                onClick={() => {
+                  handleClose();
+                  close();
+                }}
+              >
+                Confirm Edits
+              </button>
+            </div>
+          </div>
+        </Box>
+      </Modal>
+    </React.Fragment>
+  );
+}
+
+// Child modal to delete a task
+
+function DeleteModal({ close, task, uderId }) {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = async (closing) => {
+    if (closing) {
+      setOpen(false);
+      return;
+    }
+    deleteDoc(doc(db, 'Tasks', task.id));
+    setOpen(false);
+  };
+
+  return (
+    <React.Fragment>
+      <button
+        onClick={handleOpen}
+        className='text-red-600 border border-red-600 rounded-3xl p-2 w-1/3 hover:bg-red-600 hover:text-white'
+      >
+        Delete Task
+      </button>
+      <Modal
+        hideBackdrop
+        open={open}
+        onClose={(e) => handleClose(e, true)}
+        aria-labelledby='child-modal-title'
+        aria-describedby='child-modal-description'
+      >
+        <Box
+          sx={{
+            ...style,
+            width: 300,
+            height: 135,
+            boxShadow: '2px 5px 30px red',
+          }}
+        >
+          <div className='w-full flex flex-col items-center pt-4'>
+            <h2 id='child-modal-title' className='p-2'>
+              No going back from here!
+              <CloseIcon
+                className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
+                onClick={(e) => handleClose(e, true)}
+              />
+            </h2>
+            <p id='child-modal-description'></p>
+            <button
+              onClick={() => {
+                handleClose();
+                close();
+              }}
+              className='text-red-600 border border-red-600 rounded-3xl p-2 w-3/4 hover:bg-red-600 hover:text-white'
+            >
+              Comfirm Delete
+            </button>
+          </div>
+        </Box>
+      </Modal>
+    </React.Fragment>
+  );
+}
+
+//Parent modal for deciding what type of edit you would like to make -- Update or Delete
+
+export default function EditCompetitionTask({ task }) {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <div className='flex justify-around'>
+        <button
+          onClick={handleOpen}
+          className='text-blue-600 border border-blue-600 rounded-3xl p-2 hover:bg-blue-600 hover:text-white'
+        >
+          Edit Task
+        </button>
+      </div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby='parent-modal-title'
+        aria-describedby='parent-modal-description'
+      >
+        <Box sx={{ ...style, width: 400 }}>
+          <div className='flex flex-col items-center p-4'>
+            <CloseIcon
+              className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
+              onClick={handleClose}
+            />
+            <h2 id='parent-modal-title'>Task: {task.name}</h2>
+            <p>Reward: {task.reward}</p>
+          </div>
+          <div className='flex justify-around'>
+            <EditModal task={task} close={handleClose} />
+            <DeleteModal task={task} close={handleClose} />
+          </div>
+        </Box>
+      </Modal>
+    </div>
+  );
+}

@@ -13,7 +13,7 @@ import {
 } from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
 import AddCompetitionTask from '../../Components/AddCompetitionTask.js'
-import EditTask from '../../Components/EditTask';
+import EditCompetitionTask from '../../Components/EditCompetitionTask.js';
 import InvitePeople from '../../Components/InvitePeople';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
@@ -246,14 +246,15 @@ export default function ecosystem() {
                         return (
                           <div className='flex' key={idx}>
                             {isAdmin && (
-                               <>
+
                               <ApproveRequest
                                 request={request}
                                /*  toggle={toggleCompletedTask} */
                               />
+                              )}
                               <DenyRequest request={request} />
-                              </>
-                            )}
+
+
                             <li key={idx} className='text-left p-1 ml-2'>
                               {request.name}
                             </li>
@@ -280,7 +281,7 @@ export default function ecosystem() {
                   >
                     {task.name} : {task.reward} point reward
                     <div className='flex justify-around p-3'>
-                     {isAdmin && (<EditTask task={task} />)}
+                     {isAdmin && (<EditCompetitionTask task={task} />)}
                       <ClaimReward task={task} user={user} />
                     </div>
                   </div>
