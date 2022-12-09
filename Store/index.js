@@ -14,6 +14,7 @@ import singleTaskHistory from './taskHistory.js'
 import singleRewardRequests from './rewardRequests.js'
 import isAdmin from './isAdmin.js'
 import announcements from './announcements';
+import rewardHistory from './rewardHistory.js'
 
 const reducer = combineReducers({
   loggedInUser,
@@ -28,6 +29,7 @@ const reducer = combineReducers({
   singleRewardRequests,
   isAdmin,
   announcements,
+  rewardHistory
 });
 
 const middleware = composeWithDevTools(
@@ -49,3 +51,4 @@ export * from './taskHistory.js'
 export * from './rewardRequests.js'
 export * from './isAdmin.js'
 export * from './announcements.js';
+export * from './rewardHistory.js'
