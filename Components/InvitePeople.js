@@ -64,6 +64,9 @@ const InvitePeople = () => {
           pending: true,
         });
         setInvited(true);
+        setTimeout(() => {
+          handleClose();
+        }, 1000);
       }
     } else {
       setError(true);
@@ -111,7 +114,7 @@ const InvitePeople = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSubmit}>
+          <Button disabled={invited} onClick={handleSubmit}>
             {invited ? <Alert severity='success'>Invited</Alert> : 'Invite'}
           </Button>
           {error && <Alert severity='error'>User not found</Alert>}

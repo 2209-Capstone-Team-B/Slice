@@ -5,7 +5,13 @@ import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import { db } from '../firebase';
 import { useSelector } from 'react-redux';
-import { setDoc, doc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import {
+  setDoc,
+  doc,
+  addDoc,
+  collection,
+  serverTimestamp,
+} from 'firebase/firestore';
 
 const style = {
   position: 'absolute',
@@ -23,11 +29,11 @@ const style = {
 };
 
 //Parent modal for deciding what type of edit you would like to make -- Edit or Delete
-export default function ClaimReward({ task, user}) {
-  const {
-    ecosystemMembers,
-  } = useSelector((state) => state);
-  const userName = ecosystemMembers.find(member=>member.userId===user.uid).userName
+export default function ClaimReward({ task, user }) {
+  const { ecosystemMembers } = useSelector((state) => state);
+  const userName = ecosystemMembers.find(
+    (member) => member.userId === user.uid
+  ).userName;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -37,9 +43,13 @@ export default function ClaimReward({ task, user}) {
       setOpen(false);
       return;
     }
-    addDoc(
-      collection(db, 'RewardRequests'), {...task, approved: false, userId: user.uid, userName, created: serverTimestamp()}
-    );
+    addDoc(collection(db, 'RewardRequests'), {
+      ...task,
+      approved: false,
+      userId: user.uid,
+      userName,
+      created: serverTimestamp(),
+    });
     setOpen(false);
   };
 
@@ -48,7 +58,7 @@ export default function ClaimReward({ task, user}) {
       <div className='flex justify-around'>
         <button
           onClick={handleOpen}
-          className='text-green-600 border border-green-600 rounded-3xl p-2 hover:bg-green-600 hover:text-white'
+          className='bg-emerald-400 rounded-3xl py-1 px-3 text-sm hover:bg-emerald-500'
         >
           Claim Task
         </button>
@@ -65,12 +75,17 @@ export default function ClaimReward({ task, user}) {
               className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
               onClick={(e) => handleClose(e, true)}
             />
-            <h2 id='parent-modal-title'>Task: {task.name}</h2>
+            <h2 id='parent-modal-title'>
+              <strong>Task:</strong> {task.name}
+            </h2>
             {/* <p>Reward: {task.reward} points</p> */}
-            <p>You will receive {task.reward} points when your claim is approved</p>
+            <br></br>
+            <p>
+              You will receive {task.reward} points when your claim is approved
+            </p>
             <button
               onClick={(e) => handleClose(e, false)}
-              className='text-green-600 border border-green-600 rounded-3xl px-2 m-4 hover:bg-green-600 hover:text-white'
+              className='bg-emerald-400 rounded-3xl py-1 mt-4 px-3 text-sm hover:bg-emerald-500'
             >
               Confirm Request
             </button>

@@ -10,10 +10,11 @@ import {
   fetchRequests,
   fetchAdmin,
   testAdmin,
-  fetchRewardHistory
+  fetchRewardHistory,
+  fetchAnnouncements,
 } from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
-import AddCompetitionTask from '../../Components/AddCompetitionTask.js'
+import AddCompetitionTask from '../../Components/AddCompetitionTask.js';
 import EditCompetitionTask from '../../Components/EditCompetitionTask.js';
 import InvitePeople from '../../Components/InvitePeople';
 import Modal from '@mui/material/Modal';
@@ -24,6 +25,7 @@ import ClaimReward from '../../Components/ClaimReward';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { BiCog, BiMessageDetail } from 'react-icons/bi';
+import { BsFillCircleFill } from 'react-icons/bs';
 import {
   setDoc,
   doc,
@@ -44,8 +46,9 @@ import Container from '@mui/material/Container';
 import LeaveOrg from '../../Components/LeaveOrg.js';
 import BarGraph from '../../Components/BarGraph';
 import ApproveRequest from '../../Components/ApproveRequest.js';
-import DenyRequest from '../../Components/DenyRequest.js'
+import DenyRequest from '../../Components/DenyRequest.js';
 import EditDescription from '../../Components/EditDescription';
+import EcoAnnouncement from '../../Components/EcoAnnouncement';
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -62,27 +65,28 @@ export default function ecosystem() {
     singleTaskHistory,
     singleRewardRequests,
     isAdmin,
-    rewardHistory
+    rewardHistory,
   } = useSelector((state) => state);
-
 
   useEffect(() => {
     const unsubscribeEcosystemMembers = dispatch(fetchEcosystemMembers(id));
     const unsubscribeEcosystem = dispatch(fetchEcosystem(id));
     const unsubscribeEcosystemTasks = dispatch(fetchEcosystemTasks(id));
     const unsubscribeTaskHistory = dispatch(fetchTaskHistory(id));
-    const unsubscribeRewardRequests = dispatch(fetchRequests(id))
-    const unsubscribeAdmin = dispatch(fetchAdmin(id, user?.uid))
+    const unsubscribeRewardRequests = dispatch(fetchRequests(id));
+    const unsubscribeAdmin = dispatch(fetchAdmin(id, user?.uid));
+    const unsubscribeAnnouncements = dispatch(fetchAnnouncements(id));
     //dispatch(testAdmin(id, user?.uid))
-    const unsubscribeRewardHistory = dispatch(fetchRewardHistory(id))
+    const unsubscribeRewardHistory = dispatch(fetchRewardHistory(id));
     return () => {
       unsubscribeEcosystemMembers();
       unsubscribeEcosystemTasks();
       unsubscribeEcosystem();
       unsubscribeTaskHistory();
-      unsubscribeRewardRequests()
-      unsubscribeAdmin()
-      unsubscribeRewardHistory()
+      unsubscribeRewardRequests();
+      unsubscribeAdmin();
+      unsubscribeRewardHistory();
+      unsubscribeAnnouncements();
     };
   }, [id]);
 
@@ -160,7 +164,7 @@ export default function ecosystem() {
           aria-labelledby='modal-modal-title'
           aria-describedby='modal-modal-description'
         >
-          <Box sx={style}>
+          <Box className='overflow-auto' sx={style}>
             <Box sx={{ width: '100%' }}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs
@@ -170,53 +174,70 @@ export default function ecosystem() {
                   TabIndicatorProps={{ style: { background: '#FEF3C7' } }}
                   textColor='inherit'
                 >
-                  <Tab label='About' {...a11yProps(0)} />
+                  <Tab label='Messages' {...a11yProps(0)} />
+                  <Tab label='About' {...a11yProps(1)} />
                   <Tab
                     label={`Members (${ecosystemMembers.length})`}
-                    {...a11yProps(1)}
+                    {...a11yProps(2)}
                   />
-                  <Tab label='Task History' {...a11yProps(2)} />
+                  <Tab label='Task History' {...a11yProps(3)} />
                 </Tabs>
               </Box>
-              <TabPanel value={value} index={0} className='p-1'>
+              <TabPanel value={value} index={0}>
+                <Typography
+                  id='modal-modal-title'
+                  component='div'
+                  className='text-center underline text-lg'
+                >
+                  Messages for '{singleEcosystem.orgName}'
+                </Typography>
+                <EcoAnnouncement />
+              </TabPanel>
+              <TabPanel value={value} index={1} className='p-1'>
                 Ecosystem Name: {singleEcosystem.orgName}
               </TabPanel>
-              <TabPanel value={value} index={0} className='p-1'>
+              <TabPanel value={value} index={1} className='p-1'>
                 Description: {singleEcosystem.description}
               </TabPanel>
-              {value === 0 && (
+              {value === 1 && (
                 <EditDescription
                   curDescription={singleEcosystem.description}
                   orgId={singleEcosystem.id}
                   curEcoName={singleEcosystem.orgName}
                 />
               )}
-              <TabPanel value={value} index={1}>
-                <Typography
-                  id='modal-modal-title'
-                  component='div'
-                  className='text-center underline text-lg'
-                >
-                  {singleEcosystem.orgName} Members
-                </Typography>
-                {ecosystemMembers.map((member) => (
-                  <div key={member.id} className='flex justify-between'>
-                    {member.userName}
-                  </div>
-                ))}
-              </TabPanel>
               <TabPanel value={value} index={2}>
                 <Typography
                   id='modal-modal-title'
                   component='div'
+                  className='text-center text-lg'
+                >
+                  {singleEcosystem.orgName} Members
+                </Typography>
+                {ecosystemMembers.map((member) => (
+                  <ol key={member.id} className='flex justify-between'>
+                    <li className='flex items-center my-2'>
+                      <BsFillCircleFill color={member.color} className='mr-2' />
+                      {member.userName}
+                    </li>
+                  </ol>
+                ))}
+              </TabPanel>
+              <TabPanel value={value} index={3}>
+                <Typography
+                  id='modal-modal-title'
+                  component='div'
                   className='text-center underline text-lg'
                 >
-                  Approved Task History (Last 30 Days)
+                  Completed Task History (Last 30 Days)
                 </Typography>
-                {rewardHistory.map((task) => (
-                  <div key={task.rewardId}>
-                    "{task.userName}" completed "{task.name}" on{' '}
-                    {task.created.toDate().toUTCString()}
+                {singleTaskHistory.map((task) => (
+                  <div key={task.id}>
+                    <div>
+                      "{task.userName}" completed "{task.name}"
+                    </div>
+                    <small>{task.completedAt.toDate().toUTCString()}</small>
+                    <hr className='my-2' />
                   </div>
                 ))}
               </TabPanel>
@@ -244,24 +265,25 @@ export default function ecosystem() {
                   <p className='text-lg font-bold'>{member.userName}</p>
                   <ol className='list-decimal p-3'>
                     {singleRewardRequests.map((request, idx) => {
-                      if (
-                        request.userId === member.userId
-                      ) {
+                      if (request.userId === member.userId) {
                         return (
-                          <div className='flex' key={idx}>
-                            {isAdmin && (
-
-                              <ApproveRequest
-                                request={request}
-                               /*  toggle={toggleCompletedTask} */
-                              />
+                          <div className='flex flex-col' key={idx}>
+                            <div className='flex justify-around'>
+                              {isAdmin && (
+                                <ApproveRequest
+                                  request={request}
+                                  /*  toggle={toggleCompletedTask} */
+                                />
                               )}
+
                               <DenyRequest request={request} />
-
-
-                            <li key={idx} className='text-left p-1 ml-2'>
-                              {request.name}
-                            </li>
+                            </div>
+                            <div className='flex'>
+                              <li key={idx} className='text-left p-1 ml-2'>
+                                {request.name}
+                              </li>
+                            </div>
+                            <hr className='my-2' />
                           </div>
                         );
                       }
@@ -272,10 +294,8 @@ export default function ecosystem() {
             </div>
           </div>
           <div className='border border-gray-200 rounded-3xl justify-center w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
-            <p className='text-center font-serif text-blue-600 pt-2'>
-              Tasks
-            </p>
-           {isAdmin && (<AddCompetitionTask id={id} />)}
+            <p className='text-center font-serif text-blue-600 pt-2'>Tasks</p>
+            {isAdmin && <AddCompetitionTask id={id} />}
             <div className='flex flex-wrap justify-center'>
               {singleEcosystemTasks.length > 0 ? (
                 singleEcosystemTasks.map((task, i) => (
@@ -285,7 +305,7 @@ export default function ecosystem() {
                   >
                     {task.name} : {task.reward} point reward
                     <div className='flex justify-around p-3'>
-                     {isAdmin && (<EditCompetitionTask task={task} />)}
+                      {isAdmin && <EditCompetitionTask task={task} />}
                       <ClaimReward task={task} user={user} />
                     </div>
                   </div>
@@ -298,11 +318,14 @@ export default function ecosystem() {
         </div>
         <div className='flex h-1/2 w-full justify-center'>
           <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
-            <BarGraph ecosystemMembers={ecosystemMembers} title = "Leaderboard"className='w-full' />
+            <BarGraph
+              ecosystemMembers={ecosystemMembers}
+              title='Leaderboard'
+              className='w-full'
+            />
           </div>
         </div>
       </div>
     </>
   );
 }
-

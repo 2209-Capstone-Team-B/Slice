@@ -12,13 +12,13 @@ const style = {
   left: '78%',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
   pt: 0,
   borderRadius: 5,
   alignItems: 'center',
   overflow: 'scroll',
+  paddingTop: 5,
 };
 
 //Parent modal for deciding what type of edit you would like to make -- Edit or Delete
@@ -45,7 +45,7 @@ export default function ClaimTask({ task, user }) {
       <div className='flex justify-around'>
         <button
           onClick={handleOpen}
-          className='text-green-600 border border-green-600 rounded-3xl p-2 hover:bg-green-600 hover:text-white'
+          className='bg-emerald-400 rounded-3xl py-1 px-3 text-sm hover:bg-emerald-500'
         >
           Claim Task
         </button>
@@ -56,21 +56,33 @@ export default function ClaimTask({ task, user }) {
         aria-labelledby='parent-modal-title'
         aria-describedby='parent-modal-description'
       >
-        <Box sx={{ ...style, width: 300, height: 150 }}>
-          <div className='flex flex-col items-center p-4'>
+        <Box sx={{ ...style, width: 450, height: 250 }}>
+          <div className='flex flex-col items-left p-4'>
             <CloseIcon
               className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
               onClick={(e) => handleClose(e, true)}
             />
-            <h2 id='parent-modal-title'>Task: {task.name}</h2>
-            <p>{task.completed ? 'Status: Completed' : 'Status: Incomplete'}</p>
-            <p>Due: {task.due}</p>
-            <button
-              onClick={(e) => handleClose(e, false)}
-              className='text-green-600 border border-green-600 rounded-3xl px-2 m-4 hover:bg-green-600 hover:text-white'
-            >
-              Confirm!
-            </button>
+            <h2 id='parent-modal-title'>
+              <span className='font-semibold'>Task:</span> {task.name}
+            </h2>
+            <hr className='m-1' />
+            <p>
+              <span className='font-semibold'>Status: </span>{' '}
+              {task.completed ? 'Completed' : 'Incomplete'}
+            </p>
+            <hr className='m-1' />
+            <p>
+              <span className='font-semibold'>Due:</span> {task.due}
+            </p>
+            <hr className='m-1' />
+            <div className='flex justify-center items-end'>
+              <button
+                onClick={(e) => handleClose(e, false)}
+                className='bg-emerald-500 rounded-3xl w-1/3 mt-6 hover:bg-emerald-600'
+              >
+                Confirm
+              </button>
+            </div>
           </div>
         </Box>
       </Modal>

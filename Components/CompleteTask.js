@@ -19,6 +19,7 @@ const style = {
   p: 4,
   pt: 0,
   borderRadius: 5,
+  paddingTop: 4,
   alignItems: 'center',
   overflow: 'scroll',
 };
@@ -64,7 +65,7 @@ export default function CompleteTask({ task, toggle }) {
         aria-labelledby='parent-modal-title'
         aria-describedby='parent-modal-description'
       >
-        <Box sx={{ ...style, width: 300, height: 150 }}>
+        <Box sx={{ ...style, width: 350, height: 200 }}>
           <div className='flex flex-col items-center p-4'>
             <CloseIcon
               className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
@@ -77,9 +78,9 @@ export default function CompleteTask({ task, toggle }) {
                 toggle(task.id, task.completed);
                 handleClose();
               }}
-              className='text-green-600 border border-green-600 rounded-3xl px-2 m-4 hover:bg-green-600 hover:text-white'
+              className='bg-emerald-400 rounded-3xl py-1 m-4 px-3 text-sm hover:bg-emerald-500'
             >
-              Confirm Complete!
+              Confirm Complete
             </button>
           </div>
         </Box>
