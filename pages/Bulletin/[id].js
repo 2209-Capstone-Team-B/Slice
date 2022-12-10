@@ -42,6 +42,7 @@ import CompleteTask from "../../Components/CompleteTask";
 import EditDescription from "../../Components/EditDescription";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import EcoAnnouncement from "../../Components/EcoAnnouncement";
+import Instructions from "../../Components/Instructions";
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -211,6 +212,7 @@ export default function ecosystem() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="text-center text-5xl pt-6 font-serif text-blue-500">
+        <Instructions />
         You are in Competition: {singleEcosystem.orgName}
         <div className="flex justify-center mt-5">
           <button
