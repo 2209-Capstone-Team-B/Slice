@@ -211,10 +211,10 @@ export default function ecosystem() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="text-center text-5xl pt-6 font-serif text-blue-500">
+      <div className='text-center text-5xl pt-6 font-serif text-blue-500'>
         <Instructions />
-        You are in Competition: {singleEcosystem.orgName}
-        <div className="flex justify-center mt-5">
+        {singleEcosystem.orgName}
+        <div className='flex justify-center mt-5'>
           <button
             onClick={handleOpen}
             className="flex text-sm items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300"
@@ -388,7 +388,7 @@ export default function ecosystem() {
                 </p>
 
                 <AddTask id={id} />
-                <div className="flex flex-wrap justify-center">
+                <div className='flex flex-wrap justify-center'>
                   {unclaimedTasks.length ? (
                     unclaimedTasks.map((task, i) => (
                       <Draggable key={task.id} draggableId={task.id} index={i}>

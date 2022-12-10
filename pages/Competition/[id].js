@@ -9,7 +9,8 @@ import {
   fetchTaskHistory,
   fetchRequests,
   fetchAdmin,
-  testAdmin
+  testAdmin,
+  fetchRewardHistory
 } from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
 import AddCompetitionTask from '../../Components/AddCompetitionTask.js'
@@ -60,7 +61,8 @@ export default function ecosystem() {
     ecosystemMembers,
     singleTaskHistory,
     singleRewardRequests,
-    isAdmin
+    isAdmin,
+    rewardHistory
   } = useSelector((state) => state);
 
 
@@ -72,6 +74,7 @@ export default function ecosystem() {
     const unsubscribeRewardRequests = dispatch(fetchRequests(id))
     const unsubscribeAdmin = dispatch(fetchAdmin(id, user?.uid))
     //dispatch(testAdmin(id, user?.uid))
+    const unsubscribeRewardHistory = dispatch(fetchRewardHistory(id))
     return () => {
       unsubscribeEcosystemMembers();
       unsubscribeEcosystemTasks();
@@ -79,6 +82,7 @@ export default function ecosystem() {
       unsubscribeTaskHistory();
       unsubscribeRewardRequests()
       unsubscribeAdmin()
+      unsubscribeRewardHistory()
     };
   }, [id]);
 
@@ -207,12 +211,12 @@ export default function ecosystem() {
                   component='div'
                   className='text-center underline text-lg'
                 >
-                  Completed Task History (Last 30 Days)
+                  Approved Task History (Last 30 Days)
                 </Typography>
-                {singleTaskHistory.map((task) => (
-                  <div key={task.id}>
+                {rewardHistory.map((task) => (
+                  <div key={task.rewardId}>
                     "{task.userName}" completed "{task.name}" on{' '}
-                    {task.completedAt.toDate().toUTCString()}
+                    {task.created.toDate().toUTCString()}
                   </div>
                 ))}
               </TabPanel>
