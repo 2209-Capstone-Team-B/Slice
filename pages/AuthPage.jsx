@@ -19,6 +19,10 @@ const AuthPage = () => {
   const { currentUser, login, signup } = useAuth();
   const myauth = getAuth();
 
+  useEffect(() => {
+    if (currentUser) router.push("/dashboard");
+  }, [currentUser]);
+
   const handleClick = () => {
     setSignIn(!signIn);
   };
@@ -27,7 +31,7 @@ const AuthPage = () => {
     if (signIn) {
       try {
         await login(email, password);
-        router.push("/dashboard");
+        // router.push("/dashboard");
       } catch (error) {
         console.log(">>>>>", error);
         setError("Incorrect Email or Password");
@@ -91,8 +95,6 @@ const AuthPage = () => {
     };
     await updateDb().catch(console.error);
   };
-
-  if (currentUser) router.push("/dashboard");
 
   return (
     <div className="flex items-center justify-center sm:h-screen mb-0 bg-center bg-cover custom-img border">
