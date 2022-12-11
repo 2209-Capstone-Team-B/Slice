@@ -77,13 +77,13 @@ export default function EditProfile({ close, userObject }) {
                 <input
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  className='block border-2 m-auto my-4 border-black text-center rounded-xl'
+                  className='block border border-1 m-auto my-4 border-black text-center rounded-xl'
                 ></input>
                 <input
                   value={lastName}
                   type='string'
                   onChange={(e) => setLastName(e.target.value)}
-                  className='block border-2 m-auto my-4 border-black text-center rounded-xl mt-6'
+                  className='block border border-1 m-auto my-4 border-black text-center rounded-xl mt-6'
                 ></input>
               </form>
             </div>

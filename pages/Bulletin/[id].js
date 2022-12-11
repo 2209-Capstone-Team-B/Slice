@@ -328,7 +328,7 @@ export default function ecosystem() {
         </Modal>
       </div>
       <div className="bg-white h-screen flex-col min-w-full pt-0 p-10">
-        <div className="flex h-1/2 w-full">
+        <div className="flex h-2/3 w-full">
           <div className="border border-gray-200 rounded-3xl w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]">
             <p className="text-center font-serif text-blue-600 pt-2">
               Group Members

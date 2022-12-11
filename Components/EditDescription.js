@@ -67,16 +67,18 @@ const EditDescription = ({ curDescription, orgId, curEcoName }) => {
           />
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
+          <DialogContent id='alert-dialog-description'>
             <form className='w-3/4'>
-              <label>Ecosystem Name: </label>
+            <DialogContentText id='alert-dialog-description'> <label>Ecosystem Name: </label> </DialogContentText>
               <input
                 type='text'
                 value={ecosystemName}
                 onChange={(e) => setEcosystemName(e.target.value)}
                 className='block border border-1 m-auto my-4 w-5/6 border-black rounded-xl p-2'
               />
+             <DialogContentText id='alert-dialog-description'>
               <label>Description: </label>
+              </DialogContentText>
               <textarea
                 value={description}
                 rows='5'
@@ -85,7 +87,7 @@ const EditDescription = ({ curDescription, orgId, curEcoName }) => {
                 className='block border border-1 m-auto my-4 w-5/6 border-black rounded-xl p-2'
               />
             </form>
-          </DialogContentText>
+          </DialogContent>
         </DialogContent>
         <DialogActions>
           <Button

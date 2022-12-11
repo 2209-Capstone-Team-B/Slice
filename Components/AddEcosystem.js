@@ -145,9 +145,10 @@ export default function AddEcosystem({ id, user }) {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+            <div className='flex items-end justify-start'>
             <label className='float-left w-16 text-left'>Type:</label>
             <select
-              className='block border border-1 m-auto my-6 w-3/4 border-black text-center rounded-xl'
+              className='block border border-1 m-auto mr-1.5 w-3/4 border-black text-center rounded-xl'
               type='date'
               name='type'
               onChange={(e) => setType(e.target.value)}
@@ -155,9 +156,15 @@ export default function AddEcosystem({ id, user }) {
               <option name='Bulletin'>Bulletin</option>
               <option name='Competition'>Competition</option>
             <option name='QuickTask' value="QuickTask">Quick Task</option>
-              </select> <Tooltip title={
+              </select>
+
+              <Tooltip className='ml-2' title={
         <div style={{ whiteSpace: 'pre-line' }}>{tip}</div>
     }><span>  <VscQuestion /></span></Tooltip>
+
+            </div>
+
+
             <div className='flex justify-center pt-5'>
               <Button
                 disabled={added}
