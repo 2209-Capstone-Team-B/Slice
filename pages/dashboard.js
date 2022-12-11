@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { auth, db } from '../firebase';
-import { serverTimestamp, doc, setDoc, toDate } from 'firebase/firestore';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
-import Chart from './Chart';
-import Skeleton from '@mui/material/Skeleton';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser, fetchTasks } from '../Store';
-import MyCalendar from './Calendar';
-import DialogContentText from '@mui/material/DialogContentText';
+import React, { useState } from "react";
+import { auth, db } from "../firebase";
+import { serverTimestamp, doc, setDoc, toDate } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import Chart from "./Chart";
+import Skeleton from "@mui/material/Skeleton";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUser, fetchTasks } from "../Store";
+import MyCalendar from "./Calendar";
+import DialogContentText from "@mui/material/DialogContentText";
+import Instructions from "../Components/Instructions";
 
 export default function Dashboard() {
   //const [tasks, setTasks] = useState([]);
@@ -39,6 +40,7 @@ export default function Dashboard() {
   // if (!user) router.push("/");
   return (
     <div>
+      <Instructions />
       {currentUser ? (
         <h2 className='text-center text-3xl pt-6 grid grid-auto-fit-sm font-serif text-blue-500'>
           Welcome to your slice, {userObject.firstName}!
@@ -126,11 +128,11 @@ export default function Dashboard() {
               {notifications.length > 0 ? (
                 notifications.map((note) => (
                   <>
-                    <li className='p-2' key={note.id}>
+                    <li className="p-2" key={note.id}>
                       "{note.userName}" in "{note.orgName}" completed your task
                       "{note.name}" on {note.completedAt.toDate().toUTCString()}
                     </li>
-                    <hr className='bg-gray-500 rounded-xl h-0.5' />
+                    <hr className="bg-gray-500 rounded-xl h-0.5" />
                   </>
                 ))
               ) : (

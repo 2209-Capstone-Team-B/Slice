@@ -74,9 +74,9 @@ export default function Dashboard() {
               <EditProfile userObject={userObject} />
               <EditPassword passUser={passUser} />
             </div>
-            {/* <div className="flex justify-around">
+            <div className="h-25">
               {user?.emailVerified ? "Thanks for verifying!" : <VerifyEmail />}
-            </div> */}
+            </div>
           </div>
         </div>
       </div>

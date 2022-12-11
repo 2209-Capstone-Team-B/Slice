@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 // import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 const OnboardingPage = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -31,7 +32,7 @@ const OnboardingPage = () => {
   const router = useRouter();
 
   const redirect = () => {
-    router.push('/AuthPage');
+    router.push("/AuthPage");
   };
 
   return (
@@ -56,7 +57,7 @@ const OnboardingPage = () => {
         </h1>
         {/* <Link href='/AuthPage'> */}
         <button
-          className='flex animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border'
+          className="flex animate-bounce rounded-full p-3 bg-green-400 text-white text-sm m-auto hover:text-gray-600 hover:border"
           onClick={redirect}
         >
           Get Started
