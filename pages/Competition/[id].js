@@ -13,7 +13,7 @@ import {
   fetchRewardHistory
 } from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
-import AddCompetitionTask from '../../Components/AddCompetitionTask.js'
+import AddCompetitionTask from '../../Components/AddCompetitionTask.js';
 import EditCompetitionTask from '../../Components/EditCompetitionTask.js';
 import InvitePeople from '../../Components/InvitePeople';
 import Modal from '@mui/material/Modal';
@@ -44,7 +44,7 @@ import Container from '@mui/material/Container';
 import LeaveOrg from '../../Components/LeaveOrg.js';
 import BarGraph from '../../Components/BarGraph';
 import ApproveRequest from '../../Components/ApproveRequest.js';
-import DenyRequest from '../../Components/DenyRequest.js'
+import DenyRequest from '../../Components/DenyRequest.js';
 import EditDescription from '../../Components/EditDescription';
 
 export default function ecosystem() {
@@ -65,14 +65,13 @@ export default function ecosystem() {
     rewardHistory
   } = useSelector((state) => state);
 
-
   useEffect(() => {
     const unsubscribeEcosystemMembers = dispatch(fetchEcosystemMembers(id));
     const unsubscribeEcosystem = dispatch(fetchEcosystem(id));
     const unsubscribeEcosystemTasks = dispatch(fetchEcosystemTasks(id));
     const unsubscribeTaskHistory = dispatch(fetchTaskHistory(id));
-    const unsubscribeRewardRequests = dispatch(fetchRequests(id))
-    const unsubscribeAdmin = dispatch(fetchAdmin(id, user?.uid))
+    const unsubscribeRewardRequests = dispatch(fetchRequests(id));
+    const unsubscribeAdmin = dispatch(fetchAdmin(id, user?.uid));
     //dispatch(testAdmin(id, user?.uid))
     const unsubscribeRewardHistory = dispatch(fetchRewardHistory(id))
     return () => {
@@ -143,7 +142,7 @@ export default function ecosystem() {
   return (
     <>
       <div className='text-center text-5xl pt-6 font-serif text-blue-500'>
-        {singleEcosystem.orgName}
+        You are in Competition: {singleEcosystem.orgName}
         <div className='flex justify-center mt-5'>
           <button
             onClick={handleOpen}
@@ -244,20 +243,16 @@ export default function ecosystem() {
                   <p className='text-lg font-bold'>{member.userName}</p>
                   <ol className='list-decimal p-3'>
                     {singleRewardRequests.map((request, idx) => {
-                      if (
-                        request.userId === member.userId
-                      ) {
+                      if (request.userId === member.userId) {
                         return (
                           <div className='flex' key={idx}>
                             {isAdmin && (
-
                               <ApproveRequest
                                 request={request}
-                               /*  toggle={toggleCompletedTask} */
+                                /*  toggle={toggleCompletedTask} */
                               />
-                              )}
-                              <DenyRequest request={request} />
-
+                            )}
+                            <DenyRequest request={request} />
 
                             <li key={idx} className='text-left p-1 ml-2'>
                               {request.name}
@@ -272,10 +267,8 @@ export default function ecosystem() {
             </div>
           </div>
           <div className='border border-gray-200 rounded-3xl justify-center w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
-            <p className='text-center font-serif text-blue-600 pt-2'>
-              Tasks
-            </p>
-           {isAdmin && (<AddCompetitionTask id={id} />)}
+            <p className='text-center font-serif text-blue-600 pt-2'>Tasks</p>
+            {isAdmin && <AddCompetitionTask id={id} />}
             <div className='flex flex-wrap justify-center'>
               {singleEcosystemTasks.length > 0 ? (
                 singleEcosystemTasks.map((task, i) => (
@@ -285,7 +278,7 @@ export default function ecosystem() {
                   >
                     {task.name} : {task.reward} point reward
                     <div className='flex justify-around p-3'>
-                     {isAdmin && (<EditCompetitionTask task={task} />)}
+                      {isAdmin && <EditCompetitionTask task={task} />}
                       <ClaimReward task={task} user={user} />
                     </div>
                   </div>
@@ -298,11 +291,14 @@ export default function ecosystem() {
         </div>
         <div className='flex h-1/2 w-full justify-center'>
           <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
-            <BarGraph ecosystemMembers={ecosystemMembers} title = "Leaderboard"className='w-full' />
+            <BarGraph
+              ecosystemMembers={ecosystemMembers}
+              title='Leaderboard'
+              className='w-full'
+            />
           </div>
         </div>
       </div>
     </>
   );
 }
-
