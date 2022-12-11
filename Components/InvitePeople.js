@@ -94,7 +94,7 @@ const InvitePeople = () => {
           />
         </DialogTitle>
         <DialogContent>
-          <DialogContentText className='w-screen'>
+          <DialogContentText className='w-[32rem]'>
             Enter Email Address:{' '}
           </DialogContentText>
           <TextField
@@ -107,7 +107,6 @@ const InvitePeople = () => {
             variant='standard'
             name='email'
             onChange={handleChange}
-            className='w-screen'
           />
         </DialogContent>
         <DialogActions>

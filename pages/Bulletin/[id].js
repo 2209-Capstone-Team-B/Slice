@@ -211,7 +211,7 @@ export default function ecosystem() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className='text-center text-5xl pt-6 font-serif text-blue-500'>
-        You are in Competition: {singleEcosystem.orgName}
+        {singleEcosystem.orgName}
         <div className='flex justify-center mt-5'>
           <button
             onClick={handleOpen}
@@ -327,7 +327,7 @@ export default function ecosystem() {
                       key={member.id}
                       className={`${
                         snapshot.isDraggingOver
-                          ? 'shadow-[0_15px_100px_-15px_rgba(0,0,0,0.3)]'
+                          ? 'shadow-[0_15px_100px_-15px_rgba(0,0,0,0.3)] shadow-[#005b96]'
                           : ''
                       } border border-gray-200 text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto shadow-md`}
                     >
@@ -385,7 +385,7 @@ export default function ecosystem() {
                   Unassigned Tasks
                 </p>
 
-                <AddTask id={id} getTasks={getTasks} />
+                <AddTask id={id} />
                 <div className='flex flex-wrap justify-center'>
                   {unclaimedTasks.length ? (
                     unclaimedTasks.map((task, i) => (
@@ -394,9 +394,9 @@ export default function ecosystem() {
                           <div
                             className={`${
                               snapshot.draggingOver
-                                ? 'shadow-[0_15px_100px_-15px_rgba(0,0,0,0.6)]'
+                                ? 'shadow-[0_15px_100px_-15px_rgba(0,0,0,0.6)] shadow-[#005b96] border border-blue-600'
                                 : ''
-                            } border border-gray-200 text-center w-3/4 rounded-2xl p-2 m-2 shadow-md`}
+                            } border border-gray-200 text-center w-3/4 rounded-2xl p-2 m-2 shadow-md hover:shadow-[0_15px_100px_-15px_rgba(0,0,0,0.3)] hover:shadow-[#005b96]`}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}
@@ -423,11 +423,14 @@ export default function ecosystem() {
         </div>
         <div className='flex h-1/2 w-full justify-center'>
           <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
-            <BarGraph ecosystemMembers={ecosystemMembers} title = 'Number of Tasks Completed' className='w-full' />
+            <BarGraph
+              ecosystemMembers={ecosystemMembers}
+              title='Number of Tasks Completed'
+              className='w-full'
+            />
           </div>
         </div>
       </div>
     </DragDropContext>
   );
 }
-           
