@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '../../firebase';
-import { useRouter } from 'next/router';
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../../firebase";
+import { useRouter } from "next/router";
 import {
   fetchEcosystem,
   fetchEcosystemTasks,
   fetchEcosystemMembers,
   fetchTaskHistory,
   fetchAnnouncements,
-} from '../../Store';
-import { useDispatch, useSelector } from 'react-redux';
-import AddTask from '../../Components/AddTask';
-import EditTask from '../../Components/EditTask';
-import InvitePeople from '../../Components/InvitePeople';
-import Modal from '@mui/material/Modal';
-import CloseIcon from '@mui/icons-material/Close';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import ClaimTask from '../../Components/ClaimTask';
-import { BiCog, BiMessageDetail } from 'react-icons/bi';
+} from "../../Store";
+import { useDispatch, useSelector } from "react-redux";
+import AddTask from "../../Components/AddTask";
+import EditTask from "../../Components/EditTask";
+import InvitePeople from "../../Components/InvitePeople";
+import Modal from "@mui/material/Modal";
+import CloseIcon from "@mui/icons-material/Close";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import ClaimTask from "../../Components/ClaimTask";
+import { BiCog, BiMessageDetail } from "react-icons/bi";
 import {
   setDoc,
   doc,
@@ -31,17 +31,18 @@ import {
   updateDoc,
   serverTimestamp,
   toDate,
-} from 'firebase/firestore';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
-import PropTypes from 'prop-types';
-import Container from '@mui/material/Container';
-import LeaveOrg from '../../Components/LeaveOrg.js';
-import BarGraph from '../../Components/BarGraph';
-import CompleteTask from '../../Components/CompleteTask';
-import EditDescription from '../../Components/EditDescription';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import EcoAnnouncement from '../../Components/EcoAnnouncement';
+} from "firebase/firestore";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import PropTypes from "prop-types";
+import Container from "@mui/material/Container";
+import LeaveOrg from "../../Components/LeaveOrg.js";
+import BarGraph from "../../Components/BarGraph";
+import CompleteTask from "../../Components/CompleteTask";
+import EditDescription from "../../Components/EditDescription";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import EcoAnnouncement from "../../Components/EcoAnnouncement";
+import Instructions from "../../Components/Instructions";
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -66,15 +67,15 @@ export default function ecosystem() {
   const toggleCompletedTask = async (id, status) => {
     //Build a query to find the right ecosystemMember
     const q = query(
-      collection(db, 'EcosystemMembers'),
-      where('ecosystemId', '==', singleEcosystem.id),
-      where('userId', '==', user.uid)
+      collection(db, "EcosystemMembers"),
+      where("ecosystemId", "==", singleEcosystem.id),
+      where("userId", "==", user.uid)
     );
     const docSnap = await getDocs(q);
     const currentName = docSnap.docs[0].data().userName;
 
     await setDoc(
-      doc(db, 'Tasks', id),
+      doc(db, "Tasks", id),
       {
         completed: !status,
         completedAt: serverTimestamp(),
@@ -99,11 +100,11 @@ export default function ecosystem() {
       });
     }
     //create notification
-    const currentTaskDoc = await getDoc(doc(db, 'Tasks', id));
+    const currentTaskDoc = await getDoc(doc(db, "Tasks", id));
     const TaskObj = currentTaskDoc.data();
 
     if (TaskObj.assignedTo !== TaskObj.owner) {
-      await setDoc(doc(db, 'Notifications', id), {
+      await setDoc(doc(db, "Notifications", id), {
         ...TaskObj,
         orgName: singleEcosystem.orgName,
         userName: currentName,
@@ -145,25 +146,25 @@ export default function ecosystem() {
   };
 
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     width: 800,
     height: 600,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    bgcolor: "background.paper",
+    border: "2px solid #000",
     boxShadow: 24,
     p: 4,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
   };
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
     return (
       <div
-        role='tabpanel'
+        role="tabpanel"
         hidden={value !== index}
         id={`simple-tabpanel-${index}`}
         aria-labelledby={`simple-tab-${index}`}
@@ -187,7 +188,7 @@ export default function ecosystem() {
   function a11yProps(index) {
     return {
       id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
+      "aria-controls": `simple-tabpanel-${index}`,
     };
   }
   const onDragEnd = (result) => {
@@ -205,13 +206,13 @@ export default function ecosystem() {
     const task = unclaimedTasks.find((task) => task.id === result.draggableId);
     const member = ecosystemMembers[index];
 
-    if (result.destination.droppableId === 'claimedTasks' && task) {
+    if (result.destination.droppableId === "claimedTasks" && task) {
       setDoc(
-        doc(db, 'Tasks', task.id),
+        doc(db, "Tasks", task.id),
         { assignedTo: member.userId },
         { merge: true }
       );
-    } else if (result.destination.droppableId === 'unclaimedTasks') {
+    } else if (result.destination.droppableId === "unclaimedTasks") {
       const [reorderedItem] = unclaimedTasks.splice(result.source.index, 1);
       unclaimedTasks.splice(result.destination.index, 0, reorderedItem);
     }
@@ -220,6 +221,7 @@ export default function ecosystem() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className='text-center text-5xl pt-6 font-serif text-blue-500'>
+        <Instructions />
         {singleEcosystem.orgName}
         <div className='flex justify-center mt-5'>
           <button
@@ -235,42 +237,42 @@ export default function ecosystem() {
         <Modal
           open={open}
           onClose={handleOpen}
-          aria-labelledby='modal-modal-title'
-          aria-describedby='modal-modal-description'
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
         >
-          <Box className='overflow-auto' sx={style}>
-            <Box sx={{ width: '100%' }}>
-              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Box className="overflow-auto" sx={style}>
+            <Box sx={{ width: "100%" }}>
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs
                   value={value}
                   onChange={handleTabChange}
-                  aria-label='basic tabs example'
-                  TabIndicatorProps={{ style: { background: '#FEF3C7' } }}
-                  textColor='inherit'
+                  aria-label="basic tabs example"
+                  TabIndicatorProps={{ style: { background: "#FEF3C7" } }}
+                  textColor="inherit"
                 >
-                  <Tab label='Messages' {...a11yProps(0)} />
-                  <Tab label='About' {...a11yProps(1)} />
+                  <Tab label="Messages" {...a11yProps(0)} />
+                  <Tab label="About" {...a11yProps(1)} />
                   <Tab
                     label={`Members (${ecosystemMembers.length})`}
                     {...a11yProps(2)}
                   />
-                  <Tab label='Task History' {...a11yProps(3)} />
+                  <Tab label="Task History" {...a11yProps(3)} />
                 </Tabs>
               </Box>
               <TabPanel value={value} index={0}>
                 <Typography
-                  id='modal-modal-title'
-                  component='div'
-                  className='text-center underline text-lg'
+                  id="modal-modal-title"
+                  component="div"
+                  className="text-center underline text-lg"
                 >
                   Messages for '{singleEcosystem.orgName}'
                 </Typography>
                 <EcoAnnouncement />
               </TabPanel>
-              <TabPanel value={value} index={1} className='p-1'>
+              <TabPanel value={value} index={1} className="p-1">
                 Ecosystem Name: {singleEcosystem.orgName}
               </TabPanel>
-              <TabPanel value={value} index={1} className='p-1'>
+              <TabPanel value={value} index={1} className="p-1">
                 Description: {singleEcosystem.description}
               </TabPanel>
               {value === 1 && (
@@ -282,52 +284,52 @@ export default function ecosystem() {
               )}
               <TabPanel value={value} index={2}>
                 <Typography
-                  id='modal-modal-title'
-                  component='div'
-                  className='text-center underline text-lg'
+                  id="modal-modal-title"
+                  component="div"
+                  className="text-center underline text-lg"
                 >
                   {singleEcosystem.orgName} Members
                 </Typography>
                 {ecosystemMembers.map((member) => (
-                  <div key={member.id} className='flex justify-between'>
+                  <div key={member.id} className="flex justify-between">
                     {member.userName}
                   </div>
                 ))}
               </TabPanel>
               <TabPanel value={value} index={3}>
                 <Typography
-                  id='modal-modal-title'
-                  component='div'
-                  className='text-center underline text-lg'
+                  id="modal-modal-title"
+                  component="div"
+                  className="text-center underline text-lg"
                 >
                   Completed Task History (Last 30 Days)
                 </Typography>
                 {singleTaskHistory.map((task) => (
                   <div key={task.id}>
-                    "{task.userName}" completed "{task.name}" on{' '}
+                    "{task.userName}" completed "{task.name}" on{" "}
                     {task.completedAt.toDate().toUTCString()}
                   </div>
                 ))}
               </TabPanel>
             </Box>
             <CloseIcon
-              className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
+              className="absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold"
               onClick={handleOpen}
             />
           </Box>
         </Modal>
       </div>
-      <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
-        <div className='flex h-1/2 w-full'>
-          <div className='border border-gray-200 rounded-3xl w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
-            <p className='text-center font-serif text-blue-600 pt-2'>
+      <div className="bg-white h-screen flex-col min-w-full pt-0 p-10">
+        <div className="flex h-1/2 w-full">
+          <div className="border border-gray-200 rounded-3xl w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]">
+            <p className="text-center font-serif text-blue-600 pt-2">
               Group Members
             </p>
             <InvitePeople />
-            <Droppable droppableId='claimedTasks'>
+            <Droppable droppableId="claimedTasks">
               {(provided, snapshot) => (
                 <div
-                  className='flex flex-wrap justify-center'
+                  className="flex flex-wrap justify-center"
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
@@ -336,15 +338,15 @@ export default function ecosystem() {
                       key={member.id}
                       className={`${
                         snapshot.isDraggingOver
-                          ? 'shadow-[0_15px_100px_-15px_rgba(0,0,0,0.3)]'
-                          : ''
+                          ? "shadow-[0_15px_100px_-15px_rgba(0,0,0,0.3)]"
+                          : ""
                       } border border-gray-200 text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto shadow-md`}
                     >
-                      <p className='text-lg font-bold'>{member.userName}</p>
+                      <p className="text-lg font-bold">{member.userName}</p>
                       <Draggable draggableId={member.id} index={i}>
                         {(provided) => (
                           <ol
-                            className='list-decimal p-3'
+                            className="list-decimal p-3"
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}
@@ -355,7 +357,7 @@ export default function ecosystem() {
                                 !task.completed
                               ) {
                                 return (
-                                  <div className='flex' key={idx}>
+                                  <div className="flex" key={idx}>
                                     {task.assignedTo === user?.uid && (
                                       <CompleteTask
                                         task={task}
@@ -364,7 +366,7 @@ export default function ecosystem() {
                                     )}
                                     <li
                                       key={idx}
-                                      className='text-left p-1 ml-2'
+                                      className="text-left p-1 ml-2"
                                     >
                                       {task.name}
                                     </li>
@@ -383,14 +385,14 @@ export default function ecosystem() {
             </Droppable>
           </div>
 
-          <Droppable droppableId='unclaimedTasks'>
+          <Droppable droppableId="unclaimedTasks">
             {(provided) => (
               <div
-                className='border border-gray-200 rounded-3xl justify-center w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'
+                className="border border-gray-200 rounded-3xl justify-center w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                <p className='text-center font-serif text-blue-600 pt-2'>
+                <p className="text-center font-serif text-blue-600 pt-2">
                   Unassigned Tasks
                 </p>
 
@@ -403,15 +405,15 @@ export default function ecosystem() {
                           <div
                             className={`${
                               snapshot.draggingOver
-                                ? 'shadow-[0_15px_100px_-15px_rgba(0,0,0,0.6)]'
-                                : ''
+                                ? "shadow-[0_15px_100px_-15px_rgba(0,0,0,0.6)]"
+                                : ""
                             } border border-gray-200 text-center w-3/4 rounded-2xl p-2 m-2 shadow-md`}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}
                           >
                             {task.name} due {task.due}
-                            <div className='flex justify-around p-3'>
+                            <div className="flex justify-around p-3">
                               {task.owner === user?.uid && (
                                 <EditTask task={task} />
                               )}
@@ -423,16 +425,20 @@ export default function ecosystem() {
                       </Draggable>
                     ))
                   ) : (
-                    <h1 className='mt-10 items-end'>No Tasks To Claim!</h1>
+                    <h1 className="mt-10 items-end">No Tasks To Claim!</h1>
                   )}
                 </div>
               </div>
             )}
           </Droppable>
         </div>
-        <div className='flex h-1/2 w-full justify-center'>
-          <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
-            <BarGraph ecosystemMembers={ecosystemMembers} title = 'Number of Tasks Completed' className='w-full' />
+        <div className="flex h-1/2 w-full justify-center">
+          <div className="flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7">
+            <BarGraph
+              ecosystemMembers={ecosystemMembers}
+              title="Number of Tasks Completed"
+              className="w-full"
+            />
           </div>
         </div>
       </div>

@@ -19,6 +19,10 @@ const AuthPage = () => {
   const { currentUser, login, signup } = useAuth();
   const myauth = getAuth();
 
+  useEffect(() => {
+    if (currentUser) router.push("/dashboard");
+  }, [currentUser]);
+
   const handleClick = () => {
     setSignIn(!signIn);
   };
@@ -27,7 +31,7 @@ const AuthPage = () => {
     if (signIn) {
       try {
         await login(email, password);
-        router.push("/dashboard");
+        // router.push("/dashboard");
       } catch (error) {
         console.log(">>>>>", error);
         setError("Incorrect Email or Password");
@@ -57,16 +61,15 @@ const AuthPage = () => {
     if (!signIn) {
       try {
         await signup(email, password);
-        router.push({
-          pathname: "/",
-          query: {
-            firstName: firstName,
-            lastName: lastName,
-          },
-        });
       } catch (error) {
         console.log(">>>>>", error);
-        setError("Please Fill In All Fields");
+        if (password.length < 6) {
+          setError("Password Needs to be at least 6 characters");
+        } else if (error) {
+          setError("Email already in use");
+        } else {
+          setError("Please Fill In All Fields");
+        }
       }
     }
   };
@@ -92,8 +95,6 @@ const AuthPage = () => {
     };
     await updateDb().catch(console.error);
   };
-
-  if (currentUser) router.push("/dashboard");
 
   return (
     <div className="flex items-center justify-center sm:h-screen mb-0 bg-center bg-cover custom-img border">
@@ -160,6 +161,7 @@ const AuthPage = () => {
               >
                 <Image
                   src="/btn_google_signin_light_pressed_web.png"
+                  alt=""
                   width="200"
                   height="200"
                   unoptimized
