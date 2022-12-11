@@ -67,7 +67,7 @@ const EcoAnnouncement = () => {
       setSent(true);
       setTimeout(() => {
         handleClose();
-      }, 2000);
+      }, 1000);
     }
   };
 

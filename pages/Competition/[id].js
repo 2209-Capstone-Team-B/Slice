@@ -10,7 +10,8 @@ import {
   fetchRequests,
   fetchAdmin,
   testAdmin,
-  fetchRewardHistory
+  fetchRewardHistory,
+  fetchAnnouncements,
 } from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
 import AddCompetitionTask from '../../Components/AddCompetitionTask.js';
@@ -24,6 +25,7 @@ import ClaimReward from '../../Components/ClaimReward';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { BiCog, BiMessageDetail } from 'react-icons/bi';
+import { BsFillCircleFill } from 'react-icons/bs';
 import {
   setDoc,
   doc,
@@ -46,6 +48,7 @@ import BarGraph from '../../Components/BarGraph';
 import ApproveRequest from '../../Components/ApproveRequest.js';
 import DenyRequest from '../../Components/DenyRequest.js';
 import EditDescription from '../../Components/EditDescription';
+import EcoAnnouncement from '../../Components/EcoAnnouncement';
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -72,16 +75,18 @@ export default function ecosystem() {
     const unsubscribeTaskHistory = dispatch(fetchTaskHistory(id));
     const unsubscribeRewardRequests = dispatch(fetchRequests(id));
     const unsubscribeAdmin = dispatch(fetchAdmin(id, user?.uid));
+    const unsubscribeAnnouncements = dispatch(fetchAnnouncements(id));
     //dispatch(testAdmin(id, user?.uid))
-    const unsubscribeRewardHistory = dispatch(fetchRewardHistory(id))
+    const unsubscribeRewardHistory = dispatch(fetchRewardHistory(id));
     return () => {
       unsubscribeEcosystemMembers();
       unsubscribeEcosystemTasks();
       unsubscribeEcosystem();
       unsubscribeTaskHistory();
-      unsubscribeRewardRequests()
-      unsubscribeAdmin()
-      unsubscribeRewardHistory()
+      unsubscribeRewardRequests();
+      unsubscribeAdmin();
+      unsubscribeRewardHistory();
+      unsubscribeAnnouncements();
     };
   }, [id]);
 
@@ -159,7 +164,7 @@ export default function ecosystem() {
           aria-labelledby='modal-modal-title'
           aria-describedby='modal-modal-description'
         >
-          <Box sx={style}>
+          <Box className='overflow-auto' sx={style}>
             <Box sx={{ width: '100%' }}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs
@@ -169,53 +174,70 @@ export default function ecosystem() {
                   TabIndicatorProps={{ style: { background: '#FEF3C7' } }}
                   textColor='inherit'
                 >
-                  <Tab label='About' {...a11yProps(0)} />
+                  <Tab label='Messages' {...a11yProps(0)} />
+                  <Tab label='About' {...a11yProps(1)} />
                   <Tab
                     label={`Members (${ecosystemMembers.length})`}
-                    {...a11yProps(1)}
+                    {...a11yProps(2)}
                   />
-                  <Tab label='Task History' {...a11yProps(2)} />
+                  <Tab label='Task History' {...a11yProps(3)} />
                 </Tabs>
               </Box>
-              <TabPanel value={value} index={0} className='p-1'>
+              <TabPanel value={value} index={0}>
+                <Typography
+                  id='modal-modal-title'
+                  component='div'
+                  className='text-center underline text-lg'
+                >
+                  Messages for '{singleEcosystem.orgName}'
+                </Typography>
+                <EcoAnnouncement />
+              </TabPanel>
+              <TabPanel value={value} index={1} className='p-1'>
                 Ecosystem Name: {singleEcosystem.orgName}
               </TabPanel>
-              <TabPanel value={value} index={0} className='p-1'>
+              <TabPanel value={value} index={1} className='p-1'>
                 Description: {singleEcosystem.description}
               </TabPanel>
-              {value === 0 && (
+              {value === 1 && (
                 <EditDescription
                   curDescription={singleEcosystem.description}
                   orgId={singleEcosystem.id}
                   curEcoName={singleEcosystem.orgName}
                 />
               )}
-              <TabPanel value={value} index={1}>
-                <Typography
-                  id='modal-modal-title'
-                  component='div'
-                  className='text-center underline text-lg'
-                >
-                  {singleEcosystem.orgName} Members
-                </Typography>
-                {ecosystemMembers.map((member) => (
-                  <div key={member.id} className='flex justify-between'>
-                    {member.userName}
-                  </div>
-                ))}
-              </TabPanel>
               <TabPanel value={value} index={2}>
                 <Typography
                   id='modal-modal-title'
                   component='div'
+                  className='text-center text-lg'
+                >
+                  {singleEcosystem.orgName} Members
+                </Typography>
+                {ecosystemMembers.map((member) => (
+                  <ol key={member.id} className='flex justify-between'>
+                    <li className='flex items-center my-2'>
+                      <BsFillCircleFill color={member.color} className='mr-2' />
+                      {member.userName}
+                    </li>
+                  </ol>
+                ))}
+              </TabPanel>
+              <TabPanel value={value} index={3}>
+                <Typography
+                  id='modal-modal-title'
+                  component='div'
                   className='text-center underline text-lg'
                 >
-                  Approved Task History (Last 30 Days)
+                  Completed Task History (Last 30 Days)
                 </Typography>
-                {rewardHistory.map((task) => (
-                  <div key={task.rewardId}>
-                    "{task.userName}" completed "{task.name}" on{' '}
-                    {task.created.toDate().toUTCString()}
+                {singleTaskHistory.map((task) => (
+                  <div key={task.id}>
+                    <div>
+                      "{task.userName}" completed "{task.name}"
+                    </div>
+                    <small>{task.completedAt.toDate().toUTCString()}</small>
+                    <hr className='my-2' />
                   </div>
                 ))}
               </TabPanel>
@@ -245,7 +267,10 @@ export default function ecosystem() {
                     {singleRewardRequests.map((request, idx) => {
                       if (request.userId === member.userId) {
                         return (
-                          <div className='flex' key={idx}>
+                          <div className='flex flex-col' key={idx}>
+                            <div className='flex justify-around'>
+                            
+                            
                             {isAdmin && (
                               <>
                               <ApproveRequest
@@ -255,10 +280,17 @@ export default function ecosystem() {
                               <DenyRequest request={request} />
                               </>
                               )}
+
                               {(!isAdmin && request.userId === user?.uid) && ( <DenyRequest request={request} />)}
-                            <li key={idx} className='text-left p-1 ml-2'>
-                              {request.name}
-                            </li>
+                              
+                            </div>
+                            <div className='flex'>
+                            
+                              <li key={idx} className='text-left p-1 ml-2'>
+                                {request.name}
+                              </li>
+                            </div>
+                            <hr className='my-2' />
                           </div>
                         );
                       }

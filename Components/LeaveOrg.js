@@ -11,17 +11,17 @@ import { leaveMember } from "../Store";
 import { RxExit } from "react-icons/rx";
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
   pt: 0,
   borderRadius: 5,
-  alignItems: "center",
+  alignItems: 'center',
+  textAlign: 'center',
 };
 
 export default function LeaveOrg({ ecosystemId, type }) {
@@ -87,7 +87,7 @@ export default function LeaveOrg({ ecosystemId, type }) {
               }}
               className="text-red-600 border border-red-600 rounded-3xl p-2 w-3/4 hover:bg-red-600 hover:text-white"
             >
-              Confirm
+              Leave
             </button>
           </div>
         </Box>

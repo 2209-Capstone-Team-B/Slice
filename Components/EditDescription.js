@@ -9,8 +9,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { db } from '../firebase';
 import { updateDoc, doc } from 'firebase/firestore';
-import { useDispatch} from 'react-redux';
-import {_updateEcosystem} from '../Store'
+import { useDispatch } from 'react-redux';
+import { _updateEcosystem } from '../Store';
+import { BiPencil } from 'react-icons/bi';
 
 const EditDescription = ({ curDescription, orgId, curEcoName }) => {
   const dispatch = useDispatch();
@@ -37,17 +38,20 @@ const EditDescription = ({ curDescription, orgId, curEcoName }) => {
       description,
       orgName: ecosystemName,
     });
-    dispatch(_updateEcosystem({description, orgName: ecosystemName, id: orgId}))
+    dispatch(
+      _updateEcosystem({ description, orgName: ecosystemName, id: orgId })
+    );
     setSave(true);
   };
-  console.log(open);
+
   return (
     <div className='p-1'>
       <button
-        className='text-slate-600 border border-slate-600 rounded-3xl p-1 w-1/6 text-sm hover:bg-red-600 hover:text-white'
+        className='border flex items-center bg-blue-300 rounded-lg p-1 px-3 hover:bg-blue-400 ml-5'
         onClick={handleOpen}
       >
         Edit
+        <BiPencil className='ml-2' />
       </button>
       <Dialog
         open={open}
@@ -56,7 +60,7 @@ const EditDescription = ({ curDescription, orgId, curEcoName }) => {
         aria-describedby='alert-dialog-description'
       >
         <DialogTitle id='alert-dialog-title'>
-          Edit{' '}
+          Edit
           <CloseIcon
             className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
             onClick={(e) => handleClose(e, true)}
@@ -70,7 +74,7 @@ const EditDescription = ({ curDescription, orgId, curEcoName }) => {
                 type='text'
                 value={ecosystemName}
                 onChange={(e) => setEcosystemName(e.target.value)}
-                className='block border-2 m-auto my-4 w-5/6 border-black rounded-xl p-2'
+                className='block border border-1 m-auto my-4 w-5/6 border-black rounded-xl p-2'
               />
               <label>Description: </label>
               <textarea
@@ -78,7 +82,7 @@ const EditDescription = ({ curDescription, orgId, curEcoName }) => {
                 rows='5'
                 cols='53'
                 onChange={(e) => setDescription(e.target.value)}
-                className='block border-2 m-auto my-4 w-5/6 border-black rounded-xl p-2'
+                className='block border border-1 m-auto my-4 w-5/6 border-black rounded-xl p-2'
               />
             </form>
           </DialogContentText>

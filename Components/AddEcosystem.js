@@ -16,6 +16,7 @@ import Tooltip from '@mui/material/Tooltip'
 const infoItems= ["Each ecosystem type has different behavior:", "","BULLETIN: the default ecosystem allows any member to add/edit tasks.  Members are other signed in users who are invited by email to the ecosystem. Tasks can be assigned/claimed by anyone. If a task you create is completed by someone else, you will be notified in your dashboard","","COMPETITION: designed for repetitive tasks/tasks of different weight. Only admins can create/edit tasks, which can be given different values, and do not disappear when 'claimed'. Users can submit claims of task completion, which must be admin approved, after which they will receive credit for task completion", "", "QUICK TASK: designed as a quick, on-the-fly scratch pad for assigning tasks. Unlike other ecosystem types which require every group member to sign up for an account, in Quick Task, group members are directly created so they can be assigned tasks quickly"]
 const tip = infoItems.join('\n')
 
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -24,7 +25,6 @@ const style = {
   width: 600,
   height: 490,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
   borderRadius: 5,
@@ -32,7 +32,7 @@ const style = {
 };
 
 export default function AddEcosystem({ id, user }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const userObject = useSelector((state) => state.loggedInUser);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
@@ -65,25 +65,23 @@ export default function AddEcosystem({ id, user }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (name.length > 0 && description.length > 0) {
-    /*   await axios.post('/api/Ecosystem', {
-        id,
-        name,
-        type,
-        userName,
-        description,
-      }) */
-      dispatch(addEcosystem({
-        id,
-        name,
-        type,
-        userName,
-        description,
-      }))
+      dispatch(
+        addEcosystem({
+          id,
+          name,
+          type,
+          userName,
+          description,
+        })
+      );
       setName('');
       setType('Bulletin');
       setDescription('');
       setAdded(true);
       setError(false);
+      setTimeout(() => {
+        handleClose();
+      }, 1000);
     } else {
       setError(true);
     }
@@ -104,7 +102,7 @@ export default function AddEcosystem({ id, user }) {
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'
       >
-        <Box sx={style}>
+        <Box sx={style} className='overflow-auto'>
           <Typography
             id='modal-modal-title'
             variant='h5'
@@ -118,13 +116,10 @@ export default function AddEcosystem({ id, user }) {
             />
           </Typography>
 
-          <form
-            onSubmit={handleSubmit}
-            className='px-10 border-2 border-black w-5/6 m-auto p-6 mt-6 rounded-md'
-          >
-            <label className='float-left pt-6 w-12 text-center'>Name:</label>
+          <form onSubmit={handleSubmit} className='m-auto p-6 mt-6 rounded-md'>
+            <label className='float-left pt-6 w-16 text-left'>Name:</label>
             <input
-              className='block border-2 m-auto my-6 w-3/4 border-black text-center rounded-xl'
+              className='block border border-1 m-auto my-6 w-3/4 border-black text-center rounded-xl'
               type='text'
               name='name'
               placeholder='Enter a name for your ecosystem...'
@@ -134,7 +129,7 @@ export default function AddEcosystem({ id, user }) {
             />
             <label className='float-left w-16 text-left'>Username:</label>
             <input
-              className='block border-2 m-auto my-6 w-3/4 border-black text-center rounded-xl'
+              className='block border border-1 m-auto my-6 w-3/4 border-black text-center rounded-xl'
               type='text'
               name='username'
               placeholder='Create a username...'
@@ -143,40 +138,42 @@ export default function AddEcosystem({ id, user }) {
             />
             <label className='float-left w-16 text-left'>Description:</label>
             <textarea
-              className='block border-2 m-auto my-6 w-3/5 border-black p-1 rounded-xl'
+              className='block border border-1 m-auto my-6 w-3/4 border-black p-1 rounded-xl'
               type='textarea'
               name='description'
               placeholder='Write a description...'
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-            <label className='float-left w-12 text-center'>Type:</label>
+            <label className='float-left w-16 text-left'>Type:</label>
             <select
-              className='block border-2 m-auto my-6 w-3/4 border-black text-center rounded-xl'
+              className='block border border-1 m-auto my-6 w-3/4 border-black text-center rounded-xl'
               type='date'
               name='type'
               onChange={(e) => setType(e.target.value)}
             >
               <option name='Bulletin'>Bulletin</option>
               <option name='Competition'>Competition</option>
-              <option name='QuickTask' value="QuickTask">Quick Task</option>
-
-            </select> <Tooltip title={
+            <option name='QuickTask' value="QuickTask">Quick Task</option>
+              </select> <Tooltip title={
         <div style={{ whiteSpace: 'pre-line' }}>{tip}</div>
     }><span>  <VscQuestion /></span></Tooltip>
-
-
-            <Button
-              type='submit'
-              className='bg-slate-300 hover:bg-slate-200 text-black px-4 rounded-md h-1/6 items-center m-auto block'
-            >
-              {added ? (
-                <Alert severity='success'>Added</Alert>
-              ) : (
-                'Add Ecosystem'
+            <div className='flex justify-center pt-5'>
+              <Button
+                disabled={added}
+                type='submit'
+                className='bg-slate-300 hover:bg-slate-200 text-black px-4 rounded-md h-1/6 items-center m-auto block'
+              >
+                {added ? (
+                  <Alert severity='success'>Added</Alert>
+                ) : (
+                  'Add Ecosystem'
+                )}
+              </Button>
+              {error && (
+                <Alert severity='error'>Please fill out all fields</Alert>
               )}
-            </Button>
-            {error && <Alert severity='error'>Dont leave fields empty</Alert>}
+            </div>
           </form>
         </Box>
       </Modal>

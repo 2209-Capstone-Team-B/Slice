@@ -22,7 +22,6 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
   pt: 0,
@@ -93,7 +92,7 @@ function EditModal({ close, passUser }) {
         aria-labelledby='child-modal-title'
         aria-describedby='child-modal-description'
       >
-        <Box sx={{ ...style, width: 450, height: 350 }}>
+        <Box sx={{ ...style, width: 570, height: 250 }}>
           <div className='flex flex-col justify-around h-full'>
             <CloseIcon
               className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
@@ -101,27 +100,27 @@ function EditModal({ close, passUser }) {
             />
             <h2
               id='child-modal-title'
-              className='flex items-center justify-center'
+              className='flex items-center justify-center pt-4'
             >
               Editing Password
             </h2>
             <div className='flex'>
               <div className='flex flex-col justify-around w-1/4'>
-                <p className='text-right pt-2'>Old Password</p>
-                <p className='text-right pt-2'>New Password</p>
+                <p className='text-right pt-2'>Old Password:</p>
+                <p className='text-right pb-2'>New Password:</p>
               </div>
               <form className='w-3/4'>
                 <input
                   value={oldPassword}
                   type='password'
                   onChange={(e) => setOldPassword(e.target.value)}
-                  className='block border-2 m-auto my-4 w-5/6 border-black text-center rounded-xl'
+                  className='block border border-spacing-1 m-auto my-5 w-5/6 border-black text-center rounded-xl'
                 ></input>
                 <input
                   value={password}
                   type='password'
                   onChange={(e) => setPassword(e.target.value)}
-                  className='block border-2 m-auto my-4 w-5/6 border-black text-center rounded-xl'
+                  className='block border border-spacing-1 m-auto my-5 w-5/6 border-black text-center rounded-xl'
                 ></input>
               </form>
             </div>
@@ -137,7 +136,7 @@ function EditModal({ close, passUser }) {
                 <Alert severity='success'>Added</Alert>
               ) : (
                 <button
-                  className='text-blue-600 border border-blue-600 w-3/4 rounded-3xl p-2 hover:bg-blue-600 hover:text-white'
+                  className='bg-emerald-400 rounded-3xl px-4 mt-2 hover:bg-emerald-500'
                   onClick={(e) => {
                     handleSubmit();
                     close();

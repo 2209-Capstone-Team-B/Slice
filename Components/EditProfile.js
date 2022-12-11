@@ -12,7 +12,6 @@ const style = {
   left: '51%',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
   pt: 0,
@@ -63,14 +62,14 @@ export default function EditProfile({ close, userObject }) {
         aria-labelledby='parent-modal-title'
         aria-describedby='parent-modal-description'
       >
-        <Box sx={{ ...style, width: 450, height: 300 }}>
-          <div className='flex flex-col items-center p-4'>
+        <Box sx={{ ...style, width: 450, height: 210 }}>
+          <div className='flex flex-col items-center p-4 mt-5'>
             <CloseIcon
               className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
               onClick={(e) => handleClose(e, true)}
             />
-            <div className='flex align-center'>
-              <div className='flex flex-col justify-around w-1/4'>
+            <div className='flex'>
+              <div className='flex flex-col items-start justify-around mr-2 w-1/2'>
                 <p>First Name: </p>
                 <p>Last Name: </p>
               </div>
@@ -78,19 +77,19 @@ export default function EditProfile({ close, userObject }) {
                 <input
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  className='block border-2 m-auto my-4 w-5/6 border-black text-center rounded-xl'
+                  className='block border-2 m-auto my-4 border-black text-center rounded-xl'
                 ></input>
                 <input
                   value={lastName}
                   type='string'
                   onChange={(e) => setLastName(e.target.value)}
-                  className='block border-2 m-auto my-4 w-5/6 border-black text-center rounded-xl'
+                  className='block border-2 m-auto my-4 border-black text-center rounded-xl mt-6'
                 ></input>
               </form>
             </div>
             <button
               onClick={(e) => handleCloseSubmit(e, true)}
-              className='text-green-600 border border-green-600 rounded-3xl px-2 m-4 hover:bg-green-600 hover:text-white'
+              className='bg-emerald-400 rounded-3xl px-4 m-6 mt-2 hover:bg-emerald-500'
             >
               Confirm Edit
             </button>

@@ -42,6 +42,9 @@ export default function AddCompetitionTask({ id }) {
       setReward(1);
       setAdded(true);
       setError(false);
+      setTimeout(() => {
+        handleClose();
+      }, 1000);
     } else {
       setError(true);
     }
@@ -93,7 +96,7 @@ export default function AddCompetitionTask({ id }) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSubmit}>
+          <Button disabled={added} onClick={handleSubmit}>
             {added ? <Alert severity='success'>Added</Alert> : 'Add Task'}
           </Button>
           {error && <Alert severity='error'>Enter task</Alert>}

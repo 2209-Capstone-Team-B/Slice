@@ -8,17 +8,18 @@ import {
   fetchEcosystemMembers,
   fetchTaskHistory,
   fetchAnnouncements,
-} from "../../Store";
-import { useDispatch, useSelector } from "react-redux";
-import AddTask from "../../Components/AddTask";
-import EditTask from "../../Components/EditTask";
-import InvitePeople from "../../Components/InvitePeople";
-import Modal from "@mui/material/Modal";
-import CloseIcon from "@mui/icons-material/Close";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import ClaimTask from "../../Components/ClaimTask";
-import { BiCog, BiMessageDetail } from "react-icons/bi";
+} from '../../Store';
+import { useDispatch, useSelector } from 'react-redux';
+import AddTask from '../../Components/AddTask';
+import EditTask from '../../Components/EditTask';
+import InvitePeople from '../../Components/InvitePeople';
+import Modal from '@mui/material/Modal';
+import CloseIcon from '@mui/icons-material/Close';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import ClaimTask from '../../Components/ClaimTask';
+import { BiCog, BiMessageDetail } from 'react-icons/bi';
+import { BsFillCircleFill } from 'react-icons/bs';
 import {
   setDoc,
   doc,
@@ -72,14 +73,14 @@ export default function ecosystem() {
       where("userId", "==", user.uid)
     );
     const docSnap = await getDocs(q);
-    const currentName = docSnap.docs[0].data().userName;
+    const ecoMem = docSnap.docs[0].data();
 
     await setDoc(
       doc(db, "Tasks", id),
       {
         completed: !status,
         completedAt: serverTimestamp(),
-        userName: currentName,
+        userName: ecoMem.userName,
       },
       { merge: true }
     );
@@ -107,7 +108,8 @@ export default function ecosystem() {
       await setDoc(doc(db, "Notifications", id), {
         ...TaskObj,
         orgName: singleEcosystem.orgName,
-        userName: currentName,
+        userName: ecoMem.userName,
+        color: ecoMem.color,
       });
     }
 
@@ -284,16 +286,19 @@ export default function ecosystem() {
               )}
               <TabPanel value={value} index={2}>
                 <Typography
-                  id="modal-modal-title"
-                  component="div"
-                  className="text-center underline text-lg"
+                  id='modal-modal-title'
+                  component='div'
+                  className='text-center text-lg'
                 >
                   {singleEcosystem.orgName} Members
                 </Typography>
                 {ecosystemMembers.map((member) => (
-                  <div key={member.id} className="flex justify-between">
-                    {member.userName}
-                  </div>
+                  <ol key={member.id} className='flex justify-between'>
+                    <li className='flex items-center my-2'>
+                      <BsFillCircleFill color={member.color} className='mr-2' />
+                      {member.userName}
+                    </li>
+                  </ol>
                 ))}
               </TabPanel>
               <TabPanel value={value} index={3}>
@@ -306,8 +311,11 @@ export default function ecosystem() {
                 </Typography>
                 {singleTaskHistory.map((task) => (
                   <div key={task.id}>
-                    "{task.userName}" completed "{task.name}" on{" "}
-                    {task.completedAt.toDate().toUTCString()}
+                    <div>
+                      "{task.userName}" completed "{task.name}"
+                    </div>
+                    <small>{task.completedAt.toDate().toUTCString()}</small>
+                    <hr className='my-2' />
                   </div>
                 ))}
               </TabPanel>
@@ -357,19 +365,22 @@ export default function ecosystem() {
                                 !task.completed
                               ) {
                                 return (
-                                  <div className="flex" key={idx}>
-                                    {task.assignedTo === user?.uid && (
-                                      <CompleteTask
-                                        task={task}
-                                        toggle={toggleCompletedTask}
-                                      />
-                                    )}
-                                    <li
-                                      key={idx}
-                                      className="text-left p-1 ml-2"
-                                    >
-                                      {task.name}
-                                    </li>
+                                  <div className='flex flex-col' key={idx}>
+                                    <div className='flex' key={idx}>
+                                      {task.assignedTo === user?.uid && (
+                                        <CompleteTask
+                                          task={task}
+                                          toggle={toggleCompletedTask}
+                                        />
+                                      )}
+                                      <li
+                                        key={idx}
+                                        className='text-left p-1 ml-2'
+                                      >
+                                        {task.name}
+                                      </li>
+                                    </div>
+                                    <hr className='my-2' />
                                   </div>
                                 );
                               }

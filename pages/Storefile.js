@@ -241,9 +241,10 @@ export default function ecosystem() {
                   {singleEcosystem.orgName} Members
                 </Typography>
                 {ecosystemMembers.map((member) => (
-                  <div key={member.id} className='flex justify-between'>
-                    {member.userName}
-                  </div>
+                  <ol key={member.id} className='flex justify-between'>
+                    <li>{member.userName}</li>
+                    <hr />
+                  </ol>
                 ))}
               </TabPanel>
               <TabPanel value={value} index={2}>

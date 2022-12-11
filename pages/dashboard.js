@@ -1,17 +1,21 @@
-import React, { useState } from "react";
-import { auth, db } from "../firebase";
-import { serverTimestamp, doc, setDoc, toDate } from "firebase/firestore";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
-import Chart from "./Chart";
-import Skeleton from "@mui/material/Skeleton";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchUser, fetchTasks } from "../Store";
-import MyCalendar from "./Calendar";
-import DialogContentText from "@mui/material/DialogContentText";
+import React, { useState } from 'react';
+import { auth, db } from '../firebase';
+import { serverTimestamp, doc, setDoc, toDate } from 'firebase/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
+import Chart from './Chart';
+import Skeleton from '@mui/material/Skeleton';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser, fetchTasks } from '../Store';
+import MyCalendar from './Calendar';
+import DialogContentText from '@mui/material/DialogContentText';
+import { BsFillCircleFill } from 'react-icons/bs';
+import { IoMdNotificationsOutline } from 'react-icons/io';
+import { yellow } from '@mui/material/colors';
 import Instructions from "../Components/Instructions";
+
 
 export default function Dashboard() {
   //const [tasks, setTasks] = useState([]);
@@ -35,8 +39,6 @@ export default function Dashboard() {
 
   const completedTasks = tasks.filter((task) => task.completed === true);
   const incompleteTasks = tasks.filter((task) => task.completed === false);
-
-  console.log(tasks);
   // if (!user) router.push("/");
   return (
     <div>
@@ -121,19 +123,34 @@ export default function Dashboard() {
             </div>
           </div>
           <div className='text-black border border-gray-200 p-3 w-11/12 height rounded-3xl absolute bottom-0 left-0 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] overflow-auto'>
-            <header className='text-center underline'>
+            <header className='text-center flex justify-center items-center font-serif text-blue-600'>
+              <IoMdNotificationsOutline
+                size={30}
+                color={'orange'}
+                className='pr-2'
+              />
               Task Completion Notifications (last 7 days)
             </header>
             <ul className='list-decimal p-3'>
               {notifications.length > 0 ? (
                 notifications.map((note) => (
-                  <>
-                    <li className="p-2" key={note.id}>
-                      "{note.userName}" in "{note.orgName}" completed your task
-                      "{note.name}" on {note.completedAt.toDate().toUTCString()}
-                    </li>
-                    <hr className="bg-gray-500 rounded-xl h-0.5" />
-                  </>
+                  <div
+                    key={note.id}
+                    className='shadow-md p-2 my-2 rounded-xl border border-gray-200'
+                  >
+                    <p className='p-2 flex items-center justify-center'>
+                      <BsFillCircleFill
+                        size={10}
+                        color={note.color}
+                        className='mr-2'
+                      />
+                      "{note.userName}" in "{note.orgName}" completed:
+                    </p>
+                    <p className='text-center'>"{note.name}"</p>
+                    <p className='text-gray-400 text-center text-xs py-2'>
+                      {note.completedAt.toDate().toUTCString()}
+                    </p>
+                  </div>
                 ))
               ) : (
                 <DialogContentText className='text-center'>

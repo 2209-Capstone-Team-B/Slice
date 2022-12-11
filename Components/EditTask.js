@@ -12,7 +12,6 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
   pt: 0,
@@ -45,7 +44,7 @@ function EditModal({ close, task }) {
   return (
     <React.Fragment>
       <button
-        className='text-blue-600 border border-blue-600 rounded-3xl p-2 w-1/3 hover:bg-blue-600 hover:text-white'
+        className='bg-blue-300 rounded-3xl px-3  py-1 text-sm hover:bg-blue-400'
         onClick={handleOpen}
       >
         Edit Task
@@ -71,9 +70,9 @@ function EditModal({ close, task }) {
             </h2>
             <div className='flex'>
               <div className='flex flex-col justify-around w-1/4'>
-                <p className='text-right pt-2'>Name</p>
-                <p className='text-right'>Due Date</p>
-                <p className='text-right pb-2'>Status</p>
+                <p className='text-right pt-2'>Name:</p>
+                <p className='text-right'>Due:</p>
+                <p className='text-right pb-2'>Status:</p>
               </div>
               <form className='w-3/4'>
                 <input
@@ -101,7 +100,7 @@ function EditModal({ close, task }) {
             </div>
             <div className='flex justify-center w-full'>
               <button
-                className='text-blue-600 border border-blue-600 w-3/4 rounded-3xl p-2 hover:bg-blue-600 hover:text-white'
+                className='bg-emerald-400 rounded-3xl py-1 w-1/2 px-3 hover:bg-emerald-500'
                 onClick={() => {
                   handleClose();
                   close();
@@ -137,7 +136,7 @@ function DeleteModal({ close, task, uderId }) {
     <React.Fragment>
       <button
         onClick={handleOpen}
-        className='text-red-600 border border-red-600 rounded-3xl p-2 w-1/3 hover:bg-red-600 hover:text-white'
+        className='bg-red-400 rounded-3xl py-1 px-3 text-sm hover:bg-red-500'
       >
         Delete Task
       </button>
@@ -197,7 +196,7 @@ export default function EditTask({ task }) {
       <div className='flex justify-around'>
         <button
           onClick={handleOpen}
-          className='text-blue-600 border border-blue-600 rounded-3xl p-2 hover:bg-blue-600 hover:text-white'
+          className='bg-blue-300 rounded-3xl py-1 px-3 text-sm hover:bg-blue-400'
         >
           Edit Task
         </button>
