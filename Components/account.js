@@ -119,7 +119,7 @@ export default function Account({ children }) {
                       aria-hidden="true"
                     />
                   )}
-                  LOG OUT
+                  Log out
                 </button>
               )}
             </Menu.Item>
