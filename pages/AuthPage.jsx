@@ -57,16 +57,15 @@ const AuthPage = () => {
     if (!signIn) {
       try {
         await signup(email, password);
-        router.push({
-          pathname: "/",
-          query: {
-            firstName: firstName,
-            lastName: lastName,
-          },
-        });
       } catch (error) {
         console.log(">>>>>", error);
-        setError("Please Fill In All Fields");
+        if (password.length < 6) {
+          setError("Password Needs to be at least 6 characters");
+        } else if (error) {
+          setError("Email already in use");
+        } else {
+          setError("Please Fill In All Fields");
+        }
       }
     }
   };
@@ -160,6 +159,7 @@ const AuthPage = () => {
               >
                 <Image
                   src="/btn_google_signin_light_pressed_web.png"
+                  alt=""
                   width="200"
                   height="200"
                   unoptimized
