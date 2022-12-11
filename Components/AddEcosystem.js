@@ -4,12 +4,18 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
 import { AiOutlineDashboard, AiOutlinePlus } from 'react-icons/ai';
+import {VscQuestion} from 'react-icons/vsc'
 import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import { addEcosystem } from '../Store';
+import {addEcosystem} from '../Store'
+import Tooltip from '@mui/material/Tooltip'
+
+const infoItems= ["Each ecosystem type has different behavior:", "","BULLETIN: the default ecosystem allows any member to add/edit tasks.  Members are other signed in users who are invited by email to the ecosystem. Tasks can be assigned/claimed by anyone. If a task you create is completed by someone else, you will be notified in your dashboard","","COMPETITION: designed for repetitive tasks/tasks of different weight. Only admins can create/edit tasks, which can be given different values, and do not disappear when 'claimed'. Users can submit claims of task completion, which must be admin approved, after which they will receive credit for task completion", "", "QUICK TASK: designed as a quick, on-the-fly scratch pad for assigning tasks. Unlike other ecosystem types which require every group member to sign up for an account, in Quick Task, group members are directly created so they can be assigned tasks quickly"]
+const tip = infoItems.join('\n')
+
 
 const style = {
   position: 'absolute',
@@ -118,7 +124,7 @@ export default function AddEcosystem({ id, user }) {
               name='name'
               placeholder='Enter a name for your ecosystem...'
               value={name}
-              maxlength='16'
+              maxLength='16'
               onChange={(e) => setName(e.target.value)}
             />
             <label className='float-left w-16 text-left'>Username:</label>
@@ -148,8 +154,10 @@ export default function AddEcosystem({ id, user }) {
             >
               <option name='Bulletin'>Bulletin</option>
               <option name='Competition'>Competition</option>
-              <option name='Event'>Event</option>
-            </select>
+            <option name='QuickTask' value="QuickTask">Quick Task</option>
+              </select> <Tooltip title={
+        <div style={{ whiteSpace: 'pre-line' }}>{tip}</div>
+    }><span>  <VscQuestion /></span></Tooltip>
             <div className='flex justify-center pt-5'>
               <Button
                 disabled={added}

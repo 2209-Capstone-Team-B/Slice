@@ -12,6 +12,7 @@ import {
 import { db } from '../firebase.js';
 
 const GET_INVITES = 'GET_INVITES';
+const LOG_OUT = "LOG_OUT"
 
 const _getINVITES = (invites) => {
   return {
@@ -37,6 +38,9 @@ export default function userInvites(state = [], action) {
   switch (action.type) {
     case GET_INVITES: {
       return action.invites;
+    }
+    case LOG_OUT: {
+      return []
     }
     default:
       return state;

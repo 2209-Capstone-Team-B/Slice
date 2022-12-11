@@ -14,6 +14,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import { BsFillCircleFill } from 'react-icons/bs';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { yellow } from '@mui/material/colors';
+import Instructions from "../Components/Instructions";
+
 
 export default function Dashboard() {
   //const [tasks, setTasks] = useState([]);
@@ -40,6 +42,7 @@ export default function Dashboard() {
   // if (!user) router.push("/");
   return (
     <div>
+      <Instructions />
       {currentUser ? (
         <h2 className='text-center text-3xl pt-6 grid grid-auto-fit-sm font-serif text-blue-500'>
           Welcome to your slice, {userObject.firstName}!

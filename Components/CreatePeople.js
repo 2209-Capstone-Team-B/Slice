@@ -11,12 +11,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import { auth, db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Alert from '@mui/material/Alert';
+import { useDispatch, useSelector } from 'react-redux';
+import {createEcosystemMember} from '../Store'
 
-export default function AddTask({ id }) {
+export default function CreateMember() {
+  const dispatch = useDispatch()
+  const {singleEcosystem} = useSelector((state)=>state)
   const [user, loading] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
-  const [name, setName] = React.useState('');
-  const [due, setDue] = React.useState('');
+  const [userName, setUserName] = React.useState('');
   const [added, setAdded] = React.useState(false);
   const [error, setError] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -28,23 +31,11 @@ export default function AddTask({ id }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (name.length > 0) {
-      await axios.post(`/api/Ecosystem/${id}`, {
-        name,
-        due,
-        ecosystemId: id,
-        assignedTo: null,
-        owner: user.uid,
-        completed: false,
-        completedAt: null,
-      });
-      setName('');
-      setDue('');
+    if (userName.length > 0) {
+      dispatch(createEcosystemMember(singleEcosystem.id, userName))
+      setUserName('');
       setAdded(true);
       setError(false);
-      setTimeout(() => {
-        handleClose();
-      }, 1000);
     } else {
       setError(true);
     }
@@ -56,52 +47,47 @@ export default function AddTask({ id }) {
         onClick={handleOpen}
         className='bg-blue-300 hover:bg-blue-400 text-black px-4 py-2 rounded-2xl h-10 m-2 w-1/2'
       >
-        Add Task
+        Add a Member
       </button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
-          Create New Task
+          Create New Member
           <CloseIcon
             className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
             onClick={handleClose}
           />
         </DialogTitle>
         <DialogContent>
-          <DialogContentText className='w-[32rem]'>Task Name</DialogContentText>
+          <DialogContentText className='w-screen'></DialogContentText>
           <TextField
             autoFocus
             margin='dense'
-            id='name'
-            label='Enter a name for your task...'
+            id='userName'
+            label='Enter a name'
             type='email'
             fullWidth
             variant='standard'
-            name='name'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </DialogContent>
-        <DialogContent>
-          <DialogContentText className='w-[32rem]'>Due</DialogContentText>
-          <TextField
-            autoFocus
-            margin='dense'
-            id='name'
-            type='date'
-            fullWidth
-            variant='standard'
-            name='name'
-            value={due}
-            onChange={(e) => setDue(e.target.value)}
+            name='userName'
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            className='w-screen'
           />
         </DialogContent>
         <DialogActions>
-          <Button disabled={added} onClick={handleSubmit}>
-            {added ? <Alert severity='success'>Added</Alert> : 'Add Task'}
+          <Button onClick={handleSubmit}>
+            {added ? <Alert severity='success'>Added</Alert> : 'Confirm'}
           </Button>
-          {error && <Alert severity='error'>Enter task</Alert>}
+          {error && <Alert severity='error'>Enter Name</Alert>}
         </DialogActions>
       </Dialog>
     </div>
   );
 }
+
+
+
+
+
+
+
+

@@ -62,6 +62,7 @@ const EcoAnnouncement = () => {
         message,
         created,
         color,
+        seenBy: {[user.uid]: true}
       });
       setSent(true);
       setTimeout(() => {

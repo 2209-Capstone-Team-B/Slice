@@ -12,6 +12,8 @@ import { db } from '../firebase.js';
 // Actions
 
 const GET_TASKS = 'GET_TASKS';
+const LOG_OUT = "LOG_OUT"
+
 
 // Action Creators
 const _getTASKS = (tasks) => {
@@ -46,6 +48,9 @@ export default function userTasks(state = initialState, action) {
   switch (action.type) {
     case GET_TASKS: {
       return action.tasks;
+    }
+    case LOG_OUT: {
+      return []
     }
     default:
       return state;

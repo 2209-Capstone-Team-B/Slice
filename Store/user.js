@@ -4,6 +4,7 @@ import {db} from '../firebase.js'
 
 // Actions
 const GET_USER = "GET_USER";
+const LOG_OUT = "LOG_OUT"
 
 // Action Creators
 const _getUser = (user) => {
@@ -12,6 +13,12 @@ const _getUser = (user) => {
     user,
   };
 };
+
+const _logout = () => {
+  return {
+    type: LOG_OUT
+  }
+}
 
 // Thunks
 export const fetchUser = (userId) => (dispatch)=> {
@@ -22,6 +29,10 @@ export const fetchUser = (userId) => (dispatch)=> {
  return subscriber
 };
 
+export const logoutClearRedux = () => {
+  return (dispatch) => {dispatch(_logout())}
+}
+
 // Initial State
 const initialState = {}
 
@@ -30,6 +41,9 @@ export default function loggedInUserReducer(state = initialState, action) {
   switch (action.type) {
     case GET_USER: {
       return action.user;
+    }
+    case LOG_OUT: {
+      return {}
     }
     default:
       return state;

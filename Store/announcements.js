@@ -9,6 +9,7 @@ import {
 import { db } from '../firebase.js';
 
 const GET_ANNOUNCEMENTS = 'GET_ANNOUNCEMENTS';
+const LOG_OUT = "LOG_OUT"
 
 const _getANNOUNCEMENTS = (announcements) => {
   return {
@@ -38,6 +39,9 @@ export default function userAnnouncements(state = [], action) {
   switch (action.type) {
     case GET_ANNOUNCEMENTS: {
       return action.announcements;
+    }
+    case LOG_OUT: {
+      return []
     }
     default:
       return state;

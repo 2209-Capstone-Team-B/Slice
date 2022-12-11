@@ -11,6 +11,7 @@ import { db } from '../firebase.js';
 
 // Actions
 const GET_ECOSYSTEM = 'GET_ECOSYSTEM';
+const LOG_OUT = "LOG_OUT"
 
 // Action Creators
 const _getECOSYSTEM = (ecosystem) => {
@@ -33,6 +34,9 @@ export default function userEcosystem(state = {}, action) {
   switch (action.type) {
     case GET_ECOSYSTEM: {
       return action.ecosystem;
+    }
+    case LOG_OUT: {
+      return {}
     }
     default:
       return state;

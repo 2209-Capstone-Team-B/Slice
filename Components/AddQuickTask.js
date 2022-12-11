@@ -12,11 +12,10 @@ import { auth, db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Alert from '@mui/material/Alert';
 
-export default function AddTask({ id }) {
+export default function AddQuickTask({ id}) {
   const [user, loading] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
-  const [due, setDue] = React.useState('');
   const [added, setAdded] = React.useState(false);
   const [error, setError] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -31,7 +30,7 @@ export default function AddTask({ id }) {
     if (name.length > 0) {
       await axios.post(`/api/Ecosystem/${id}`, {
         name,
-        due,
+        due: null,
         ecosystemId: id,
         assignedTo: null,
         owner: user.uid,
@@ -39,12 +38,8 @@ export default function AddTask({ id }) {
         completedAt: null,
       });
       setName('');
-      setDue('');
       setAdded(true);
       setError(false);
-      setTimeout(() => {
-        handleClose();
-      }, 1000);
     } else {
       setError(true);
     }
@@ -67,7 +62,7 @@ export default function AddTask({ id }) {
           />
         </DialogTitle>
         <DialogContent>
-          <DialogContentText className='w-[32rem]'>Task Name</DialogContentText>
+          <DialogContentText className='w-screen'>Task Name</DialogContentText>
           <TextField
             autoFocus
             margin='dense'
@@ -79,24 +74,11 @@ export default function AddTask({ id }) {
             name='name'
             value={name}
             onChange={(e) => setName(e.target.value)}
-          />
-        </DialogContent>
-        <DialogContent>
-          <DialogContentText className='w-[32rem]'>Due</DialogContentText>
-          <TextField
-            autoFocus
-            margin='dense'
-            id='name'
-            type='date'
-            fullWidth
-            variant='standard'
-            name='name'
-            value={due}
-            onChange={(e) => setDue(e.target.value)}
+            className='w-screen'
           />
         </DialogContent>
         <DialogActions>
-          <Button disabled={added} onClick={handleSubmit}>
+          <Button onClick={handleSubmit}>
             {added ? <Alert severity='success'>Added</Alert> : 'Add Task'}
           </Button>
           {error && <Alert severity='error'>Enter task</Alert>}
