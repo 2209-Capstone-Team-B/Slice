@@ -10,15 +10,16 @@ import {
   fetchAnnouncements,
 } from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
-import AddTask from '../../Components/AddTask';
+import AddQuickTask from '../../Components/AddQuickTask';
 import EditTask from '../../Components/EditTask';
-import InvitePeople from '../../Components/InvitePeople';
+import CreateMember from '../../Components/CreatePeople.js'
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ClaimTask from '../../Components/ClaimTask';
 import { BiCog, BiMessageDetail } from 'react-icons/bi';
+import {FcAbout} from 'react-icons/fc'
 import {
   setDoc,
   doc,
@@ -38,12 +39,12 @@ import PropTypes from 'prop-types';
 import Container from '@mui/material/Container';
 import LeaveOrg from '../../Components/LeaveOrg.js';
 import BarGraph from '../../Components/BarGraph';
-import CompleteTask from '../../Components/CompleteTask';
+import CompleteQuickTask from '../../Components/CompleteQuickTask';
 import EditDescription from '../../Components/EditDescription';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import EcoAnnouncement from '../../Components/EcoAnnouncement';
 
-export default function ecosystem() {
+export default function QuickTaskecosystem() {
   const [addTask, setAddTasK] = useState(false);
   const [user, loading] = useAuthState(auth);
   const [open, setOpen] = useState(false);
@@ -56,88 +57,29 @@ export default function ecosystem() {
     singleEcosystemTasks,
     ecosystemMembers,
     singleTaskHistory,
-    announcements
   } = useSelector((state) => state);
 
   const unclaimedTasks = singleEcosystemTasks.filter(
     (task) => task.assignedTo === null
   );
 
-  const toggleCompletedTask = async (id, status) => {
-    //Build a query to find the right ecosystemMember
-    const q = query(
-      collection(db, 'EcosystemMembers'),
-      where('ecosystemId', '==', singleEcosystem.id),
-      where('userId', '==', user.uid)
-    );
-    const docSnap = await getDocs(q);
-    const currentName = docSnap.docs[0].data().userName;
-
-    await setDoc(
-      doc(db, 'Tasks', id),
-      {
-        completed: !status,
-        completedAt: serverTimestamp(),
-        userName: currentName,
-      },
-      { merge: true }
-    );
-
-    if (!status) {
-      docSnap.forEach(async (ecoMember) => {
-        let newAmount = ecoMember.data().currencyAmount + 1;
-        await updateDoc(ecoMember.ref, {
-          currencyAmount: newAmount,
-        });
-      });
-    } else {
-      docSnap.forEach(async (ecoMember) => {
-        let newAmount = ecoMember.data().currencyAmount - 1;
-        await updateDoc(ecoMember.ref, {
-          currencyAmount: newAmount,
-        });
-      });
-    }
-    //create notification
-    const currentTaskDoc = await getDoc(doc(db, 'Tasks', id));
-    const TaskObj = currentTaskDoc.data();
-
-    if (TaskObj.assignedTo !== TaskObj.owner) {
-      await setDoc(doc(db, 'Notifications', id), {
-        ...TaskObj,
-        orgName: singleEcosystem.orgName,
-        userName: currentName,
-      });
-    }
-
-    setOpen(false);
-  };
-
   useEffect(() => {
     const unsubscribeEcosystemMembers = dispatch(fetchEcosystemMembers(id));
     const unsubscribeEcosystem = dispatch(fetchEcosystem(id));
     const unsubscribeEcosystemTasks = dispatch(fetchEcosystemTasks(id));
-    const unsubscribeTaskHistory = dispatch(fetchTaskHistory(id));
-    const unsubscribeAnnouncements = dispatch(fetchAnnouncements(id));
+    //const unsubscribeTaskHistory = dispatch(fetchTaskHistory(id));
+    //const unsubscribeAnnouncements = dispatch(fetchAnnouncements(id));
     return () => {
       unsubscribeEcosystemMembers();
       unsubscribeEcosystemTasks();
       unsubscribeEcosystem();
-      unsubscribeTaskHistory();
-      unsubscribeAnnouncements();
+      //unsubscribeTaskHistory();
+      //unsubscribeAnnouncements();
     };
   }, [id]);
-  let unseenMessages = announcements.reduce((prev, curr)=> {if (!curr.seenBy[user?.uid]){return ++prev}else {return prev}},0)
-  const setSeen = (e, announcements) => {
-    handleOpen()
-    announcements.forEach(message=>{if (!message.seenBy[user?.uid]){
-      updateDoc(doc(db, "Messages", message.id),{ seenBy: {...message.seenBy, [user.uid]: true}})
-    }})
-  }
 
   const handleOpen = () => {
     setOpen(!open);
-
   };
 
   const handleTabChange = (event, newValue) => {
@@ -220,14 +162,14 @@ export default function ecosystem() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className='text-center text-5xl pt-6 font-serif text-blue-500'>
-        {singleEcosystem.orgName}
+        You are in QuickTask: {singleEcosystem.orgName}
         <div className='flex justify-center mt-5'>
           <button
-            onClick={(e)=>{setSeen(e, announcements)}}
-            className={`flex text-sm items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300 ${(unseenMessages > 0) ? 'animate-bounce' : ''}`}
+            onClick={handleOpen}
+            className='flex text-sm items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300'
           >
-            Messages ({unseenMessages})
-            <BiMessageDetail size={25} className='pl-2' />
+            Channel Details
+            <FcAbout size={25} className='pl-2' />
           </button>
           <LeaveOrg ecosystemId={singleEcosystem.id} type={singleEcosystem.type}/>
           {/* ({ecosystemMembers.length}) */}
@@ -248,67 +190,25 @@ export default function ecosystem() {
                   TabIndicatorProps={{ style: { background: '#FEF3C7' } }}
                   textColor='inherit'
                 >
-                  <Tab label='Messages' {...a11yProps(0)} />
-                  <Tab label='About' {...a11yProps(1)} />
-                  <Tab
-                    label={`Members (${ecosystemMembers.length})`}
-                    {...a11yProps(2)}
-                  />
-                  <Tab label='Task History' {...a11yProps(3)} />
+                  <Tab label='About' {...a11yProps(0)} />
                 </Tabs>
               </Box>
-              <TabPanel value={value} index={0}>
-                <Typography
-                  id='modal-modal-title'
-                  component='div'
-                  className='text-center underline text-lg'
-                >
-                  Messages for '{singleEcosystem.orgName}'
-                </Typography>
-                <EcoAnnouncement />
-              </TabPanel>
-              <TabPanel value={value} index={1} className='p-1'>
+              <TabPanel value={value} index={0} className='p-1'>
                 Ecosystem Name: {singleEcosystem.orgName}
               </TabPanel>
-              <TabPanel value={value} index={1} className='p-1'>
+              <TabPanel value={value} index={0} className='p-1'>
                 Description: {singleEcosystem.description}
               </TabPanel>
-              {value === 1 && (
+              <TabPanel value={value} index={0} className='p-1'>
+                Ecosystem Type: {singleEcosystem.type}
+              </TabPanel>
+              {value === 0 && (
                 <EditDescription
                   curDescription={singleEcosystem.description}
                   orgId={singleEcosystem.id}
                   curEcoName={singleEcosystem.orgName}
                 />
               )}
-              <TabPanel value={value} index={2}>
-                <Typography
-                  id='modal-modal-title'
-                  component='div'
-                  className='text-center underline text-lg'
-                >
-                  {singleEcosystem.orgName} Members
-                </Typography>
-                {ecosystemMembers.map((member) => (
-                  <div key={member.id} className='flex justify-between'>
-                    {member.userName}
-                  </div>
-                ))}
-              </TabPanel>
-              <TabPanel value={value} index={3}>
-                <Typography
-                  id='modal-modal-title'
-                  component='div'
-                  className='text-center underline text-lg'
-                >
-                  Completed Task History (Last 30 Days)
-                </Typography>
-                {singleTaskHistory.map((task) => (
-                  <div key={task.id}>
-                    "{task.userName}" completed "{task.name}" on{' '}
-                    {task.completedAt.toDate().toUTCString()}
-                  </div>
-                ))}
-              </TabPanel>
             </Box>
             <CloseIcon
               className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
@@ -318,12 +218,12 @@ export default function ecosystem() {
         </Modal>
       </div>
       <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
-        <div className='flex h-1/2 w-full'>
+        <div className='flex h-2/3 w-full'>
           <div className='border border-gray-200 rounded-3xl w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
             <p className='text-center font-serif text-blue-600 pt-2'>
               Group Members
             </p>
-            <InvitePeople />
+            <CreateMember />
             <Droppable droppableId='claimedTasks'>
               {(provided, snapshot) => (
                 <div
@@ -356,12 +256,11 @@ export default function ecosystem() {
                               ) {
                                 return (
                                   <div className='flex' key={idx}>
-                                    {task.assignedTo === user?.uid && (
-                                      <CompleteTask
+
+                                      <CompleteQuickTask
                                         task={task}
-                                        toggle={toggleCompletedTask}
                                       />
-                                    )}
+
                                     <li
                                       key={idx}
                                       className='text-left p-1 ml-2'
@@ -394,7 +293,7 @@ export default function ecosystem() {
                   Unassigned Tasks
                 </p>
 
-                <AddTask id={id} />
+                <AddQuickTask id={id} />
                 <div className='flex flex-wrap justify-center'>
                   {unclaimedTasks.length ? (
                     unclaimedTasks.map((task, i) => (
@@ -410,7 +309,7 @@ export default function ecosystem() {
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}
                           >
-                            {task.name} due {task.due}
+                            {task.name} {/* due {task.due} */}
                             <div className='flex justify-around p-3'>
                               {task.owner === user?.uid && (
                                 <EditTask task={task} />
@@ -430,11 +329,11 @@ export default function ecosystem() {
             )}
           </Droppable>
         </div>
-        <div className='flex h-1/2 w-full justify-center'>
+   {/*      <div className='flex h-1/2 w-full justify-center'>
           <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
             <BarGraph ecosystemMembers={ecosystemMembers} title = 'Number of Tasks Completed' className='w-full' />
           </div>
-        </div>
+        </div> */}
       </div>
     </DragDropContext>
   );

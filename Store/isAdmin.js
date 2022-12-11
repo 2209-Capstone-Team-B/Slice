@@ -3,6 +3,7 @@ import {db} from '../firebase.js'
 
 // Actions
 const GET_ADMIN = "GET_ADMIN";
+const LOG_OUT = "LOG_OUT"
 
 // Action Creators
 const _getADMIN = (admin) => {
@@ -35,6 +36,9 @@ export default function isAdmin (state = initialState, action) {
   switch (action.type) {
     case GET_ADMIN: {
       return action.admin;
+    }
+    case LOG_OUT: {
+      return false
     }
     default:
       return state;

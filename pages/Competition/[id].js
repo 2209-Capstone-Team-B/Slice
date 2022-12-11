@@ -62,7 +62,7 @@ export default function ecosystem() {
     singleTaskHistory,
     singleRewardRequests,
     isAdmin,
-    rewardHistory
+    rewardHistory,
   } = useSelector((state) => state);
 
 
@@ -143,7 +143,7 @@ export default function ecosystem() {
   return (
     <>
       <div className='text-center text-5xl pt-6 font-serif text-blue-500'>
-        {singleEcosystem.orgName}
+       You are in Competition: {singleEcosystem.orgName}
         <div className='flex justify-center mt-5'>
           <button
             onClick={handleOpen}
@@ -151,7 +151,7 @@ export default function ecosystem() {
           >
             Messages <BiMessageDetail size={25} className='pl-2' />
           </button>
-          <LeaveOrg ecosystemId={singleEcosystem.id} />
+          <LeaveOrg ecosystemId={singleEcosystem.id} type={singleEcosystem.type} />
           {/* ({ecosystemMembers.length}) */}
         </div>
         <Modal
@@ -250,13 +250,16 @@ export default function ecosystem() {
                         return (
                           <div className='flex' key={idx}>
                             {isAdmin && (
-
+                              <>
                               <ApproveRequest
                                 request={request}
                                /*  toggle={toggleCompletedTask} */
                               />
-                              )}
                               <DenyRequest request={request} />
+                              </>
+                              )}
+                              {(!isAdmin && request.userId === user?.uid) && ( <DenyRequest request={request} />)}
+
 
 
                             <li key={idx} className='text-left p-1 ml-2'>
