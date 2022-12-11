@@ -12,6 +12,7 @@ import {
 import { db } from '../firebase.js';
 
 const GET_REWARD_HISTORY = 'GET_REWARD_HISTORY';
+const LOG_OUT = "LOG_OUT"
 
 const _getREWARD_HISTORY = (history) => {
   return {
@@ -35,6 +36,9 @@ export default function userHistory(state = [], action) {
   switch (action.type) {
     case GET_REWARD_HISTORY: {
       return action.history;
+    }
+    case LOG_OUT: {
+      return []
     }
     default:
       return state;

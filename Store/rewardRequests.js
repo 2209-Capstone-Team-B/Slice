@@ -12,6 +12,7 @@ import { db } from '../firebase.js';
 
 // Action Constant
 const GET_REQUESTS = 'GET_REQUESTS';
+const LOG_OUT = "LOG_OUT"
 
 // Action Creator
 const _getREQUESTS = (requests) => {
@@ -41,6 +42,9 @@ export default function singleEcosystemRequests(state = [], action) {
   switch (action.type) {
     case GET_REQUESTS: {
       return action.requests;
+    }
+    case LOG_OUT: {
+      return []
     }
     default:
       return state;

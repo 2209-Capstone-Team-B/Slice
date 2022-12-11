@@ -13,6 +13,7 @@ import {
 import { db } from '../firebase.js';
 
 const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS';
+const LOG_OUT = "LOG_OUT"
 
 const _getNOTIFICATIONS = (notifications) => {
   return {
@@ -40,6 +41,9 @@ export default function userNotifications(state = [], action) {
   switch (action.type) {
     case GET_NOTIFICATIONS: {
       return action.notifications;
+    }
+    case LOG_OUT: {
+      return []
     }
     default:
       return state;

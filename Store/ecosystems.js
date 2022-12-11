@@ -8,6 +8,7 @@ import {
   onSnapshot,
   doc,
   getDoc,
+  updateDoc
 } from "firebase/firestore";
 import { db } from "../firebase.js";
 
@@ -27,6 +28,7 @@ function randomRgbColor() {
 
 const GET_ECOSYSTEMS = "GET_ECOSYSTEMS";
 const UPDATE_ECOSYSTEM = "UPDATE_ECOSYSTEM";
+const LOG_OUT = "LOG_OUT"
 
 // Action Creators
 const _getECOSYSTEMS = (ecosystems) => {
@@ -83,6 +85,30 @@ export const addEcosystem = (eco) => async (dispatch) => {
   }
 }
 
+export const createEcosystemMember = (ecoId, userName) => async (dispatch) => {
+/*   const { id, name, type, userName, description } = eco
+  const docRef = await addDoc(collection(db, 'Ecosystem'), {
+    orgName: name,
+    type,
+    description
+  });
+  const docSnap = await getDoc(docRef); */
+
+  const docRef = await addDoc(collection(db, 'EcosystemMembers'), {
+    userId: null,
+    userName,
+    ecosystemId: ecoId,
+    currencyAmount: 0,
+    color: randomRgbColor(),
+  });
+
+  const memberDoc = await getDoc(docRef)
+
+  updateDoc(docRef, {userId: docRef.id} )
+
+
+}
+
 // Initial State
 const initialState = [];
 
@@ -100,6 +126,9 @@ export default function userEcosystems(state = initialState, action) {
           return eco;
         }
       });
+    }
+    case LOG_OUT: {
+      return []
     }
     default:
       return state;
