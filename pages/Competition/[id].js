@@ -66,6 +66,7 @@ export default function ecosystem() {
     singleRewardRequests,
     isAdmin,
     rewardHistory,
+    announcements
   } = useSelector((state) => state);
 
   useEffect(() => {
@@ -89,6 +90,14 @@ export default function ecosystem() {
       unsubscribeAnnouncements();
     };
   }, [id]);
+
+  let unseenMessages = announcements.reduce((prev, curr)=> {if (!curr.seenBy[user?.uid]){return ++prev}else {return prev}},0)
+  const setSeen = (e, announcements) => {
+    handleOpen()
+    announcements.forEach(message=>{if (!message.seenBy[user?.uid]){
+      updateDoc(doc(db, "Messages", message.id),{ seenBy: {...message.seenBy, [user.uid]: true}})
+    }})
+  }
 
   const handleOpen = () => {
     setOpen(!open);
@@ -149,10 +158,10 @@ export default function ecosystem() {
         You are in Competition: {singleEcosystem.orgName}
         <div className='flex justify-center mt-5'>
           <button
-            onClick={handleOpen}
-            className='flex text-sm ml-6 items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300'
+            onClick={(e)=>{setSeen(e, announcements)}}
+            className={`flex text-sm ml-6 items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300 ${(unseenMessages > 0) ? 'animate-bounce' : ''}`}
           >
-            Messages <BiMessageDetail size={25} className='pl-2' />
+            Messages ({unseenMessages})<BiMessageDetail size={25} className='pl-2' />
           </button>
           <LeaveOrg
             ecosystemId={singleEcosystem.id}
@@ -252,7 +261,7 @@ export default function ecosystem() {
         </Modal>
       </div>
       <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
-        <div className='flex h-1/2 w-full'>
+        <div className='flex h-2/3 w-full'>
           <div className='flex flex-col border border-gray-200 rounded-3xl w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
             <p className='text-center font-serif text-blue-600 pt-2'>
               Group Members
@@ -271,19 +280,18 @@ export default function ecosystem() {
                         return (
                           <div className='flex flex-col' key={idx}>
                             <div className='flex justify-around'>
-                              {isAdmin && (
-                                <>
-                                  <ApproveRequest
-                                    request={request}
-                                    /*  toggle={toggleCompletedTask} */
-                                  />
-                                  <DenyRequest request={request} />
-                                </>
+                            {isAdmin && (
+                              <>
+                              <ApproveRequest
+                                request={request}
+                                /*  toggle={toggleCompletedTask} */
+                              />
+                              <DenyRequest request={request} />
+                              </>
                               )}
 
-                              {!isAdmin && request.userId === user?.uid && (
-                                <DenyRequest request={request} />
-                              )}
+                              {(!isAdmin && request.userId === user?.uid) && ( <DenyRequest request={request} />)}
+
                             </div>
                             <div className='flex'>
                               <li key={idx} className='text-left p-1 ml-2'>
