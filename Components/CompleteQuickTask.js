@@ -7,8 +7,7 @@ import { db } from '../firebase';
 import { setDoc, doc, deleteDoc } from 'firebase/firestore';
 import { BsCheckLg } from 'react-icons/bs';
 import { FaUndoAlt } from 'react-icons/fa';
-import {AiFillDelete} from 'react-icons/ai'
-
+import { AiFillDelete } from 'react-icons/ai';
 
 const style = {
   position: 'absolute',
@@ -16,7 +15,6 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
   pt: 0,
@@ -26,7 +24,7 @@ const style = {
 };
 
 //Parent modal for deciding what type of edit you would like to make -- Edit or Delete
-export default function CompleteQuickTask({ task}) {
+export default function CompleteQuickTask({ task }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -76,7 +74,7 @@ export default function CompleteQuickTask({ task}) {
             <p>Due: {task.due}</p>
             <button
               onClick={() => {
-                deleteDoc(doc(db, 'Tasks', task.id))
+                deleteDoc(doc(db, 'Tasks', task.id));
                 handleClose();
               }}
               className='text-green-600 border border-green-600 rounded-3xl px-2 m-4 hover:bg-green-600 hover:text-white'
