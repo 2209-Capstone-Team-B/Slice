@@ -10,7 +10,6 @@ const MyCalendar = () => {
       onClick={() => {
         console.log(date);
       }}
-      className="shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]"
     >
       <Calendar onChange={setDate} value={date} />
     </div>
