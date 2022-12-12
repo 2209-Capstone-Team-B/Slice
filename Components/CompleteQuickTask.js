@@ -55,6 +55,7 @@ export default function CompleteQuickTask({ task }) {
             className='hover:text-green-300 text-green-500'
             onClick={handleOpen}
             title='Complete Task'
+            size={20}
           />
         </div>
       </div>
