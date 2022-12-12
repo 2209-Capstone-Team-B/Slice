@@ -115,7 +115,6 @@ export default function ecosystem() {
     width: 800,
     height: 600,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
     boxShadow: 24,
     p: 4,
     borderRadius: 5,
@@ -156,15 +155,18 @@ export default function ecosystem() {
   return (
     <>
       <div className='text-center text-5xl pt-6 font-serif text-blue-500'>
-       You are in Competition: {singleEcosystem.orgName}
+        You are in Competition: {singleEcosystem.orgName}
         <div className='flex justify-center mt-5'>
           <button
             onClick={(e)=>{setSeen(e, announcements)}}
-            className={`flex text-sm items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300 ${(unseenMessages > 0) ? 'animate-bounce' : ''}`}
+            className={`flex text-sm ml-6 items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300 ${(unseenMessages > 0) ? 'animate-bounce' : ''}`}
           >
             Messages ({unseenMessages})<BiMessageDetail size={25} className='pl-2' />
           </button>
-          <LeaveOrg ecosystemId={singleEcosystem.id} type={singleEcosystem.type} />
+          <LeaveOrg
+            ecosystemId={singleEcosystem.id}
+            type={singleEcosystem.type}
+          />
           {/* ({ecosystemMembers.length}) */}
         </div>
         <Modal
@@ -278,8 +280,6 @@ export default function ecosystem() {
                         return (
                           <div className='flex flex-col' key={idx}>
                             <div className='flex justify-around'>
-
-
                             {isAdmin && (
                               <>
                               <ApproveRequest
@@ -294,7 +294,6 @@ export default function ecosystem() {
 
                             </div>
                             <div className='flex'>
-
                               <li key={idx} className='text-left p-1 ml-2'>
                                 {request.name}
                               </li>

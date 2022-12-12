@@ -1,14 +1,14 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
-import CloseIcon from "@mui/icons-material/Close";
-import { db } from "../firebase";
-import { setDoc, doc, deleteDoc } from "firebase/firestore";
-import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
-import { leaveMember } from "../Store";
-import { RxExit } from "react-icons/rx";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
+import { db } from '../firebase';
+import { setDoc, doc, deleteDoc } from 'firebase/firestore';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { leaveMember } from '../Store';
+import { RxExit } from 'react-icons/rx';
 
 const style = {
   position: 'absolute',
@@ -26,7 +26,9 @@ const style = {
 
 export default function LeaveOrg({ ecosystemId, type }) {
   const [open, setOpen] = React.useState(false);
-  const { singleEcosystem, loggedInUser, isAdmin } = useSelector((state) => state);
+  const { singleEcosystem, loggedInUser, isAdmin } = useSelector(
+    (state) => state
+  );
   const router = useRouter();
   const dispatch = useDispatch();
   const handleOpen = () => {
@@ -37,7 +39,7 @@ export default function LeaveOrg({ ecosystemId, type }) {
       setOpen(false);
       return;
     }
-    router.push("/");
+    router.push('/');
     dispatch(leaveMember(loggedInUser.id, ecosystemId, type, isAdmin));
 
     setOpen(false);
@@ -47,45 +49,48 @@ export default function LeaveOrg({ ecosystemId, type }) {
     <React.Fragment>
       <button
         onClick={handleOpen}
-        className="flex text-sm items-center hover:bg-red-500 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-red-400"
+        className='flex text-sm items-center ml-10 hover:bg-red-500 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-red-400'
       >
-        {type ==='Bulletin' || type ==="Competition" ? 'Leave Ecosystem': 'Delete Ecosystem' }<RxExit size={23} className="pl-2" />
+        {type === 'Bulletin' || type === 'Competition'
+          ? 'Leave Ecosystem'
+          : 'Delete Ecosystem'}
+        <RxExit size={23} className='pl-2' />
       </button>
       <Modal
         hideBackdrop
         open={open}
         onClose={(e) => handleClose(e, true)}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
+        aria-labelledby='child-modal-title'
+        aria-describedby='child-modal-description'
       >
         <Box
           sx={{
             ...style,
             width: 300,
             height: 185,
-            boxShadow: "2px 5px 30px red",
+            boxShadow: '2px 5px 30px red',
           }}
         >
-          <div className="w-full flex flex-col items-center pt-4">
-            <h2 id="child-modal-title" className="p-2">
-              {type === "Bulletin"
-                ? "Leaving will delete any/all uncompleted tasks you have created (even if currently claimed by another)"
-                : ""}
-              {type === "Competition"
-                ? "Leaving as the sole admin will randomly assign another as admin"
-                : ""}
-              {type === "QuickTask" ? "Are you sure?" : ""}
+          <div className='w-full flex flex-col items-center pt-4'>
+            <h2 id='child-modal-title' className='p-2'>
+              {type === 'Bulletin'
+                ? 'Leaving will delete any/all uncompleted tasks you have created (even if currently claimed by another)'
+                : ''}
+              {type === 'Competition'
+                ? 'Leaving as the sole admin will randomly assign another as admin'
+                : ''}
+              {type === 'QuickTask' ? 'Are you sure?' : ''}
               <CloseIcon
-                className="absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold"
+                className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
                 onClick={(e) => handleClose(e, true)}
               />
             </h2>
-            <p id="child-modal-description"></p>
+            <p id='child-modal-description'></p>
             <button
               onClick={() => {
                 handleClose();
               }}
-              className="text-red-600 border border-red-600 rounded-3xl p-2 w-3/4 hover:bg-red-600 hover:text-white"
+              className='text-red-600 border border-red-600 rounded-3xl p-2 w-3/4 hover:bg-red-600 hover:text-white'
             >
               Leave
             </button>
