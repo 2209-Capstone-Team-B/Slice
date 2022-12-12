@@ -66,6 +66,7 @@ export default function ecosystem() {
     singleRewardRequests,
     isAdmin,
     rewardHistory,
+    announcements
   } = useSelector((state) => state);
 
   useEffect(() => {
@@ -89,6 +90,14 @@ export default function ecosystem() {
       unsubscribeAnnouncements();
     };
   }, [id]);
+
+  let unseenMessages = announcements.reduce((prev, curr)=> {if (!curr.seenBy[user?.uid]){return ++prev}else {return prev}},0)
+  const setSeen = (e, announcements) => {
+    handleOpen()
+    announcements.forEach(message=>{if (!message.seenBy[user?.uid]){
+      updateDoc(doc(db, "Messages", message.id),{ seenBy: {...message.seenBy, [user.uid]: true}})
+    }})
+  }
 
   const handleOpen = () => {
     setOpen(!open);
@@ -150,10 +159,10 @@ export default function ecosystem() {
        You are in Competition: {singleEcosystem.orgName}
         <div className='flex justify-center mt-5'>
           <button
-            onClick={handleOpen}
-            className='flex text-sm items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300'
+            onClick={(e)=>{setSeen(e, announcements)}}
+            className={`flex text-sm items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300 ${(unseenMessages > 0) ? 'animate-bounce' : ''}`}
           >
-            Messages <BiMessageDetail size={25} className='pl-2' />
+            Messages ({unseenMessages})<BiMessageDetail size={25} className='pl-2' />
           </button>
           <LeaveOrg ecosystemId={singleEcosystem.id} type={singleEcosystem.type} />
           {/* ({ecosystemMembers.length}) */}
