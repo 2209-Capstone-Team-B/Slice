@@ -9,6 +9,7 @@ const Chart = ({ completed, incomplete }) => {
     ChartJS.defaults.plugins.title.text = 'My Tasks';
     ChartJS.defaults.plugins.title.display = true;
     ChartJS.defaults.plugins.legend.display = true;
+    ChartJS.defaults.responsive = false;
   });
   const data = {
     labels: ['Completed', 'Incomplete'],

@@ -459,11 +459,11 @@ export default function ecosystem() {
           </Droppable>
         </div>
         <div className='flex h-1/2 w-full justify-center'>
-          <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
+          <div className='flex border border-gray-200 rounded-3xl justify-center w-3/4 m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
             <BarGraph
               ecosystemMembers={ecosystemMembers}
               title='Number of Tasks Completed'
-              className='w-full'
+              className='h-full'
             />
           </div>
         </div>

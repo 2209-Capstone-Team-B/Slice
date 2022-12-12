@@ -43,7 +43,7 @@ export default function AddTask({ id }) {
       setAdded(true);
       setError(false);
       setTimeout(() => {
-        handleClose();
+        setAdded(false);
       }, 1000);
     } else {
       setError(true);
