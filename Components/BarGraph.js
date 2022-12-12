@@ -15,6 +15,7 @@ const BarGraph = ({ ecosystemMembers, title }) => {
     ChartJS.defaults.plugins.title.text = title;
     ChartJS.defaults.plugins.title.display = true;
     ChartJS.defaults.plugins.legend.display = false;
+    ChartJS.defaults.responsive = true;
   });
 
   const data = {

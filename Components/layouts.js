@@ -142,7 +142,7 @@ export default function Layout({ children }) {
               <div className="flex justify-center items-center">
                 <button
                   onClick={goToTeam}
-                  className="text-center flex justify-center items-center h-10 rounded-md bg-emerald-400 m-5 px-4 py-4 text-sm font-medium text-black hover:bg-emerald-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                  className='text-center flex justify-center items-center h-10 rounded-md bg-emerald-400 m-5 px-4 py-4 text-sm font-medium text-black hover:bg-emerald-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
                 >
                   Meet the team
                 </button>

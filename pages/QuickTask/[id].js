@@ -12,14 +12,14 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import AddQuickTask from '../../Components/AddQuickTask';
 import EditTask from '../../Components/EditTask';
-import CreateMember from '../../Components/CreatePeople.js'
+import CreateMember from '../../Components/CreatePeople.js';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ClaimTask from '../../Components/ClaimTask';
 import { BiCog, BiMessageDetail } from 'react-icons/bi';
-import {FcAbout} from 'react-icons/fc'
+import { FcAbout } from 'react-icons/fc';
 import {
   setDoc,
   doc,
@@ -94,7 +94,6 @@ export default function QuickTaskecosystem() {
     width: 800,
     height: 600,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
     boxShadow: 24,
     p: 4,
     borderRadius: 5,
@@ -171,7 +170,10 @@ export default function QuickTaskecosystem() {
             Channel Details
             <FcAbout size={25} className='pl-2' />
           </button>
-          <LeaveOrg ecosystemId={singleEcosystem.id} type={singleEcosystem.type}/>
+          <LeaveOrg
+            ecosystemId={singleEcosystem.id}
+            type={singleEcosystem.type}
+          />
           {/* ({ecosystemMembers.length}) */}
         </div>
         <Modal
@@ -256,10 +258,7 @@ export default function QuickTaskecosystem() {
                               ) {
                                 return (
                                   <div className='flex' key={idx}>
-
-                                      <CompleteQuickTask
-                                        task={task}
-                                      />
+                                    <CompleteQuickTask task={task} />
 
                                     <li
                                       key={idx}
@@ -329,7 +328,7 @@ export default function QuickTaskecosystem() {
             )}
           </Droppable>
         </div>
-   {/*      <div className='flex h-1/2 w-full justify-center'>
+        {/*      <div className='flex h-1/2 w-full justify-center'>
           <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
             <BarGraph ecosystemMembers={ecosystemMembers} title = 'Number of Tasks Completed' className='w-full' />
           </div>
