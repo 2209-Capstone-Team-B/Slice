@@ -5,11 +5,7 @@ const MyCalendar = () => {
   const [date, setDate] = useState(new Date());
 
   return (
-    <div
-      onClick={() => {
-        console.log(date);
-      }}
-    >
+    <div>
       <Calendar onChange={setDate} value={date} />
     </div>
   );

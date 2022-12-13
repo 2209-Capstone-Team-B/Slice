@@ -53,7 +53,6 @@ const AuthPage = () => {
       try {
         await login(email, password);
       } catch (error) {
-        console.log(">>>>>", error);
         setError("Incorrect Email or Password");
       }
     }
@@ -82,7 +81,6 @@ const AuthPage = () => {
       try {
         await signup(email, password);
       } catch (error) {
-        console.log(">>>>>", error);
         if (password.length < 6) {
           setError("Password Needs to be at least 6 characters");
         } else if (error) {

@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   if (loading) return <Loading />;
-  // you can grab the entire user object on state.loggedInUser
+
   return (
     <Provider store={store}>
       <AuthProvider>

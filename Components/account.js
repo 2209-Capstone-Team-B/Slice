@@ -27,9 +27,7 @@ export default function Account({ children }) {
     try {
       router.push("/");
       dispatch(logoutClearRedux());
-      console.log("we reached past logout dispatch");
       await logout();
-      console.log("we reached past logout");
     } catch (error) {
       console.log(error);
       console.log(`Help I can't get out!`);
