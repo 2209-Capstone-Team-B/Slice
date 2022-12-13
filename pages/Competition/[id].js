@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '../../firebase';
-import { useRouter } from 'next/router';
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../../firebase";
+import { useRouter } from "next/router";
 import {
   fetchEcosystem,
   fetchEcosystemTasks,
@@ -12,20 +12,20 @@ import {
   testAdmin,
   fetchRewardHistory,
   fetchAnnouncements,
-} from '../../Store';
-import { useDispatch, useSelector } from 'react-redux';
-import AddCompetitionTask from '../../Components/AddCompetitionTask.js';
-import EditCompetitionTask from '../../Components/EditCompetitionTask.js';
-import InvitePeople from '../../Components/InvitePeople';
-import Modal from '@mui/material/Modal';
-import CloseIcon from '@mui/icons-material/Close';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import ClaimReward from '../../Components/ClaimReward';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { BiCog, BiMessageDetail } from 'react-icons/bi';
-import { BsFillCircleFill } from 'react-icons/bs';
+} from "../../Store";
+import { useDispatch, useSelector } from "react-redux";
+import AddCompetitionTask from "../../Components/AddCompetitionTask.js";
+import EditCompetitionTask from "../../Components/EditCompetitionTask.js";
+import InvitePeople from "../../Components/InvitePeople";
+import Modal from "@mui/material/Modal";
+import CloseIcon from "@mui/icons-material/Close";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import ClaimReward from "../../Components/ClaimReward";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import { BiCog, BiMessageDetail } from "react-icons/bi";
+import { BsFillCircleFill } from "react-icons/bs";
 import {
   setDoc,
   doc,
@@ -38,17 +38,18 @@ import {
   updateDoc,
   serverTimestamp,
   toDate,
-} from 'firebase/firestore';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
-import PropTypes from 'prop-types';
-import Container from '@mui/material/Container';
-import LeaveOrg from '../../Components/LeaveOrg.js';
-import BarGraph from '../../Components/BarGraph';
-import ApproveRequest from '../../Components/ApproveRequest.js';
-import DenyRequest from '../../Components/DenyRequest.js';
-import EditDescription from '../../Components/EditDescription';
-import EcoAnnouncement from '../../Components/EcoAnnouncement';
+} from "firebase/firestore";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import PropTypes from "prop-types";
+import Container from "@mui/material/Container";
+import LeaveOrg from "../../Components/LeaveOrg.js";
+import BarGraph from "../../Components/BarGraph";
+import ApproveRequest from "../../Components/ApproveRequest.js";
+import DenyRequest from "../../Components/DenyRequest.js";
+import EditDescription from "../../Components/EditDescription";
+import EcoAnnouncement from "../../Components/EcoAnnouncement";
+import Instructions from "../../Components/Instructions";
 
 export default function ecosystem() {
   const [addTask, setAddTasK] = useState(false);
@@ -66,7 +67,7 @@ export default function ecosystem() {
     singleRewardRequests,
     isAdmin,
     rewardHistory,
-    announcements
+    announcements,
   } = useSelector((state) => state);
 
   useEffect(() => {
@@ -91,13 +92,23 @@ export default function ecosystem() {
     };
   }, [id]);
 
-  let unseenMessages = announcements.reduce((prev, curr)=> {if (!curr.seenBy[user?.uid]){return ++prev}else {return prev}},0)
+  let unseenMessages = announcements.reduce((prev, curr) => {
+    if (!curr.seenBy[user?.uid]) {
+      return ++prev;
+    } else {
+      return prev;
+    }
+  }, 0);
   const setSeen = (e, announcements) => {
-    handleOpen()
-    announcements.forEach(message=>{if (!message.seenBy[user?.uid]){
-      updateDoc(doc(db, "Messages", message.id),{ seenBy: {...message.seenBy, [user.uid]: true}})
-    }})
-  }
+    handleOpen();
+    announcements.forEach((message) => {
+      if (!message.seenBy[user?.uid]) {
+        updateDoc(doc(db, "Messages", message.id), {
+          seenBy: { ...message.seenBy, [user.uid]: true },
+        });
+      }
+    });
+  };
 
   const handleOpen = () => {
     setOpen(!open);
@@ -108,24 +119,24 @@ export default function ecosystem() {
   };
 
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     width: 800,
     height: 600,
-    bgcolor: 'background.paper',
+    bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
   };
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
     return (
       <div
-        role='tabpanel'
+        role="tabpanel"
         hidden={value !== index}
         id={`simple-tabpanel-${index}`}
         aria-labelledby={`simple-tab-${index}`}
@@ -149,19 +160,25 @@ export default function ecosystem() {
   function a11yProps(index) {
     return {
       id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
+      "aria-controls": `simple-tabpanel-${index}`,
     };
   }
   return (
     <>
-      <div className='text-center text-5xl pt-6 font-serif text-blue-500'>
+      <Instructions />
+      <div className="text-center text-5xl pt-6 font-serif text-blue-500">
         You are in Competition: {singleEcosystem.orgName}
-        <div className='flex justify-center mt-5'>
+        <div className="flex justify-center mt-5">
           <button
-            onClick={(e)=>{setSeen(e, announcements)}}
-            className={`flex text-sm ml-6 items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300 ${(unseenMessages > 0) ? 'animate-bounce' : ''}`}
+            onClick={(e) => {
+              setSeen(e, announcements);
+            }}
+            className={`flex text-sm ml-6 items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300 ${
+              unseenMessages > 0 ? "animate-bounce" : ""
+            }`}
           >
-            Messages ({unseenMessages})<BiMessageDetail size={25} className='pl-2' />
+            Messages ({unseenMessages})
+            <BiMessageDetail size={25} className="pl-2" />
           </button>
           <LeaveOrg
             ecosystemId={singleEcosystem.id}
@@ -172,42 +189,42 @@ export default function ecosystem() {
         <Modal
           open={open}
           onClose={handleOpen}
-          aria-labelledby='modal-modal-title'
-          aria-describedby='modal-modal-description'
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
         >
-          <Box className='overflow-auto' sx={style}>
-            <Box sx={{ width: '100%' }}>
-              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Box className="overflow-auto" sx={style}>
+            <Box sx={{ width: "100%" }}>
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs
                   value={value}
                   onChange={handleTabChange}
-                  aria-label='basic tabs example'
-                  TabIndicatorProps={{ style: { background: '#FEF3C7' } }}
-                  textColor='inherit'
+                  aria-label="basic tabs example"
+                  TabIndicatorProps={{ style: { background: "#FEF3C7" } }}
+                  textColor="inherit"
                 >
-                  <Tab label='Messages' {...a11yProps(0)} />
-                  <Tab label='About' {...a11yProps(1)} />
+                  <Tab label="Messages" {...a11yProps(0)} />
+                  <Tab label="About" {...a11yProps(1)} />
                   <Tab
                     label={`Members (${ecosystemMembers.length})`}
                     {...a11yProps(2)}
                   />
-                  <Tab label='Task History' {...a11yProps(3)} />
+                  <Tab label="Task History" {...a11yProps(3)} />
                 </Tabs>
               </Box>
               <TabPanel value={value} index={0}>
                 <Typography
-                  id='modal-modal-title'
-                  component='div'
-                  className='text-center underline text-lg'
+                  id="modal-modal-title"
+                  component="div"
+                  className="text-center underline text-lg"
                 >
                   Messages for '{singleEcosystem.orgName}'
                 </Typography>
                 <EcoAnnouncement />
               </TabPanel>
-              <TabPanel value={value} index={1} className='p-1'>
+              <TabPanel value={value} index={1} className="p-1">
                 Ecosystem Name: {singleEcosystem.orgName}
               </TabPanel>
-              <TabPanel value={value} index={1} className='p-1'>
+              <TabPanel value={value} index={1} className="p-1">
                 Description: {singleEcosystem.description}
               </TabPanel>
               {value === 1 && (
@@ -219,16 +236,16 @@ export default function ecosystem() {
               )}
               <TabPanel value={value} index={2}>
                 <Typography
-                  id='modal-modal-title'
-                  component='div'
-                  className='text-center text-lg'
+                  id="modal-modal-title"
+                  component="div"
+                  className="text-center text-lg"
                 >
                   {singleEcosystem.orgName} Members
                 </Typography>
                 {ecosystemMembers.map((member) => (
-                  <ol key={member.id} className='flex justify-between'>
-                    <li className='flex items-center my-2'>
-                      <BsFillCircleFill color={member.color} className='mr-2' />
+                  <ol key={member.id} className="flex justify-between">
+                    <li className="flex items-center my-2">
+                      <BsFillCircleFill color={member.color} className="mr-2" />
                       {member.userName}
                     </li>
                   </ol>
@@ -236,9 +253,9 @@ export default function ecosystem() {
               </TabPanel>
               <TabPanel value={value} index={3}>
                 <Typography
-                  id='modal-modal-title'
-                  component='div'
-                  className='text-center underline text-lg'
+                  id="modal-modal-title"
+                  component="div"
+                  className="text-center underline text-lg"
                 >
                   Completed Task History (Last 30 Days)
                 </Typography>
@@ -248,57 +265,58 @@ export default function ecosystem() {
                       "{task.userName}" completed "{task.name}"
                     </div>
                     <small>{task.completedAt.toDate().toUTCString()}</small>
-                    <hr className='my-2' />
+                    <hr className="my-2" />
                   </div>
                 ))}
               </TabPanel>
             </Box>
             <CloseIcon
-              className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
+              className="absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold"
               onClick={handleOpen}
             />
           </Box>
         </Modal>
       </div>
-      <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
-        <div className='flex h-2/3 w-full'>
-          <div className='flex flex-col border border-gray-200 rounded-3xl w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
-            <p className='text-center font-serif text-blue-600 pt-2'>
+      <div className="bg-white h-screen flex-col min-w-full pt-0 p-10">
+        <div className="flex h-2/3 w-full">
+          <div className="flex flex-col border border-gray-200 rounded-3xl w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]">
+            <p className="text-center font-serif text-blue-600 pt-2">
               Group Members
             </p>
             <InvitePeople />
-            <div className='flex flex-wrap justify-center'>
+            <div className="flex flex-wrap justify-center">
               {ecosystemMembers.map((member, i) => (
                 <div
                   key={i}
-                  className='border border-gray-200 text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto shadow-md'
+                  className="border border-gray-200 text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto shadow-md"
                 >
-                  <p className='text-lg font-bold'>{member.userName}</p>
-                  <ol className='list-decimal p-3'>
+                  <p className="text-lg font-bold">{member.userName}</p>
+                  <ol className="list-decimal p-3">
                     {singleRewardRequests.map((request, idx) => {
                       if (request.userId === member.userId) {
                         return (
-                          <div className='flex flex-col' key={idx}>
-                            <div className='flex justify-around'>
-                            {isAdmin && (
-                              <>
-                              <ApproveRequest
-                                request={request}
-                                /*  toggle={toggleCompletedTask} */
-                              />
-                              <DenyRequest request={request} />
-                              </>
+                          <div className="flex flex-col" key={idx}>
+                            <div className="flex justify-around">
+                              {isAdmin && (
+                                <>
+                                  <ApproveRequest
+                                    request={request}
+                                    /*  toggle={toggleCompletedTask} */
+                                  />
+                                  <DenyRequest request={request} />
+                                </>
                               )}
 
-                              {(!isAdmin && request.userId === user?.uid) && ( <DenyRequest request={request} />)}
-
+                              {!isAdmin && request.userId === user?.uid && (
+                                <DenyRequest request={request} />
+                              )}
                             </div>
-                            <div className='flex'>
-                              <li key={idx} className='text-left p-1 ml-2'>
+                            <div className="flex">
+                              <li key={idx} className="text-left p-1 ml-2">
                                 {request.name}
                               </li>
                             </div>
-                            <hr className='my-2' />
+                            <hr className="my-2" />
                           </div>
                         );
                       }
@@ -308,35 +326,35 @@ export default function ecosystem() {
               ))}
             </div>
           </div>
-          <div className='border border-gray-200 rounded-3xl justify-center w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
-            <p className='text-center font-serif text-blue-600 pt-2'>Tasks</p>
+          <div className="border border-gray-200 rounded-3xl justify-center w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]">
+            <p className="text-center font-serif text-blue-600 pt-2">Tasks</p>
             {isAdmin && <AddCompetitionTask id={id} />}
-            <div className='flex flex-wrap justify-center'>
+            <div className="flex flex-wrap justify-center">
               {singleEcosystemTasks.length > 0 ? (
                 singleEcosystemTasks.map((task, i) => (
                   <div
                     key={i}
-                    className='border border-gray-200 text-center w-3/4 rounded-2xl p-2 m-2 shadow-md'
+                    className="border border-gray-200 text-center w-3/4 rounded-2xl p-2 m-2 shadow-md"
                   >
                     {task.name} : {task.reward} point reward
-                    <div className='flex justify-around p-3'>
+                    <div className="flex justify-around p-3">
                       {isAdmin && <EditCompetitionTask task={task} />}
                       <ClaimReward task={task} user={user} />
                     </div>
                   </div>
                 ))
               ) : (
-                <h1 className='mt-10 items-end'>No Tasks</h1>
+                <h1 className="mt-10 items-end">No Tasks</h1>
               )}
             </div>
           </div>
         </div>
-        <div className='flex h-1/2 w-full justify-center'>
-          <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
+        <div className="flex h-1/2 w-full justify-center">
+          <div className="flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7">
             <BarGraph
               ecosystemMembers={ecosystemMembers}
-              title='Leaderboard'
-              className='w-full'
+              title="Leaderboard"
+              className="w-full"
             />
           </div>
         </div>
