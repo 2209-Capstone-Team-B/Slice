@@ -12,11 +12,11 @@ import { auth, db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Alert from '@mui/material/Alert';
 import { useDispatch, useSelector } from 'react-redux';
-import {createEcosystemMember} from '../Store'
+import { createEcosystemMember } from '../Store';
 
 export default function CreateMember() {
-  const dispatch = useDispatch()
-  const {singleEcosystem} = useSelector((state)=>state)
+  const dispatch = useDispatch();
+  const { singleEcosystem } = useSelector((state) => state);
   const [user, loading] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
   const [userName, setUserName] = React.useState('');
@@ -32,7 +32,7 @@ export default function CreateMember() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (userName.length > 0) {
-      dispatch(createEcosystemMember(singleEcosystem.id, userName))
+      dispatch(createEcosystemMember(singleEcosystem.id, userName));
       setUserName('');
       setAdded(true);
       setError(false);
@@ -58,7 +58,7 @@ export default function CreateMember() {
           />
         </DialogTitle>
         <DialogContent>
-          <DialogContentText className='w-screen'></DialogContentText>
+          <DialogContentText className='w-[32rem]'></DialogContentText>
           <TextField
             autoFocus
             margin='dense'
@@ -70,7 +70,6 @@ export default function CreateMember() {
             name='userName'
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
-            className='w-screen'
           />
         </DialogContent>
         <DialogActions>
@@ -83,11 +82,3 @@ export default function CreateMember() {
     </div>
   );
 }
-
-
-
-
-
-
-
-

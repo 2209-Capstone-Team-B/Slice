@@ -12,7 +12,7 @@ import { auth, db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Alert from '@mui/material/Alert';
 
-export default function AddQuickTask({ id}) {
+export default function AddQuickTask({ id }) {
   const [user, loading] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
@@ -62,7 +62,7 @@ export default function AddQuickTask({ id}) {
           />
         </DialogTitle>
         <DialogContent>
-          <DialogContentText className='w-screen'>Task Name</DialogContentText>
+          <DialogContentText className='w-[32rem]'>Task Name</DialogContentText>
           <TextField
             autoFocus
             margin='dense'
@@ -74,7 +74,6 @@ export default function AddQuickTask({ id}) {
             name='name'
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className='w-screen'
           />
         </DialogContent>
         <DialogActions>
