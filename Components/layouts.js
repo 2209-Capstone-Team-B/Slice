@@ -21,7 +21,9 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { GiOrangeSlice, GiTeamDowngrade } from "react-icons/gi";
+import { GiOrangeSlice, GiTeamDowngrade, GiHummingbird } from "react-icons/gi";
+import { TbClipboardCheck } from "react-icons/tb";
+import { GrUserAdmin } from "react-icons/gr";
 
 export default function Layout({ children }) {
   const [showEcos, setShowEcos] = useState(true);
@@ -117,7 +119,9 @@ export default function Layout({ children }) {
                               <p className="flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12">
                                 {eco.orgName}
                               </p>
-                              <MdGroups />
+                              {eco.type === "Bulletin" && <TbClipboardCheck />}
+                              {eco.type === "Competition" && <GrUserAdmin />}
+                              {eco.type === "QuickTask" && <GiHummingbird />}
                             </div>
                           ) : (
                             <div className="bg-slate-200 m-2 my-3 w-screen flex items-center border border-blue-500 duration-300 rounded-3xl scale-110 shadow-md shadow-blue-500">
@@ -142,7 +146,7 @@ export default function Layout({ children }) {
               <div className="flex justify-center items-center">
                 <button
                   onClick={goToTeam}
-                  className='text-center flex justify-center items-center h-10 rounded-md bg-emerald-400 m-5 px-4 py-4 text-sm font-medium text-black hover:bg-emerald-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
+                  className="text-center flex justify-center items-center h-10 rounded-md bg-emerald-400 m-5 px-4 py-4 text-sm font-medium text-black hover:bg-emerald-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
                   Meet the team
                 </button>
