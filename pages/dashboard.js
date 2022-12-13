@@ -48,7 +48,7 @@ export default function Dashboard() {
         </h2>
       ) : null}
       <div className='bg-white h-screen grid lg:grid-cols-2 pr-0 pl-28 pt-8'>
-        <div className='text-black w-11/12 h-3/4 rounded-3xl flex flex-col shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] overflow-y-auto overflow-x-hidden'>
+        <div className='text-black w-11/12 h-3/4 pb-16 rounded-3xl flex flex-col shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] overflow-y-auto overflow-x-hidden'>
           <div className='flex justify-center items-center h-96'>
             {completedTasks.length || incompleteTasks.length ? (
               <Chart
@@ -62,8 +62,8 @@ export default function Dashboard() {
             )}
           </div>
           <div>
-            <div className='flex h-1/4 items-center text-center flex-col shadow-md border border-gray-200 rounded-2xl p-2 m-5 text-xs sm:text-base overflow-auto'>
-              <p className='text-center underline'>Incomplete</p>
+            <div className='flex h-1/2 items-center text-center flex-col shadow-md border border-gray-200 rounded-2xl p-2 m-5 text-xs sm:text-base overflow-auto'>
+              <p className='text-center font-serif text-red-500'>Incomplete</p>
               {tasks.length ? (
                 tasks.map(
                   (task) =>
@@ -82,8 +82,8 @@ export default function Dashboard() {
                 </p>
               )}
             </div>
-            <div className='flex h-1/4 items-center text-center flex-col shadow-md border border-gray-200 rounded-3xl p-2 m-5 text-xs sm:text-base overflow-auto'>
-              <p className='text-center underline'>Completed</p>
+            <div className='flex h-1/2 items-center text-center flex-col shadow-md border border-gray-200 rounded-3xl p-2 m-5 text-xs sm:text-base overflow-auto'>
+              <p className='text-center font-serif text-blue-500'>Completed</p>
               {tasks.length ? (
                 tasks.map(
                   (task) =>
