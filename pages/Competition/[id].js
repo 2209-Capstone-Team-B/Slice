@@ -12,6 +12,7 @@ import {
   testAdmin,
   fetchRewardHistory,
   fetchAnnouncements,
+  fetchAdmins
 } from '../../Store';
 import { useDispatch, useSelector } from 'react-redux';
 import AddCompetitionTask from '../../Components/AddCompetitionTask.js';
@@ -66,6 +67,7 @@ export default function ecosystem() {
     singleRewardRequests,
     isAdmin,
     rewardHistory,
+    allAdmins
   } = useSelector((state) => state);
 
   useEffect(() => {
@@ -78,6 +80,7 @@ export default function ecosystem() {
     const unsubscribeAnnouncements = dispatch(fetchAnnouncements(id));
     //dispatch(testAdmin(id, user?.uid))
     const unsubscribeRewardHistory = dispatch(fetchRewardHistory(id));
+    const unsubscribeAllAdmins= dispatch(fetchAdmins(id))
     return () => {
       unsubscribeEcosystemMembers();
       unsubscribeEcosystemTasks();
@@ -87,6 +90,7 @@ export default function ecosystem() {
       unsubscribeAdmin();
       unsubscribeRewardHistory();
       unsubscribeAnnouncements();
+      unsubscribeAllAdmins()
     };
   }, [id]);
 
@@ -147,7 +151,7 @@ export default function ecosystem() {
   return (
     <>
       <div className='text-center text-5xl pt-6 font-serif text-blue-500'>
-       You are in Competition: {singleEcosystem.orgName}
+      {singleEcosystem.orgName}
         <div className='flex justify-center mt-5'>
           <button
             onClick={handleOpen}
@@ -262,15 +266,17 @@ export default function ecosystem() {
                   key={i}
                   className='border border-gray-200 text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto shadow-md'
                 >
-                  <p className='text-lg font-bold'>{member.userName}</p>
+
+                  <p className='text-lg font-bold'> {member.userName} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {allAdmins.find(adminObj=>adminObj.userId === member.userId)&& <span className='text-red-600'>Admin</span>}</p>
+
                   <ol className='list-decimal p-3'>
                     {singleRewardRequests.map((request, idx) => {
                       if (request.userId === member.userId) {
                         return (
                           <div className='flex flex-col' key={idx}>
                             <div className='flex justify-around'>
-                            
-                            
+
+
                             {isAdmin && (
                               <>
                               <ApproveRequest
@@ -282,10 +288,10 @@ export default function ecosystem() {
                               )}
 
                               {(!isAdmin && request.userId === user?.uid) && ( <DenyRequest request={request} />)}
-                              
+
                             </div>
                             <div className='flex'>
-                            
+
                               <li key={idx} className='text-left p-1 ml-2'>
                                 {request.name}
                               </li>
@@ -296,6 +302,7 @@ export default function ecosystem() {
                       }
                     })}
                   </ol>
+
                 </div>
               ))}
             </div>
