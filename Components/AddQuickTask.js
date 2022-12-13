@@ -40,6 +40,9 @@ export default function AddQuickTask({ id }) {
       setName('');
       setAdded(true);
       setError(false);
+      setTimeout(() => {
+        setAdded(false);
+      }, 1000);
     } else {
       setError(true);
     }
