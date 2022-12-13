@@ -1,12 +1,11 @@
 import { AuthProvider } from "../context/AuthContext";
 import "../styles/globals.css";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "../firebase";
+import { auth } from "../firebase";
 import Layout from "../Components/layouts";
-import store, { fetchUser } from "../Store";
+import store from "../Store";
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
-import Account from "../Components/account";
 import Loading from "../Components/Loading";
 import { useRouter } from "next/router";
 

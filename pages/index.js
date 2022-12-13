@@ -9,25 +9,7 @@ import { fetchUser } from "../Store";
 import { useEffect } from "react";
 
 const Home = () => {
-  const [user, loading] = useAuthState(auth);
-  /* const { currentUser } = useAuth(); */
-  console.log(">>>>", user);
-
-  /*     useEffect(()=>{
- if (user){
-  const getUser = async() =>{
-    try {
-      await fetchUser(user.uid)
-    } catch (error) {
-     console.log(error)
-    }
-  }
-  getUser()
- }
-
-  }, [user]) */
-
-  // you can grab the entire user object on state.loggedInUser
+  const [user] = useAuthState(auth);
 
   return (
     <div>
