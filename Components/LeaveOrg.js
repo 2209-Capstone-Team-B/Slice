@@ -74,7 +74,7 @@ export default function LeaveOrg({ ecosystemId, type }) {
           <div className='w-full flex flex-col items-center pt-4'>
             <h2 id='child-modal-title' className='p-2'>
               {type === 'Bulletin'
-                ? 'Leaving will delete uncompleted tasks you have created (even if currently claimed by another). Tasks you currently hold will be released.'
+                ? 'Leaving will delete ALL uncompleted tasks you have created. Tasks you hold will be released.'
                 : ''}
               {type === 'Competition'
                 ? 'Leaving as the admin will randomly assign another as admin'
