@@ -169,9 +169,13 @@ export default function ecosystem() {
   }
   return (
     <>
-      <Instructions />
       <div className='text-center text-5xl pt-6 font-serif text-blue-500'>
-        {singleEcosystem.orgName}
+        <div className='flex justify-center'>
+          <span>
+            <Instructions />
+          </span>
+          {singleEcosystem.orgName}
+        </div>
         <div className='flex justify-center mt-5'>
           <button
             onClick={(e) => {
@@ -282,7 +286,7 @@ export default function ecosystem() {
         </Modal>
       </div>
       <div className='bg-white h-screen flex-col min-w-full pt-0 p-10'>
-        <div className='flex h-2/3 w-full'>
+        <div className='flex h-[60%] w-full'>
           <div className='flex flex-col border border-gray-200 rounded-3xl w-full m-4 overflow-auto shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)]'>
             <p className='text-center font-serif text-blue-600 pt-2'>
               Group Members
@@ -360,8 +364,8 @@ export default function ecosystem() {
             </div>
           </div>
         </div>
-        <div className='flex h-1/2 w-full justify-center'>
-          <div className='flex border border-gray-200 rounded-3xl justify-center w-auto m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
+        <div className='flex h-[40%] w-full justify-center'>
+          <div className='flex border border-gray-200 rounded-3xl justify-center w-3/4 m-4 shadow-[0_15px_70px_-15px_rgba(0,0,0,0.3)] px-20 p-7'>
             <BarGraph
               ecosystemMembers={ecosystemMembers}
               title='Leaderboard'
