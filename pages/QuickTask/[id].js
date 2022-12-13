@@ -79,6 +79,15 @@ export default function QuickTaskecosystem() {
     };
   }, [id]);
 
+  const deleteBot = async (e, member) => {
+   //delete all of the bot user's tasks
+   const botTasks = query(collection(db, "Tasks"), where("assignedTo", "==", member.userId))
+   const botTaskSnap = await getDocs(botTasks)
+   await Promise.all(botTaskSnap.docs.map(task=>deleteDoc(task.ref)))
+    //delete the bot user
+    deleteDoc(doc(db, "EcosystemMembers", member.id))
+  }
+
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -163,8 +172,9 @@ export default function QuickTaskecosystem() {
     <DragDropContext onDragEnd={onDragEnd}>
       <Instructions />
       <div className="text-center text-5xl pt-6 font-serif text-blue-500">
-        You are in QuickTask: {singleEcosystem.orgName}
+        {singleEcosystem.orgName}
         <div className="flex justify-center mt-5">
+
           <button
             onClick={handleOpen}
             className="flex text-sm items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300"
@@ -203,9 +213,6 @@ export default function QuickTaskecosystem() {
               <TabPanel value={value} index={0} className="p-1">
                 Description: {singleEcosystem.description}
               </TabPanel>
-              <TabPanel value={value} index={0} className="p-1">
-                Ecosystem Type: {singleEcosystem.type}
-              </TabPanel>
               {value === 0 && (
                 <EditDescription
                   curDescription={singleEcosystem.description}
@@ -240,11 +247,19 @@ export default function QuickTaskecosystem() {
                       key={member.id}
                       className={`${
                         snapshot.isDraggingOver
-                          ? "shadow-[0_15px_100px_-15px_rgba(0,0,0,0.3)]"
-                          : ""
-                      } border border-gray-200 text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto shadow-md`}
+                          ? 'shadow-[0_15px_100px_-15px_rgba(0,0,0,0.3)]'
+                          : ''
+                      } border border-gray-200 text-center w-3/4 rounded-2xl p-4 m-1 overflow-auto shadow-md`}
                     >
-                      <p className="text-lg font-bold">{member.userName}</p>
+
+
+{member.userId !== user?.uid  && <div className = 'flex justify-end '> <CloseIcon
+className='top-0 right-0 duration-300 hover:scale-110 hover:font-bold'
+onClick={(e)=>{deleteBot(e, member)}}
+/>
+</div>}
+
+                      <p className='text-lg font-bold'>{member.userName}</p>
                       <Draggable draggableId={member.id} index={i}>
                         {(provided) => (
                           <ol

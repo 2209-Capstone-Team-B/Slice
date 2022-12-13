@@ -12,20 +12,21 @@ import {
   testAdmin,
   fetchRewardHistory,
   fetchAnnouncements,
-} from "../../Store";
-import { useDispatch, useSelector } from "react-redux";
-import AddCompetitionTask from "../../Components/AddCompetitionTask.js";
-import EditCompetitionTask from "../../Components/EditCompetitionTask.js";
-import InvitePeople from "../../Components/InvitePeople";
-import Modal from "@mui/material/Modal";
-import CloseIcon from "@mui/icons-material/Close";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import ClaimReward from "../../Components/ClaimReward";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import { BiCog, BiMessageDetail } from "react-icons/bi";
-import { BsFillCircleFill } from "react-icons/bs";
+  fetchAdmins
+} from '../../Store';
+import { useDispatch, useSelector } from 'react-redux';
+import AddCompetitionTask from '../../Components/AddCompetitionTask.js';
+import EditCompetitionTask from '../../Components/EditCompetitionTask.js';
+import InvitePeople from '../../Components/InvitePeople';
+import Modal from '@mui/material/Modal';
+import CloseIcon from '@mui/icons-material/Close';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import ClaimReward from '../../Components/ClaimReward';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { BiCog, BiMessageDetail } from 'react-icons/bi';
+import { BsFillCircleFill } from 'react-icons/bs';
 import {
   setDoc,
   doc,
@@ -67,7 +68,8 @@ export default function ecosystem() {
     singleRewardRequests,
     isAdmin,
     rewardHistory,
-    announcements,
+    allAdmins
+    announcements
   } = useSelector((state) => state);
 
   useEffect(() => {
@@ -80,6 +82,7 @@ export default function ecosystem() {
     const unsubscribeAnnouncements = dispatch(fetchAnnouncements(id));
     //dispatch(testAdmin(id, user?.uid))
     const unsubscribeRewardHistory = dispatch(fetchRewardHistory(id));
+    const unsubscribeAllAdmins= dispatch(fetchAdmins(id))
     return () => {
       unsubscribeEcosystemMembers();
       unsubscribeEcosystemTasks();
@@ -89,6 +92,7 @@ export default function ecosystem() {
       unsubscribeAdmin();
       unsubscribeRewardHistory();
       unsubscribeAnnouncements();
+      unsubscribeAllAdmins()
     };
   }, [id]);
 
@@ -167,7 +171,7 @@ export default function ecosystem() {
     <>
       <Instructions />
       <div className="text-center text-5xl pt-6 font-serif text-blue-500">
-        You are in Competition: {singleEcosystem.orgName}
+        {singleEcosystem.orgName}
         <div className="flex justify-center mt-5">
           <button
             onClick={(e) => {
@@ -290,8 +294,9 @@ export default function ecosystem() {
                   key={i}
                   className="border border-gray-200 text-center w-3/4 rounded-2xl p-4 m-2 overflow-auto shadow-md"
                 >
-                  <p className="text-lg font-bold">{member.userName}</p>
-                  <ol className="list-decimal p-3">
+                  <p className='text-lg font-bold'> {member.userName} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {allAdmins.find(adminObj=>adminObj.userId === member.userId)&& <span className='text-red-600'>Admin</span>}</p>
+
+                  <ol className='list-decimal p-3'>
                     {singleRewardRequests.map((request, idx) => {
                       if (request.userId === member.userId) {
                         return (
@@ -322,6 +327,7 @@ export default function ecosystem() {
                       }
                     })}
                   </ol>
+
                 </div>
               ))}
             </div>

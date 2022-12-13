@@ -18,9 +18,9 @@ const infoItems = [
   "",
   "BULLETIN: the default ecosystem allows any member to add/edit tasks.  Members are other signed in users who are invited by email to the ecosystem. Tasks can be assigned/claimed by anyone. If a task you create is completed by someone else, you will be notified in your dashboard",
   "",
-  "COMPETITION: designed for repetitive tasks/tasks of different weight. Only admins can create/edit tasks, which can be given different values, and do not disappear when 'claimed'. Users can submit claims of task completion, which must be admin approved, after which they will receive credit for task completion",
+  "TASKMASTER: designed for repetitive tasks/tasks of different weight. The creator of an ecosystem becomes its admin. Only admins can create/edit tasks, which can be given different values, and do not disappear when 'claimed'. Users can submit claims of task completion, which must be admin approved, after which they will receive credit for task completion",
   "",
-  "QUICK TASK: designed as a quick, on-the-fly scratch pad for assigning tasks. Unlike other ecosystem types which require every group member to sign up for an account, in Quick Task, group members are directly created so they can be assigned tasks quickly",
+  "ON THE FLY: designed as a quick scratch pad for divvying up tasks. Unlike other ecosystem types which require every group member to sign up for an account, in this ecosystem, group members are directly created so they can be assigned tasks quickly",
 ];
 const tip = infoItems.join("\n");
 
@@ -152,12 +152,11 @@ export default function AddEcosystem({ id, user }) {
                 onChange={(e) => setType(e.target.value)}
               >
                 <option name="Bulletin">Bulletin</option>
-                <option name="Competition">Competition</option>
+                <option name="Competition">Taskmaster</option>
                 <option name="QuickTask" value="QuickTask">
-                  Quick Task
+                  On The Fly
                 </option>
-              </select>
-
+              </select>{" "}
               <Tooltip
                 className="ml-2"
                 title={<div style={{ whiteSpace: "pre-line" }}>{tip}</div>}
@@ -168,7 +167,6 @@ export default function AddEcosystem({ id, user }) {
                 </span>
               </Tooltip>
             </div>
-
             <div className="flex justify-center pt-5">
               <Button
                 disabled={added}
