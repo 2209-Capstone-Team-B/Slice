@@ -23,7 +23,14 @@ const Chart = ({ completed, incomplete }) => {
     ],
   };
 
-  return <Doughnut data={data} />;
+  return (
+    <Doughnut
+      data={data}
+      width={350}
+      height={350}
+      options={{ maintainAspectRatio: false }}
+    />
+  );
 };
 
 export default Chart;

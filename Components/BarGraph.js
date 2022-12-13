@@ -41,8 +41,9 @@ const BarGraph = ({ ecosystemMembers, title }) => {
       },
       x: {},
     },
+    maintainAspectRatio: false,
   };
-  return <Bar data={data} options={options} />;
+  return <Bar data={data} options={options} height={240} width={700} />;
 };
 
 export default BarGraph;
