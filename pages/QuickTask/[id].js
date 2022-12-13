@@ -19,7 +19,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ClaimTask from '../../Components/ClaimTask';
 import { BiCog, BiMessageDetail } from 'react-icons/bi';
-import { FcAbout } from 'react-icons/fc';
+import {BsInfoCircle} from 'react-icons/bs';
 import {
   setDoc,
   doc,
@@ -186,7 +186,7 @@ export default function QuickTaskecosystem() {
             className='flex text-sm items-center hover:bg-blue-400 cursor-pointer m-2 px-2 rounded-2xl text-black font-sans border bg-blue-300'
           >
             Channel Details
-            <FcAbout size={25} className='pl-2' />
+            <BsInfoCircle size={25} className='pl-2'/>
           </button>
           <LeaveOrg
             ecosystemId={singleEcosystem.id}
