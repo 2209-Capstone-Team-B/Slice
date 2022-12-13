@@ -52,7 +52,6 @@ const AuthPage = () => {
     if (signIn) {
       try {
         await login(email, password);
-        router.push("/dashboard");
       } catch (error) {
         console.log(">>>>>", error);
         setError("Incorrect Email or Password");
@@ -64,7 +63,7 @@ const AuthPage = () => {
     const user = myauth.currentUser;
 
     const updateDb = async () => {
-      const data2 = await setDoc(
+      await setDoc(
         doc(db, "Users", user.uid),
         {
           email,

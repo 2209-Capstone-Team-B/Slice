@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
-import Link from "@mui/material/Link";
 import HelpIcon from "@mui/icons-material/Help";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
@@ -21,24 +20,6 @@ const style = {
   borderRadius: 5,
   alignItems: "center",
 };
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://slice-deploy.vercel.app/">
-        Slice
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 export default function Instructions({ id, user }) {
   const [open, setOpen] = React.useState(false);
@@ -148,9 +129,6 @@ export default function Instructions({ id, user }) {
                 manually will merge your account!
               </li>
             </ul>
-          </div>
-          <div className="align-bottom">
-            <Copyright sx={{ mt: 5 }} />
           </div>
         </Box>
       </Modal>
