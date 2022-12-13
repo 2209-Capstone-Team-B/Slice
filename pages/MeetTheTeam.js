@@ -29,7 +29,7 @@ const MeetTheTeam = () => {
     {
       name: 'Cadre Carrigan',
       linkedin: 'https://www.linkedin.com/in/cadre-carrigan/',
-      github: 'https://github.com/MichaelKleyman',
+      github: 'https://github.com/cadrec',
       image:
         'https://media.licdn.com/dms/image/C4D03AQGrsvAPtEeGcA/profile-displayphoto-shrink_400_400/0/1647899270632?e=1675900800&v=beta&t=Rh98SsjiWhdM154XZyEBzYswIzLCIWdV2Fc3S1qo1iU',
     },
@@ -58,10 +58,7 @@ const MeetTheTeam = () => {
       {sliceCreators.map((creator) => (
         <Card sx={{ minWidth: 275, margin: 2 }} key={creator.name}>
           <img src={`${creator.image}`} className='object-contain h-48 w-96' />
-          <CardHeader
-            title={`${creator.name}`}
-            subheader='Software Engineer'
-          />
+          <CardHeader title={`${creator.name}`} subheader='Software Engineer' />
           <CardContent>
             <Typography
               variant='body2'
@@ -70,7 +67,7 @@ const MeetTheTeam = () => {
             ></Typography>
           </CardContent>
           <CardActions disableSpacing>
-            Lets Connect: 
+            Lets Connect:
             <IconButton
               aria-label='add to favorites'
               onClick={(e) => redirectTo(e, creator.github)}

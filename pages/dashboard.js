@@ -80,12 +80,6 @@ export default function Dashboard() {
                 <p className='text-gray-400 rounded-3xl bg-white w-2/6'>
                   No Tasks For Me
                 </p>
-                //   )}
-                // <div>
-                //   <Skeleton variant='text' width={410} height={40} />
-                //   <Skeleton variant='text' width={410} height={40} />
-                //   <Skeleton variant='text' width={410} height={40} />
-                // </div>
               )}
             </div>
             <div className='flex h-1/4 items-center text-center flex-col shadow-md border border-gray-200 rounded-3xl p-2 m-5 text-xs sm:text-base overflow-auto'>
@@ -106,11 +100,6 @@ export default function Dashboard() {
                 <p className='text-gray-400 rounded-3xl bg-white w-2/6'>
                   No Tasks For Me
                 </p>
-                // <div>
-                //   <Skeleton variant='text' width={410} height={40} />
-                //   <Skeleton variant='text' width={410} height={40} />
-                //   <Skeleton variant='text' width={410} height={40} />
-                // </div>
               )}
             </div>
           </div>

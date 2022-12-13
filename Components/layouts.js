@@ -128,7 +128,9 @@ export default function Layout({ children }) {
                               <p className="flex justify-self-start items-end p-2 pl-3 cursor-pointer w-10/12">
                                 {eco.orgName}
                               </p>
-                              <MdGroups />
+                              {eco.type === "Bulletin" && <TbClipboardCheck />}
+                              {eco.type === "Competition" && <GrUserAdmin />}
+                              {eco.type === "QuickTask" && <GiHummingbird />}
                             </div>
                           )}
                         </Link>
