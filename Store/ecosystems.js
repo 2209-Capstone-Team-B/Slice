@@ -8,7 +8,7 @@ import {
   onSnapshot,
   doc,
   getDoc,
-  updateDoc
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase.js";
 
@@ -23,12 +23,11 @@ function randomRgbColor() {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
-
 // Actions
 
 const GET_ECOSYSTEMS = "GET_ECOSYSTEMS";
 const UPDATE_ECOSYSTEM = "UPDATE_ECOSYSTEM";
-const LOG_OUT = "LOG_OUT"
+const LOG_OUT = "LOG_OUT";
 
 // Action Creators
 const _getECOSYSTEMS = (ecosystems) => {
@@ -65,28 +64,27 @@ export const fetchEcosystems = (userId) => (dispatch) => {
 };
 
 export const addEcosystem = (eco) => async (dispatch) => {
-  const { id, name, type, userName, description } = eco
-  const docRef = await addDoc(collection(db, 'Ecosystem'), {
+  const { id, name, type, userName, description } = eco;
+  const docRef = await addDoc(collection(db, "Ecosystem"), {
     orgName: name,
     type,
-    description
+    description,
   });
   const docSnap = await getDoc(docRef);
-  console.log(id);
-  addDoc(collection(db, 'EcosystemMembers'), {
+  addDoc(collection(db, "EcosystemMembers"), {
     userId: id,
     userName,
     ecosystemId: docSnap.id,
     currencyAmount: 0,
     color: randomRgbColor(),
   });
-  if (type === "Competition"){
-    setDoc(doc(db, "Ecosystem", docSnap.id, "Admin", id), {userId: id})
+  if (type === "Competition") {
+    setDoc(doc(db, "Ecosystem", docSnap.id, "Admin", id), { userId: id });
   }
-}
+};
 
 export const createEcosystemMember = (ecoId, userName) => async (dispatch) => {
-/*   const { id, name, type, userName, description } = eco
+  /*   const { id, name, type, userName, description } = eco
   const docRef = await addDoc(collection(db, 'Ecosystem'), {
     orgName: name,
     type,
@@ -94,7 +92,7 @@ export const createEcosystemMember = (ecoId, userName) => async (dispatch) => {
   });
   const docSnap = await getDoc(docRef); */
 
-  const docRef = await addDoc(collection(db, 'EcosystemMembers'), {
+  const docRef = await addDoc(collection(db, "EcosystemMembers"), {
     userId: null,
     userName,
     ecosystemId: ecoId,
@@ -102,12 +100,10 @@ export const createEcosystemMember = (ecoId, userName) => async (dispatch) => {
     color: randomRgbColor(),
   });
 
-  const memberDoc = await getDoc(docRef)
+  const memberDoc = await getDoc(docRef);
 
-  updateDoc(docRef, {userId: docRef.id} )
-
-
-}
+  updateDoc(docRef, { userId: docRef.id });
+};
 
 // Initial State
 const initialState = [];
@@ -128,7 +124,7 @@ export default function userEcosystems(state = initialState, action) {
       });
     }
     case LOG_OUT: {
-      return []
+      return [];
     }
     default:
       return state;

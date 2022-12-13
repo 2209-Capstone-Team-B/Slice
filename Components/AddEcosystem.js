@@ -60,15 +60,6 @@ export default function AddEcosystem({ id, user }) {
     setUsername(`${userObject.firstName}-${userObject.lastName}`);
   }, [userObject]);
 
-  // const handleChange = (e) => {
-  //   if (e.target.name === type) {
-  //   } else if (e.target.name == name) {
-  //     console.log(e.target.value);
-  //     setName(e.target.value);
-  //   } else {
-  //   }
-  // };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (name.length > 0 && description.length > 0) {

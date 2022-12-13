@@ -8,7 +8,6 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { getAuth, sendEmailVerification } from "firebase/auth";
-import { auth } from "../firebase";
 import { Alert } from "@mui/material";
 
 const theme = createTheme();
