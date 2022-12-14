@@ -49,6 +49,12 @@ export default function AddQuickTask({ id }) {
     }
   };
 
+  const handleKeypress = e => {
+    if (e.key === "Enter"){
+      handleSubmit(e)
+    }
+  }
+
   return (
     <div className='flex justify-center'>
       <button
@@ -78,6 +84,7 @@ export default function AddQuickTask({ id }) {
             name='name'
             value={name}
             onChange={(e) => setName(e.target.value)}
+            onKeyPress={handleKeypress}
           />
         </DialogContent>
         <DialogActions>

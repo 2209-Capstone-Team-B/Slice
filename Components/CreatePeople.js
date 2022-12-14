@@ -36,10 +36,19 @@ export default function CreateMember() {
       setUserName('');
       setAdded(true);
       setError(false);
+      setTimeout(() => {
+        setAdded(false);
+      }, 1000);
     } else {
       setError(true);
     }
   };
+
+  const handleKeypress = e => {
+    if (e.key === "Enter"){
+      handleSubmit(e)
+    }
+  }
 
   return (
     <div className='flex justify-center'>
@@ -70,6 +79,7 @@ export default function CreateMember() {
             name='userName'
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
+            onKeyPress={handleKeypress}
           />
         </DialogContent>
         <DialogActions>

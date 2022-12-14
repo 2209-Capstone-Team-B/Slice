@@ -71,6 +71,12 @@ const EcoAnnouncement = () => {
     }
   };
 
+  const handleKeypress = e => {
+    if (e.key === "Enter"){
+      handleSubmit(e)
+    }
+  }
+
   return (
     <div className='flex flex-col items-end justify-center'>
       <>
@@ -142,10 +148,11 @@ const EcoAnnouncement = () => {
             name='message'
             onChange={handleChange}
             className='w-screen'
+            onKeyPress={handleKeypress}
           />
         </DialogContent>
         <DialogActions>
-          <Button disabled={sent} onClick={handleSubmit}>
+          <Button disabled={sent} onClick={handleSubmit} >
             {sent ? <Alert severity='success'>Done</Alert> : 'Post'}
           </Button>
           {error && <Alert severity='error'>User not found</Alert>}
