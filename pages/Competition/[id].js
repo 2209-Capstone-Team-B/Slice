@@ -196,7 +196,9 @@ export default function ecosystem() {
         </div>
         <Modal
           open={open}
-          onClose={handleOpen}
+          onClose={(e) => {
+            setSeen(e, announcements);
+          }}
           aria-labelledby='modal-modal-title'
           aria-describedby='modal-modal-description'
         >
@@ -280,7 +282,9 @@ export default function ecosystem() {
             </Box>
             <CloseIcon
               className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
-              onClick={handleOpen}
+              onClick={(e) => {
+                setSeen(e, announcements);
+              }}
             />
           </Box>
         </Modal>
