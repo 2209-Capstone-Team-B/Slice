@@ -267,12 +267,12 @@ export default function ecosystem() {
                 >
                   Completed Task History (Last 30 Days)
                 </Typography>
-                {singleTaskHistory.map((task) => (
+                {rewardHistory.map((task) => (
                   <div key={task.id}>
                     <div>
                       "{task.userName}" completed "{task.name}"
                     </div>
-                    <small>{task.completedAt.toDate().toUTCString()}</small>
+                    <small>{task.created.toDate().toUTCString()}</small>
                     <hr className='my-2' />
                   </div>
                 ))}
