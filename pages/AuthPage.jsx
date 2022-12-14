@@ -59,11 +59,11 @@ const AuthPage = () => {
   };
 
   //
-  const handleKeypress = e => {
-    if (e.key === "Enter"){
-      handleLogin()
+  const handleKeypress = (e) => {
+    if (e.key === "Enter") {
+      handleLogin();
     }
-  }
+  };
 
   const saveToDb = async () => {
     const user = myauth.currentUser;
