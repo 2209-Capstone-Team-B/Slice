@@ -155,7 +155,7 @@ function DeleteModal({ close, task, uderId }) {
               }}
               className='text-red-600 border border-red-600 rounded-3xl p-2 w-3/4 hover:bg-red-600 hover:text-white'
             >
-              Comfirm Delete
+              Confirm Delete
             </button>
           </div>
         </Box>

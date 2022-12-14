@@ -76,7 +76,7 @@ export const leaveMember = (userId, ecoId, type, admin) => async (dispatch) => {
     const incompleteTasksSnapshot = await getDocs(incompleteTasks);
     await Promise.all(incompleteTasksSnapshot.docs.map(task=>deleteDoc(task.ref)))
 
-    //update all tasks where ecosystemId = ecoid assignedTo = user id to assignedTo = null
+    //update all tasks where ecosystemId = ecoid, assignedTo = user id; to assignedTo = null
     const assignedTasks = query(
       collection(db, "Tasks"),
       where("completed", "==", false),
@@ -107,6 +107,12 @@ export const leaveMember = (userId, ecoId, type, admin) => async (dispatch) => {
     if (otherEcoMemberSnap.size === 0) {
       //you're the last member, delete the whole eco
       deleteDoc(doc(db, "Ecosystem", ecoId));
+      //delete any pending invites to this now deleted eco
+      const pendingInvites = query(collection(db,"Invites"),where("ecosystemId","==", ecoId))
+      const pendingInvitesSnap = await getDocs(pendingInvites)
+      if (pendingInvitesSnap.size>0){
+        pendingInvitesSnap.forEach(invite=>{deleteDoc(invite.ref)})
+      }
     }
   }
 
@@ -160,6 +166,12 @@ export const leaveMember = (userId, ecoId, type, admin) => async (dispatch) => {
         ecoTasksSnapshot.forEach((task) => {
           deleteDoc(task.ref);
         })
+            //delete any pending invites to this now deleted eco
+      const pendingInvites = query(collection(db,"Invites"),where("ecosystemId","==", ecoId))
+      const pendingInvitesSnap = await getDocs(pendingInvites)
+      if (pendingInvitesSnap.size>0){
+        pendingInvitesSnap.forEach(invite=>{deleteDoc(invite.ref)})
+      }
       }
     }
 

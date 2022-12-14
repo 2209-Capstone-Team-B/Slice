@@ -80,7 +80,7 @@ export default function ClaimReward({ task, user }) {
             {/* <p>Reward: {task.reward} points</p> */}
             <br></br>
             <p>
-              You will receive {task.reward} points when your claim is approved
+              You will receive {task.reward} point(s) when your claim is approved
             </p>
             <button
               onClick={(e) => handleClose(e, false)}
