@@ -109,8 +109,8 @@ export default function Instructions({ id, user }) {
                 "Account" drop-down menu.
               </li>
               <li className="p-0.5">
-                You can have a different username for every ecosystem you're
-                apart of!
+                You can have a different username for every ecosystem you're a
+                part of!
               </li>
             </ul>
           </div>
@@ -125,8 +125,8 @@ export default function Instructions({ id, user }) {
                 menu.
               </li>
               <li className="p-0.5">
-                Logging in with Google and using the same e-mail to log in
-                manually will merge your account!
+                Logging in with Google makes that e-mail unavailable for new
+                user sign-ups.
               </li>
             </ul>
           </div>
