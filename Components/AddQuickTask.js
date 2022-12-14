@@ -9,6 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import axios from 'axios';
 import CloseIcon from '@mui/icons-material/Close';
 import { auth, db } from '../firebase';
+import { collection, addDoc} from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Alert from '@mui/material/Alert';
 
@@ -28,7 +29,7 @@ export default function AddQuickTask({ id }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (name.length > 0) {
-      await axios.post(`/api/Ecosystem/${id}`, {
+      addDoc(collection(db, 'Tasks'), {
         name,
         due: null,
         ecosystemId: id,
