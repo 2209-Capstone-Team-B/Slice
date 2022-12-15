@@ -15,7 +15,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="public/Slice-logos_transparent.png" alt="Logo" width="200" height="200">
+    <img src="public/Slice-logos_transparent.png" alt="Logo" width="250" height="250">
   </a>
 
 <h3 align="center">Slice</h3>
