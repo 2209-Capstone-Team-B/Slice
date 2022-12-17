@@ -24,7 +24,7 @@
     Group Task-Management
     <br />
     <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    <a href="https://www.youtube.com/watch?v=GRtXewbt4jQ">View Demo</a>
   </p>
 </div>
 
