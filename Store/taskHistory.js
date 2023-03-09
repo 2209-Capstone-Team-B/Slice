@@ -7,12 +7,12 @@ import {
   getDoc,
   getDocs,
   deleteDoc,
-  orderBy
+  orderBy,
 } from 'firebase/firestore';
 import { db } from '../firebase.js';
 
 const GET_HISTORY = 'GET_HISTORY';
-const LOG_OUT = "LOG_OUT"
+const LOG_OUT = 'LOG_OUT';
 
 const _getHISTORY = (history) => {
   return {
@@ -23,14 +23,23 @@ const _getHISTORY = (history) => {
 
 export const fetchTaskHistory = (ecoId) => (dispatch) => {
   let today = new Date();
-let priorDate = new Date(new Date().setDate(today.getDate() - 30))
-  const completedTasks = query(collection(db, 'Tasks'), where('ecosystemId', '==', ecoId),where('completed', '==', true), where('completedAt', '>', priorDate), orderBy("completedAt", "desc"))
-  const subscriber = onSnapshot(completedTasks, (querySnapshot)=>{
-    const userHistory = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}))
-    dispatch(_getHISTORY(userHistory))
-  })
-  return subscriber
-}
+  let priorDate = new Date(new Date().setDate(today.getDate() - 30));
+  const completedTasks = query(
+    collection(db, 'Tasks'),
+    where('ecosystemId', '==', ecoId),
+    where('completed', '==', true),
+    where('completedAt', '>', priorDate),
+    orderBy('completedAt', 'desc')
+  );
+  const subscriber = onSnapshot(completedTasks, (querySnapshot) => {
+    const userHistory = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    dispatch(_getHISTORY(userHistory));
+  });
+  return subscriber;
+};
 
 export default function userHistory(state = [], action) {
   switch (action.type) {
@@ -38,7 +47,7 @@ export default function userHistory(state = [], action) {
       return action.history;
     }
     case LOG_OUT: {
-      return []
+      return [];
     }
     default:
       return state;

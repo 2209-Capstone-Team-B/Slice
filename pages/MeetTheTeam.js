@@ -17,35 +17,35 @@ const MeetTheTeam = () => {
       linkedin: 'https://www.linkedin.com/in/michael-kleyman/',
       github: 'https://github.com/MichaelKleyman',
       image:
-        'https://media.licdn.com/dms/image/D4E03AQHlvFy3WidZJA/profile-displayphoto-shrink_400_400/0/1663697694760?e=1675900800&v=beta&t=3brDAv3KeyeBL8tFTryDqD9tQXhlHCmDLJy8HAtKr_c',
+        'https://media.licdn.com/dms/image/D4E35AQFvuFcWJEUYqg/profile-framedphoto-shrink_400_400/0/1674655341289?e=1678993200&v=beta&t=FZzOa9NBQO5TVuiK8pF1pqJy6gywWm-j7oN1NBlKAus',
     },
     {
       name: 'Allan Luo',
       linkedin: 'https://www.linkedin.com/in/allanluo/',
       github: 'https://github.com/allanjluo',
       image:
-        'https://media.licdn.com/dms/image/D5603AQFYxBX0jJv8fQ/profile-displayphoto-shrink_400_400/0/1669606633794?e=1675900800&v=beta&t=CSZvSkKNT04uqTI6UuxzQq7fk3mx99Cp2_xt4DM-S88',
+        'https://media.licdn.com/dms/image/D5603AQFYxBX0jJv8fQ/profile-displayphoto-shrink_400_400/0/1669606633794?e=1683763200&v=beta&t=I5d3Tdj4TVHQq7URnLatduOf8SDoXoU4ZwQM8_KbtZY',
     },
     {
       name: 'Cadre Carrigan',
       linkedin: 'https://www.linkedin.com/in/cadre-carrigan/',
       github: 'https://github.com/cadrec',
       image:
-        'https://media.licdn.com/dms/image/C4D03AQGrsvAPtEeGcA/profile-displayphoto-shrink_400_400/0/1647899270632?e=1675900800&v=beta&t=Rh98SsjiWhdM154XZyEBzYswIzLCIWdV2Fc3S1qo1iU',
+        'https://media.licdn.com/dms/image/C4D03AQGrsvAPtEeGcA/profile-displayphoto-shrink_400_400/0/1647899270632?e=1683763200&v=beta&t=4OIt0PpvHVvn5SafoagITZjaGxqvrYSHt3SKQs90ePo',
     },
     {
       name: 'Scott Irwin',
       linkedin: 'https://www.linkedin.com/in/scott-irwin-wesleyan',
       github: 'https://github.com/sirwin6',
       image:
-        'https://media.licdn.com/dms/image/C4E03AQFsn_YQfxsVpA/profile-displayphoto-shrink_400_400/0/1645902697555?e=1675900800&v=beta&t=9cvlcdQMT80M36pE6fEN6Lj7C91T4o4LDHkfOf1NlRs',
+        'https://media.licdn.com/dms/image/D5603AQGIAZ-WN67VRQ/profile-displayphoto-shrink_400_400/0/1673453582761?e=1683763200&v=beta&t=NNOO9uSv7XfpdDUJSx-naiu0AcKpPGRW8dLWq-AQ9jY',
     },
     {
       name: 'Tasdid Hossain',
       linkedin: 'https://www.linkedin.com/in/tasdid/',
       github: 'https://github.com/Tasdeed',
       image:
-        'https://media.licdn.com/dms/image/C4D03AQGbn1VCgQlhKw/profile-displayphoto-shrink_400_400/0/1594353093530?e=1675900800&v=beta&t=QYtKjZsjo1ZQ97uXBX0KxXvsyJ24KrV75oMv1PreMGE',
+        'https://media.licdn.com/dms/image/C4D03AQGbn1VCgQlhKw/profile-displayphoto-shrink_400_400/0/1594353093530?e=1683763200&v=beta&t=MG0PEoKgj8iVsFXF5lqjs955foodH0l2e_YU86Ysn00',
     },
   ];
 
@@ -54,7 +54,7 @@ const MeetTheTeam = () => {
   };
 
   return (
-    <div className='flex justify-center items-center flex-row flex-wrap mt-7'>
+    <div className='grid grid-cols-3 place-items-center'>
       {sliceCreators.map((creator) => (
         <Card sx={{ minWidth: 275, margin: 2 }} key={creator.name}>
           <img src={`${creator.image}`} className='object-contain h-48 w-96' />

@@ -1,10 +1,10 @@
-import axios from "axios";
-import { onSnapshot,collection, doc, getDoc} from "firebase/firestore"
-import {db} from '../firebase.js'
+import axios from 'axios';
+import { onSnapshot, collection, doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase.js';
 
 // Actions
-const GET_USER = "GET_USER";
-const LOG_OUT = "LOG_OUT"
+const GET_USER = 'GET_USER';
+const LOG_OUT = 'LOG_OUT';
 
 // Action Creators
 const _getUser = (user) => {
@@ -16,25 +16,27 @@ const _getUser = (user) => {
 
 const _logout = () => {
   return {
-    type: LOG_OUT
-  }
-}
+    type: LOG_OUT,
+  };
+};
 
 // Thunks
-export const fetchUser = (userId) => (dispatch)=> {
-  const userRef = doc(db, "Users", userId)
-  const subscriber = onSnapshot(userRef, (docSnapshot)=>{
-    dispatch(_getUser({...docSnapshot.data(), id: docSnapshot.id}))
-  })
- return subscriber
+export const fetchUser = (userId) => (dispatch) => {
+  const userRef = doc(db, 'Users', userId);
+  const subscriber = onSnapshot(userRef, (docSnapshot) => {
+    dispatch(_getUser({ ...docSnapshot.data(), id: docSnapshot.id }));
+  });
+  return subscriber;
 };
 
 export const logoutClearRedux = () => {
-  return (dispatch) => {dispatch(_logout())}
+  return (dispatch) => {
+    dispatch(_logout());
+  };
 }
 
 // Initial State
-const initialState = {}
+const initialState = {};
 
 // Reducer
 export default function loggedInUserReducer(state = initialState, action) {
@@ -43,7 +45,7 @@ export default function loggedInUserReducer(state = initialState, action) {
       return action.user;
     }
     case LOG_OUT: {
-      return {}
+      return {};
     }
     default:
       return state;
