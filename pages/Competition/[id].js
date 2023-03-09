@@ -196,7 +196,9 @@ export default function ecosystem() {
         </div>
         <Modal
           open={open}
-          onClose={handleOpen}
+          onClose={(e) => {
+            setSeen(e, announcements);
+          }}
           aria-labelledby='modal-modal-title'
           aria-describedby='modal-modal-description'
         >
@@ -267,12 +269,12 @@ export default function ecosystem() {
                 >
                   Completed Task History (Last 30 Days)
                 </Typography>
-                {singleTaskHistory.map((task) => (
+                {rewardHistory.map((task) => (
                   <div key={task.id}>
                     <div>
                       "{task.userName}" completed "{task.name}"
                     </div>
-                    <small>{task.completedAt.toDate().toUTCString()}</small>
+                    <small>{task.created.toDate().toUTCString()}</small>
                     <hr className='my-2' />
                   </div>
                 ))}
@@ -280,7 +282,9 @@ export default function ecosystem() {
             </Box>
             <CloseIcon
               className='absolute top-0 right-0 m-3 duration-300 hover:scale-110 hover:font-bold'
-              onClick={handleOpen}
+              onClick={(e) => {
+                setSeen(e, announcements);
+              }}
             />
           </Box>
         </Modal>

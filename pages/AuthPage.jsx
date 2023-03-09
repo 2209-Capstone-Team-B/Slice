@@ -58,6 +58,13 @@ const AuthPage = () => {
     }
   };
 
+  //
+  const handleKeypress = (e) => {
+    if (e.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   const saveToDb = async () => {
     const user = myauth.currentUser;
 
@@ -160,6 +167,7 @@ const AuthPage = () => {
                 placeholder="Email..."
                 className="rounded-3xl p-3"
                 onChange={(event) => setEmail(event.target.value)}
+                onKeyPress={handleKeypress}
               />
             </div>
             <div className="flex justify-center items-center p-6 text-black">
@@ -169,6 +177,7 @@ const AuthPage = () => {
                 placeholder="Password..."
                 className="rounded-3xl p-3"
                 onChange={(event) => setPassword(event.target.value)}
+                onKeyPress={handleKeypress}
               />
             </div>
             <button

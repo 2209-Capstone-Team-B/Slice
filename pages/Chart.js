@@ -15,7 +15,7 @@ const Chart = ({ completed, incomplete }) => {
     labels: ['Completed', 'Incomplete'],
     datasets: [
       {
-        label: 'My First Dataset',
+        label: 'Tasks',
         data: [completed, incomplete],
         backgroundColor: ['rgb(54, 162, 235)', 'rgb(255, 99, 132)'],
         hoverOffset: 4,
